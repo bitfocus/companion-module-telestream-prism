@@ -1,3 +1,3 @@
-## Your module
+## Telestream Prism
 
-Write some help for your users here!
+Control the Telestream Prism Waveform monitor. Tested against Firmware 4.1

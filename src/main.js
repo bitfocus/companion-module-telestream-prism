@@ -3,17 +3,28 @@ const UpgradeScripts = require('./upgrades')
 const UpdateActions = require('./actions')
 const UpdateFeedbacks = require('./feedbacks')
 const UpdateVariableDefinitions = require('./variables')
+const axios = require('axios')
 
-class ModuleInstance extends InstanceBase {
+class Telestream_PRISM extends InstanceBase {
 	constructor(internal) {
 		super(internal)
 	}
 
+	setupAxios() {
+		if (this.axios) {
+			delete this.axios
+		}
+		this.axios = axios.create({
+			baseURL: `http://${this.config.host}:9000/api/`,
+			timeout: 1000,
+			headers: {'Content-Type': 'application/json'}
+		});
+	}
+
 	async init(config) {
 		this.config = config
-
+		this.setupAxios()
 		this.updateStatus(InstanceStatus.Ok)
-
 		this.updateActions() // export actions
 		this.updateFeedbacks() // export feedbacks
 		this.updateVariableDefinitions() // export variable definitions
@@ -21,10 +32,14 @@ class ModuleInstance extends InstanceBase {
 	// When module gets deleted
 	async destroy() {
 		this.log('debug', 'destroy')
+		if (this.axios) {
+			delete this.axios
+		}
 	}
 
 	async configUpdated(config) {
 		this.config = config
+		this.setupAxios()
 	}
 
 	// Return config fields for web config
@@ -36,13 +51,6 @@ class ModuleInstance extends InstanceBase {
 				label: 'Target IP',
 				width: 8,
 				regex: Regex.IP,
-			},
-			{
-				type: 'textinput',
-				id: 'port',
-				label: 'Target Port',
-				width: 4,
-				regex: Regex.PORT,
 			},
 		]
 	}
@@ -60,4 +68,4 @@ class ModuleInstance extends InstanceBase {
 	}
 }
 
-runEntrypoint(ModuleInstance, UpgradeScripts)
+runEntrypoint(Telestream_PRISM, UpgradeScripts)

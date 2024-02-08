@@ -3,7 +3,8 @@
 	"version": "1.0.0",
 	"main": "src/main.js",
 	"scripts": {
-		"format": "prettier -w ."
+		"format": "prettier -w .",
+		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"license": "MIT",
 	"repository": {
@@ -11,10 +12,11 @@
 		"url": "git+https://github.com/phillipivan/companion-module-telestream-prism.git"
 	},
 	"dependencies": {
-		"@companion-module/base": "~1.7.0"
+		"@companion-module/base": "~1.7.0",
+		"axios": "^1.6.7"
 	},
 	"devDependencies": {
-		"@companion-module/tools": "^1.4.2"
+		"@companion-module/tools": "^1.4.3"
 	},
 	"prettier": "@companion-module/tools/.prettierrc.json"
 }
