@@ -1,15 +1,18 @@
 module.exports = function (self) {
 	self.setActionDefinitions({
-		sample_action: {
-			name: 'My First Action',
+		changeInput: {
+			name: 'Select Video Input',
 			options: [
 				{
 					id: 'num',
 					type: 'number',
-					label: 'Test',
-					default: 5,
+					label: 'Input',
+					default: 0,
 					min: 0,
-					max: 100,
+					max: 5,
+					range: true,
+					step: 1,
+					tooltip: 'Input must be an integer between 0 and 5',
 				},
 			],
 			callback: async (event) => {
