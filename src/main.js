@@ -15,7 +15,7 @@ class Telestream_PRISM extends InstanceBase {
 			delete this.axios
 		}
 		this.axios = axios.create({
-			baseURL: `http://${this.config.host}:9000/api/`,
+			baseURL: `http://${this.config.host}:9000/api`,
 			timeout: 1000,
 			headers: {'Content-Type': 'application/json'}
 		});
@@ -24,10 +24,13 @@ class Telestream_PRISM extends InstanceBase {
 	async init(config) {
 		this.config = config
 		this.setupAxios()
-		this.updateStatus(InstanceStatus.Ok)
+		this.prism = {
+			presets : [{ id: 'factory', label: 'Factory Preset'}]
+		}
 		this.updateActions() // export actions
 		this.updateFeedbacks() // export feedbacks
 		this.updateVariableDefinitions() // export variable definitions
+		this.updateStatus(InstanceStatus.Ok)
 	}
 	// When module gets deleted
 	async destroy() {
@@ -40,6 +43,13 @@ class Telestream_PRISM extends InstanceBase {
 	async configUpdated(config) {
 		this.config = config
 		this.setupAxios()
+		this.prism = {
+			presets : [{ id: 'factory', label: 'Factory Preset'}]
+		}
+		this.updateActions() // export actions
+		this.updateFeedbacks() // export feedbacks
+		this.updateVariableDefinitions() // export variable definitions
+		this.updateStatus(InstanceStatus.Ok)
 	}
 
 	// Return config fields for web config

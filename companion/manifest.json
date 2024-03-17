@@ -5,8 +5,8 @@
 	"description": "Bitfocus Companion module for Telestream Prism",
 	"version": "0.0.0",
 	"license": "MIT",
-	"repository": "git+https://github.com/bitfocus/companion-module-your-module-name.git",
-	"bugs": "https://github.com/bitfocus/companion-module-your-module-name/issues",
+	"repository": "git+https://github.com/phillipivan/companion-module-telestream-prism.git",
+	"bugs": "https://github.com/phillipivan/companion-module-telestream-prism/issues",
 	"maintainers": [
 		{
 			"name": "Phillip Ivan Pietruschka",
