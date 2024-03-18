@@ -4,7 +4,21 @@ module.exports = function (self) {
 	self.setActionDefinitions({
 		changeInput: {
 			name: 'Select Video Input',
+			description:
+				`Change the unit's active input`,
 			options: [
+				{
+					id: 'action',
+					type: 'dropdown',
+					label: 'Action',
+					default: 'set',
+					choices: [
+						{ id: 'set', label: 'Set'},
+						{ id: 'get', label: 'Get'},
+						{ id: 'inc', label: 'Increment'},
+						{ id: 'dec', label: 'Decrement'},
+					]
+				},
 				{
 					id: 'input',
 					type: 'number',
@@ -15,7 +29,7 @@ module.exports = function (self) {
 					range: true,
 					step: 1,
 					isVisible: (options) => {
-						return options.useVar === false
+						return options.useVar === false && options.action == 'set'
 					},
 				},
 				{
@@ -25,7 +39,7 @@ module.exports = function (self) {
 					useVariables: true,
 					regex: Regex.SOMETHING,
 					isVisible: (options) => {
-						return options.useVar === true
+						return options.useVar === true && options.action == 'set'
 					},
 					tooltip: 'Varible must return an integer between 0 and 5',
 				},
@@ -34,10 +48,27 @@ module.exports = function (self) {
 					type: 'checkbox',
 					label: 'Use Variable',
 					default: false,
+					isVisible: (options) => {
+						return options.action == 'set'
+					},
 				},
 			],
 			callback: async ({ options }) => {
-				let prismInput = options.useVar ? parseInt( await self.parseVariablesInString(options.inputVar)) : parseInt(options.input)
+				let prismInput
+				switch (options.action) {
+					case 'set':
+						prismInput = options.useVar ? parseInt( await self.parseVariablesInString(options.inputVar)) : parseInt(options.input)
+						break
+					case 'inc':
+						prismInput = self.prism.input >= 5 ? 0 : self.prism.input + 1
+						break
+					case 'dec':
+						prismInput = self.prism.input <=  0 ? 5 : self.prism.input - 1
+						break
+					case 'get':
+						self.getInput()
+						return
+				}
 				if (isNaN(prismInput) || prismInput < 0 || prismInput > 5) {
 					self.log('warn', `input out of range ${prismInput}`)
 					return undefined
@@ -47,48 +78,33 @@ module.exports = function (self) {
 					const response = await self.axios.post('/activeinput', msg)
 					console.log(response)
 					self.updateStatus(InstanceStatus.Ok)
+					self.getInput()
 				} catch (error) {
-					console.log(response)
+					console.log(error)
 					self.updateStatus(InstanceStatus.Error)
 				}
 
 			},
-			subscribe: async () => {
-				try {
-					const response = await self.axios.get('/activeinput')
-					console.log(response)
-					self.updateStatus(InstanceStatus.Ok)
-				} catch (error) {
-					console.log(response)
-					self.updateStatus(InstanceStatus.Error)
-				}
+			subscribe: () => {
+				self.getInput()
 			},
 		},
 		getPresets: {
 			name: 'Get Presets',
+			description:
+				`Get list of presets`,
 			options: [],
-			callback: async () => {
-				try {
-					const response = await self.axios.get('/getpresets')
-					console.log(response)
-					self.updateStatus(InstanceStatus.Ok)
-					let presets = response.data.string
-					presets = presets.split(', ')
-					self.prism.presets = [{ id: 'factory', label: 'Factory Preset'}]
-					presets.forEach((preset) => {
-						self.prism.presets.push({ id: preset, label: preset })
-						console.log(preset)
-					})
-					self.updateActions()
-				} catch (error) {
-					console.log(response)
-					self.updateStatus(InstanceStatus.Error)
-				}
-
+			callback: () => {
+				self.getPresets()
+			},
+			subscribe: () => {
+				self.getPresets()
 			},
 		},
 		loadPreset: {
 			name: 'Load Preset',
+			description:
+				`Load preset specified by: "/local/[GroupLetter]_[OptionalGroupName]/[PresetNumber]:[OptionalPresetName]". Or recall Factory Preset by sending "factory".`,
 			options: [
 				{
 					id: 'preset',
@@ -109,28 +125,13 @@ module.exports = function (self) {
 					console.log(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(response)
+					console.log(error)
 					self.updateStatus(InstanceStatus.Error)
 				}
 
 			},
-			subscribe: async () => {
-				try {
-					const response = await self.axios.get('/getpresets')
-					console.log(response)
-					self.updateStatus(InstanceStatus.Ok)
-					let presets = response.data.string
-					presets = presets.split(', ')
-					self.prism.presets = [{ id: 'factory', label: 'Factory Preset'}]
-					presets.forEach((preset) => {
-						self.prism.presets.push({ id: preset, label: preset })
-						console.log(preset)
-					})
-					self.updateActions()
-				} catch (error) {
-					console.log(response)
-					self.updateStatus(InstanceStatus.Error)
-				}
+			subscribe: () => {
+				self.getPresets()
 			},
 		},
 	})

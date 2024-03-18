@@ -9,7 +9,7 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/phillipivan/companion-module-telestream-prism.git"
+		"url": "git+https://github.com/bitfocus/companion-module-telestream-prism.git"
 	},
 	"dependencies": {
 		"@companion-module/base": "~1.7.0",

@@ -1,3 +1,7 @@
 module.exports = async function (self) {
-	self.setVariableDefinitions( [] )
+	let varList = [
+		{ variableId: 'activeInputNumber', name: 'Active Input Number' },
+		{ variableId: 'activeInputName', name: 'Active Input Name' },
+	]
+	self.setVariableDefinitions( varList )
 }

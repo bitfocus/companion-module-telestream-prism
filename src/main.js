@@ -10,6 +10,54 @@ class Telestream_PRISM extends InstanceBase {
 		super(internal)
 	}
 
+	async getInput() {
+		let varList = []
+		try {
+			const response = await this.axios.get('/activeinput')
+			console.log(response)
+			this.updateStatus(InstanceStatus.Ok)
+			if (response.data === undefined || response.data.input === undefined || response.data.name === undefined) {
+				this.log('warn', 'activeinput response contains no data')
+				return undefined
+			}
+			this.prism.input = parseInt(response.data.input)
+			varList['activeInputNumber'] = this.prism.input
+			varList['activeInputName'] = response.data.name
+			this.setVariableValues(varList)
+		} catch (error) {
+			console.log(error)
+			this.updateStatus(InstanceStatus.Error)
+		}
+	}
+
+	async getPresets() {
+		try {
+			const response = await this.axios.get('/getpresets')
+			console.log(response)
+			this.updateStatus(InstanceStatus.Ok)
+			if (response.data.string === undefined) {
+				this.log('warn', 'getpresets response contains no data')
+				return undefined
+			}
+			let presets = response.data.string
+			presets = presets.split(', ')
+			this.prism.presets = [{ id: 'factory', label: 'Factory Preset'}]
+			presets.forEach((preset) => {
+				this.prism.presets.push({ id: preset, label: preset })
+				console.log(preset)
+			})
+			this.updateActions()
+		} catch (error) {
+			console.log(error)
+			this.updateStatus(InstanceStatus.Error)
+		}
+	}
+
+	async queryPrism() {
+		this.getInput()
+		this.getPresets()
+	}
+
 	setupAxios() {
 		if (this.axios) {
 			delete this.axios
@@ -25,12 +73,14 @@ class Telestream_PRISM extends InstanceBase {
 		this.config = config
 		this.setupAxios()
 		this.prism = {
-			presets : [{ id: 'factory', label: 'Factory Preset'}]
+			presets : [{ id: 'factory', label: 'Factory Preset'}],
+			input: 'unknown',
 		}
 		this.updateActions() // export actions
 		this.updateFeedbacks() // export feedbacks
 		this.updateVariableDefinitions() // export variable definitions
 		this.updateStatus(InstanceStatus.Ok)
+		this.queryPrism()
 	}
 	// When module gets deleted
 	async destroy() {
@@ -44,12 +94,14 @@ class Telestream_PRISM extends InstanceBase {
 		this.config = config
 		this.setupAxios()
 		this.prism = {
-			presets : [{ id: 'factory', label: 'Factory Preset'}]
+			presets : [{ id: 'factory', label: 'Factory Preset'}],
+			input: 'unknown',
 		}
 		this.updateActions() // export actions
 		this.updateFeedbacks() // export feedbacks
 		this.updateVariableDefinitions() // export variable definitions
 		this.updateStatus(InstanceStatus.Ok)
+		this.queryPrism()
 	}
 
 	// Return config fields for web config
