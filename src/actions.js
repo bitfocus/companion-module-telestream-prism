@@ -134,5 +134,182 @@ module.exports = function (self) {
 				self.getPresets()
 			},
 		},
+		ancSessionControl: {
+			name: 'ANC Session Control',
+			description:
+				`Reset anc session.`,
+			options: [],
+			callback: async () => {
+				let msg = JSON.stringify({ ints: ['ANC_ENGINE_SESSION_CONTROL_RESET'] })
+				try {
+					const response = await self.axios.post('/anc_session_control', msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		audioSessionControl: {
+			name: 'Audio Session Control',
+			description:
+				`Stop, Run or Reset the audio session.`,
+			options: [				
+				{
+					id: 'action',
+					type: 'dropdown',
+					label: 'Action',
+					default: 'AUDIO_SESSION_CONTROL_STOP',
+					choices: [
+						{ id: 'AUDIO_SESSION_CONTROL_STOP', label: 'Stop'},
+						{ id: 'AUDIO_SESSION_CONTROL_RUN', label: 'Run'},
+						{ id: 'AUDIO_SESSION_CONTROL_RESET', label: 'Reset'},
+					]
+				},
+			],
+			callback: async ({ options }) => {
+				let msg = JSON.stringify({ ints: [options.action] })
+				try {
+					const response = await self.axios.post('/audio_session_control', msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		loudnessSessionControl: {
+			name: 'Loudness Session Control',
+			description:
+				`Stop, Run or Reset the loudness session.`,
+			options: [				
+				{
+					id: 'action',
+					type: 'dropdown',
+					label: 'Action',
+					default: 'LOUDNESS_SESSION_CONTROL_STOP',
+					choices: [
+						{ id: 'LOUDNESS_SESSION_CONTROL_STOP', label: 'Stop'},
+						{ id: 'LOUDNESS_SESSION_CONTROL_RUN', label: 'Run'},
+						{ id: 'LOUDNESS_SESSION_CONTROL_RESET', label: 'Reset'},
+					]
+				},
+			],
+			callback: async ({ options }) => {
+				let msg = JSON.stringify({ ints: [options.action] })
+				try {
+					const response = await self.axios.post('/loudness_session_control', msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		videoSessionControl: {
+			name: 'Video Session Control',
+			description:
+				`Stop, Run or Reset the video session.`,
+			options: [				
+				{
+					id: 'action',
+					type: 'dropdown',
+					label: 'Action',
+					default: 'IOSLAVE_SESSION_CONTROL_STOP',
+					choices: [
+						{ id: 'IOSLAVE_SESSION_CONTROL_STOP', label: 'Stop'},
+						{ id: 'IOSLAVE_SESSION_CONTROL_RUN', label: 'Run'},
+						{ id: 'IOSLAVE_SESSION_CONTROL_RESET', label: 'Reset'},
+					]
+				},
+			],
+			callback: async ({ options }) => {
+				let msg = JSON.stringify({ ints: [options.action] })
+				try {
+					const response = await self.axios.post('/video_session_control', msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		ipSessionControl: {
+			name: 'IP Session Control',
+			description:
+				`Stop, Run or Reset the IP session.`,
+			options: [				
+				{
+					id: 'action',
+					type: 'dropdown',
+					label: 'Action',
+					default: 'IOSLAVE_SESSION_CONTROL_STOP',
+					choices: [
+						{ id: 'IOSLAVE_SESSION_CONTROL_STOP', label: 'Stop'},
+						{ id: 'IOSLAVE_SESSION_CONTROL_RUN', label: 'Run'},
+						{ id: 'IOSLAVE_SESSION_CONTROL_RESET', label: 'Reset'},
+					]
+				},
+			],
+			callback: async ({ options }) => {
+				let msg = JSON.stringify({ ints: [options.action] })
+				try {
+					const response = await self.axios.post('/ip_session_control', msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		tileSelect: {
+			name: 'Tile Select',
+			description:
+				`Select a tile to expand to full screen.`,
+			options: [				
+				{
+					id: 'tile',
+					type: 'dropdown',
+					label: 'Tile',
+					default: 0,
+					choices: [
+						{ id: 0, label: 'None'},
+						{ id: 1, label: 'Tile 1'},
+						{ id: 2, label: 'Tile 2'},
+						{ id: 3, label: 'Tile 3'},
+						{ id: 4, label: 'Tile 4'},
+						{ id: 5, label: 'Tile 5'},
+						{ id: 6, label: 'Tile 6'},
+						{ id: 7, label: 'Tile 7'},
+						{ id: 8, label: 'Tile 8'},
+					],
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Variable must return an integer between 0 and 8.',
+				},
+			],
+			callback: async ({ options }) => {
+				let tile = parseInt(await self.parseVariablesInString(options.tile))
+				if (isNaN(tile) || tile < 0 || tile > 8) {
+					self.log('warn', `An out of range variable has been passed to Tile Select: ${tile}`)
+					return undefined
+				}
+				let msg = JSON.stringify({ ints: [tile] })
+				try {
+					const response = await self.axios.post('/tile_select', msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
 	})
 }

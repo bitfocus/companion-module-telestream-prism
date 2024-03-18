@@ -18,6 +18,15 @@ Get a list of saved presets. Will populate the Load Preset action dropdown.
 
 Recall a preset. Accepts variables.
 
+**ANC Session, Audio Session, IP Session, Loudness Session, Video Session**
+
+Stop, Run, or Reset the session. ANC is reset only.
+
+**Tile Select**
+
+Select a tile to expand to full screen.
+
+
 ## Variables
 
 **Active Input Name**
