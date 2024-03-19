@@ -95,6 +95,27 @@ const {
 	closedCaptionsAribTypeChoices,
 	pictureAfdGratChoices,
 	pictureAfdGratOverlayChoices,
+	pictureLutChoices,
+	pictureFormatOverlayChoices,
+	pictureFalseColorChoices,
+	pictureFalseColorBandMeterChoices,
+	closedCaptionsInfoEnableChoices,
+	sourceIdDisplayChoices,
+	pictureAspectRatioChoices,
+	presetRecallSavedInputsChoices,
+	presetEditModeChoices,
+	ptpProfileChoices,
+	ptpCommMode2059ProfileChoices,
+	snmpTrapEnableChoices,
+	timingMeasureModeChoices,
+	extendedStatusBarPinnedMenuChoices,
+	cieColorSpaceChoices,
+	cieTraceAppearanceChoices,
+	outOfGamutAlarmChoices,
+	gamutAlarmThresholdsPresetChoices,
+	hdrAlarmsChoices,
+	gratColourChoices,
+	pictureSafeAreaStdChoices,
 } = require('./choices.js')
 
 module.exports = function (self) {
@@ -4009,6 +4030,1118 @@ module.exports = function (self) {
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/picture_afd_grat_overlay/${scope}`, msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		pictureLut: {
+			name: 'Picture LUT',
+			description: `Picture Lut On or Off`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Mode',
+					default: 'PICTURE_LUT_OFF',
+					choices: pictureLutChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Options: PICTURE_LUT_OFF, PICTURE_LUT_ON. Default: PICTURE_LUT_OFF',
+				},
+				{
+					id: 'scope',
+					type: 'dropdown',
+					label: 'Scope',
+					default: 'tile1',
+					choices: tiles,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Requires Tile Scope of tile1 through tile8.',
+				},
+			],
+			callback: async ({ options }) => {
+				let mode = await self.parseVariablesInString(options.mode)
+				let scope = await self.parseVariablesInString(options.scope)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/picture_lut/${scope}`, msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		pictureFormatOverlay: {
+			name: 'Picture Format Overlay',
+			description: `Picture Format Overlay On or Off`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Mode',
+					default: 'PICTURE_TIMING_INFO_SWITCH_OFF',
+					choices: pictureFormatOverlayChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip:
+						'Options: PICTURE_TIMING_INFO_SWITCH_OFF, PICTURE_TIMING_INFO_SWITCH_ON. Default: PICTURE_TIMING_INFO_SWITCH_OFF',
+				},
+				{
+					id: 'scope',
+					type: 'dropdown',
+					label: 'Scope',
+					default: 'tile1',
+					choices: tiles,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Requires Tile Scope of tile1 through tile8.',
+				},
+			],
+			callback: async ({ options }) => {
+				let mode = await self.parseVariablesInString(options.mode)
+				let scope = await self.parseVariablesInString(options.scope)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/picture_format_overlay/${scope}`, msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		pictureFalseColorGamutMode: {
+			name: 'Picture False Color Gamut Mode',
+			description: `Set Gamut False Color Mode`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Mode',
+					default: 'PICTURE_OUTSIDE_709_MODE_709_P3',
+					choices: pictureFormatOverlayChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip:
+						'Options: PICTURE_OUTSIDE_709_MODE_709_P3 for 709 - P3, PICTURE_OUTSIDE_709_MODE_P3_2020 for P3-2020, PICTURE_OUTSIDE_709_MODE_709_P3_2020 for Both.',
+				},
+			],
+			callback: async ({ options }) => {
+				let mode = await self.parseVariablesInString(options.mode)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/picture_false_color_gamut_mode`, msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		pictureFalseColor: {
+			name: 'Picture False Color',
+			description: `Enable or Disable False Color. NOTE: False Color is not applicable if @picture_lut is ON.`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Mode',
+					default: 'PICTURE_FALSE_COLOR_OFF',
+					choices: pictureFalseColorChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip:
+						'Options: PICTURE_FALSE_COLOR_OFF to disable false color, PICTURE_FALSE_COLOR_ON to enable false color.',
+				},
+				{
+					id: 'scope',
+					type: 'dropdown',
+					label: 'Scope',
+					default: 'tile1',
+					choices: tiles,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Requires Tile Scope of tile1 through tile8.',
+				},
+			],
+			callback: async ({ options }) => {
+				let mode = await self.parseVariablesInString(options.mode)
+				let scope = await self.parseVariablesInString(options.scope)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/picture_false_color/${scope}`, msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		pictureFalseColorMode: {
+			name: 'Picture False Color Mode',
+			description: `Set Picture False Coloring Mode`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Mode',
+					default: 'FALSE_COLOR_MODE_LUMA',
+					choices: pictureFalseColorChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip:
+						'Options: FALSE_COLOR_MODE_LUMA for Luminance false color, FALSE_COLOR_MODE_AREA for Percent Area false color, FALSE_COLOR_MODE_GAMUT for Gamut false color.',
+				},
+				{
+					id: 'scope',
+					type: 'dropdown',
+					label: 'Scope',
+					default: 'tile1',
+					choices: tiles,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Requires Tile Scope of tile1 through tile8.',
+				},
+			],
+			callback: async ({ options }) => {
+				let mode = await self.parseVariablesInString(options.mode)
+				let scope = await self.parseVariablesInString(options.scope)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/picture_false_color_mode/${scope}`, msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		pictureFalseColorBandMeter: {
+			name: 'Picture False Color Band Meter',
+			description: `Hide or Show False Color Band Meter on Picture Display`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Mode',
+					default: 'PICTURE_FALSE_COLOR_BAND_METER_HIDE',
+					choices: pictureFalseColorBandMeterChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Options: PICTURE_FALSE_COLOR_BAND_METER_[HIDE, SHOW]',
+				},
+				{
+					id: 'scope',
+					type: 'dropdown',
+					label: 'Scope',
+					default: 'tile1',
+					choices: tiles,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Requires Tile Scope of tile1 through tile8.',
+				},
+			],
+			callback: async ({ options }) => {
+				let mode = await self.parseVariablesInString(options.mode)
+				let scope = await self.parseVariablesInString(options.scope)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/picture_false_color_band_meter/${scope}`, msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		closedCaptionsInfoEnable: {
+			name: 'Closed Captions Info Enable',
+			description: `Enable/disable the Closed Captions/Subtitles information overlay in the picture display`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Mode',
+					default: 'PICTURE_CC_INFO_SWITCH_ON',
+					choices: closedCaptionsInfoEnableChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Options: PICTURE_CC_INFO_SWITCH_ON, PICTURE_CC_INFO_SWITCH_OFF',
+				},
+				{
+					id: 'scope',
+					type: 'dropdown',
+					label: 'Scope',
+					default: 'tile1',
+					choices: tiles,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Requires Tile Scope of tile1 through tile8.',
+				},
+			],
+			callback: async ({ options }) => {
+				let mode = await self.parseVariablesInString(options.mode)
+				let scope = await self.parseVariablesInString(options.scope)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/closed_captions_info_enable/${scope}`, msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		sourceIdDisplay: {
+			name: 'Source ID Display',
+			description: `Enable/disable source id overlay in picture display`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Mode',
+					default: 'PICTURE_SOURCE_ID_INFO_ENABLE_ON',
+					choices: sourceIdDisplayChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Options: PICTURE_SOURCE_ID_INFO_ENABLE_OFF, PICTURE_SOURCE_ID_INFO_ENABLE_ON',
+				},
+				{
+					id: 'scope',
+					type: 'dropdown',
+					label: 'Scope',
+					default: 'tile1',
+					choices: tiles,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Requires Tile Scope of tile1 through tile8.',
+				},
+			],
+			callback: async ({ options }) => {
+				let mode = await self.parseVariablesInString(options.mode)
+				let scope = await self.parseVariablesInString(options.scope)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/source_id_display/${scope}`, msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		pictureAspectRatio: {
+			name: 'Picture Aspect Ratio',
+			description: `Controls preferred Aspect Ratio for standard definition formats in Picture Display. Option PICTURE_ASPECT_RATIO_AUTO depends on the detected AFD aspect ratio data. If AFD is not detected PICTURE_ASPECT_RATIO_AUTO will be 4X3`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Mode',
+					default: 'PICTURE_ASPECT_RATIO_AUTO',
+					choices: pictureAspectRatioChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Options: PICTURE_ASPECT_RATIO_AUTO, PICTURE_ASPECT_RATIO_16x9.',
+				},
+			],
+			callback: async ({ options }) => {
+				let mode = await self.parseVariablesInString(options.mode)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/picture_aspect_ratio`, msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		presetRecallSavedInputs: {
+			name: 'Preset Recall Saved Inputs',
+			description: `Include/Exclude input settings and configuration from Preset recall.`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Mode',
+					default: 'PRESET_RECALL_SAVED_INPUTS_ON',
+					choices: presetRecallSavedInputsChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Options: PRESET_RECALL_SAVED_INPUTS_ON, PRESET_RECALL_SAVED_INPUTS_OFF',
+				},
+			],
+			callback: async ({ options }) => {
+				let mode = await self.parseVariablesInString(options.mode)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/preset_recall_saved_inputs`, msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		presetEditMode: {
+			name: 'Preset Edit Mode',
+			description: `Hides the menu options (Recall, Save, Rename) in the UI that appear on pressing a preset button and enables recalling the preset directly. Note: This selection is only applicable for the user interface preset control menu; Preset Recall, Save or Rename will be functional from the API irrespective of this selection.`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Mode',
+					default: 'PRESET_EDIT_MODE_ON',
+					choices: presetEditModeChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Options: PRESET_EDIT_MODE_ON, PRESET_EDIT_MODE_OFF',
+				},
+			],
+			callback: async ({ options }) => {
+				let mode = await self.parseVariablesInString(options.mode)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/preset_edit_mode`, msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		ptpProfile: {
+			name: 'PTP Profile',
+			description: `Set or get the current PTP profile.`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Profile',
+					default: 'PTP_PROFILE_2059',
+					choices: ptpProfileChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Options are PTP_PROFILE_2059, PTP_PROFILE_AES67, and PTP_PROFILE_GENERIC',
+				},
+			],
+			callback: async ({ options }) => {
+				let mode = await self.parseVariablesInString(options.mode)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/ptp_profile`, msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		ptpDomain2059Profile: {
+			name: 'PTP Domain ST 2059 Profile',
+			description: `Set or get the PTP domain (0-127) for the ST2059 profile.`,
+			options: [
+				{
+					id: 'mode',
+					type: 'number',
+					label: 'Domain',
+					default: 0,
+					min: 0,
+					max: 127,
+					range: true,
+					step: 1,
+				},
+			],
+			callback: async ({ options }) => {
+				let mode = parseInt(options.mode)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/ptp_domain_2059_profile`, msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		ptpCommMode2059Profile: {
+			name: 'PTP ST 2059 Communication Mode Profile',
+			description: `Set or get the selected communication mode for the 2059 profile`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Mode',
+					default: 'PTP_COMM_MODE_MULTICAST',
+					choices: ptpCommMode2059ProfileChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Options: PTP_COMM_MODE_MULTICAST and PTP_COMM_MODE_MIXED_SMPTE_NO_NEG',
+				},
+			],
+			callback: async ({ options }) => {
+				let mode = await self.parseVariablesInString(options.mode)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/ptp_comm_mode_2059_profile`, msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		ptpDomainAes67Profile: {
+			name: 'PTP Domain AES 67 Profile',
+			description: `Set or get the PTP domain (0-127) for the AES 67 profile.`,
+			options: [
+				{
+					id: 'mode',
+					type: 'number',
+					label: 'Domain',
+					default: 0,
+					min: 0,
+					max: 127,
+					range: true,
+					step: 1,
+				},
+			],
+			callback: async ({ options }) => {
+				let mode = parseInt(options.mode)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/ptp_domain_aes67_profile`, msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		ptpDomainGeneralProfile: {
+			name: 'PTP Domain Generic Profile',
+			description: `Set or get the PTP domain (0-127) for the generic profile.`,
+			options: [
+				{
+					id: 'mode',
+					type: 'number',
+					label: 'Domain',
+					default: 0,
+					min: 0,
+					max: 127,
+					range: true,
+					step: 1,
+				},
+			],
+			callback: async ({ options }) => {
+				let mode = parseInt(options.mode)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/ptp_domain_general_profile`, msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		snmpTrapEnable: {
+			name: 'SNMP Trap Enable',
+			description: `Enable/disable sending SNMP traps.`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Mode',
+					default: 'SNMP_TRAP_ENABLE_ON',
+					choices: snmpTrapEnableChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Options: SNMP_TRAP_ENABLE_ON : Enable snmp Traps, SNMP_TRAP_ENABLE_OFF : Disable snmp Traps.',
+				},
+			],
+			callback: async ({ options }) => {
+				let mode = parseInt(options.mode)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/snmp_trap_enable`, msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		timingMeasureMode: {
+			name: 'Timing Measurement Mode',
+			description: `Select which measurement to display in the timing app`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Mode',
+					default: 'STATUS_TIMING_MEASURE_MODE_VIDEO_TO_REF',
+					choices: timingMeasureModeChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Options: STATUS_TIMING_MEASURE_MODE_VIDEO_TO_REF, STATUS_TIMING_MEASURE_MODE_ANALOG_TO_PTP',
+				},
+				{
+					id: 'scope',
+					type: 'dropdown',
+					label: 'Scope',
+					default: 'tile1',
+					choices: tiles,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Requires Tile Scope of tile1 through tile8.',
+				},
+			],
+			callback: async ({ options }) => {
+				let mode = await self.parseVariablesInString(options.mode)
+				let scope = await self.parseVariablesInString(options.scope)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/timing_measure_mode/${scope}`, msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		tileGratIntensity: {
+			name: 'Graticule Brightness Level',
+			description: `Set Graticule Brightness Level`,
+			options: [
+				{
+					id: 'mode',
+					type: 'number',
+					label: 'Intensity',
+					default: 0,
+					min: -50,
+					max: 50,
+					range: true,
+					step: 1,
+				},
+			],
+			callback: async ({ options }) => {
+				let mode = parseInt(options.mode)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/tile_grat_intensity`, msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		trace_intensity: {
+			name: 'Trace Brightness Level',
+			description: `Set Trace Brightness Level`,
+			options: [
+				{
+					id: 'mode',
+					type: 'number',
+					label: 'Intensity',
+					default: 0,
+					min: -50,
+					max: 50,
+					range: true,
+					step: 1,
+				},
+			],
+			callback: async ({ options }) => {
+				let mode = parseInt(options.mode)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/trace_intensity`, msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		extendedStatusBarPinnedMenu: {
+			name: 'Extended Status Bar Pinned Menu',
+			description: `Pin a menu on extended status bar`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Mode',
+					default: 'TILE_EXTENDED_STATUS_BAR_PINNED_MENU_OFF',
+					choices: extendedStatusBarPinnedMenuChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip:
+						'Options: TILE_EXTENDED_STATUS_BAR_PINNED_MENU_OFF, TILE_EXTENDED_STATUS_BAR_PINNED_MENU_INPUT, TILE_EXTENDED_STATUS_BAR_PINNED_MENU_PRESET.',
+				},
+			],
+			callback: async ({ options }) => {
+				let mode = await self.parseVariablesInString(options.mode)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/extended_status_bar_pinned_menu`, msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		cieColorSpace: {
+			name: 'CIE Color Space',
+			description: `Select the CIE color space`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Mode',
+					default: 'TILE_CIE_COLOR_SPACE_1931',
+					choices: cieColorSpaceChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Options: TILE_CIE_COLOR_SPACE_1931 or TILE_CIE_COLOR_SPACE_1976',
+				},
+			],
+			callback: async ({ options }) => {
+				let mode = await self.parseVariablesInString(options.mode)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/cie_color_space`, msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		cieTraceAppearance: {
+			name: 'CIE Trace Appearance',
+			description: `Set the appearance of CIE trace color`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Mode',
+					default: 'TILE_CIE_COLOR_TRACE_ON',
+					choices: cieTraceAppearanceChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Options: TILE_CIE_COLOR_TRACE_OFF or TILE_CIE_COLOR_TRACE_ON',
+				},
+			],
+			callback: async ({ options }) => {
+				let mode = await self.parseVariablesInString(options.mode)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/cie_trace_appearance`, msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		outOfGamutAlarm: {
+			name: 'Out of Gamut Alarm',
+			description: `Enable or Disable Out-of-Gamut Alarms`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Mode',
+					default: 'GAMUT_ERROR_CHECK_ON',
+					choices: outOfGamutAlarmChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Options: GAMUT_ERROR_CHECK_OFF, GAMUT_ERROR_CHECK_ON',
+				},
+			],
+			callback: async ({ options }) => {
+				let mode = await self.parseVariablesInString(options.mode)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/out_of_gamut_alarm`, msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		gamutAlarmThresholdsPreset: {
+			name: 'Gamut Alarm Thresholds Preset',
+			description: `Load a predefined Preset for Out-of-Gamut Alarms`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Mode',
+					default: 'GAMUT_ERROR_PRESET_R103',
+					choices: gamutAlarmThresholdsPresetChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Options: GAMUT_ERROR_PRESET_R103 (Sets the EBU R103 Preferred Min/Max)',
+				},
+			],
+			callback: async ({ options }) => {
+				let mode = await self.parseVariablesInString(options.mode)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/gamut_alarm_thresholds_preset`, msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		hdrAlarms: {
+			name: 'HDR Alarms',
+			description: `Enable or Disable HDR Alarms`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Mode',
+					default: 'HDR_ALARMS_ON',
+					choices: hdrAlarmsChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Options: HDR_ALARMS_OFF, HDR_ALARMS_ON',
+				},
+			],
+			callback: async ({ options }) => {
+				let mode = await self.parseVariablesInString(options.mode)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/hdr_alarms`, msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		hdrTotalAreaThreshold: {
+			name: 'HDR Total Area Threshold',
+			description: `HDR total area measurement cut off in Nits`,
+			options: [
+				{
+					id: 'mode',
+					type: 'number',
+					label: 'Nits',
+					default: 5000,
+					min: 0,
+					max: 10000,
+					range: true,
+					step: 1,
+				},
+			],
+			callback: async ({ options }) => {
+				let mode = parseInt(options.mode)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/hdr_total_area_threshold`, msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		hdrBrightestAreaThreshold: {
+			name: 'HDR Brightest Area Threshold',
+			description: `HDR brightest area measurement cut off in %. The measurement will use the brightest X% of the picture. Percentage range is 0 - 100. The set threshold is relative to the max Nits value of the frame`,
+			options: [
+				{
+					id: 'mode',
+					type: 'number',
+					label: '%',
+					default: 50,
+					min: 0,
+					max: 100,
+					range: true,
+					step: 1,
+				},
+			],
+			callback: async ({ options }) => {
+				let mode = parseInt(options.mode)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/hdr_brightest_area_threshold`, msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		hdrAreaThreshold: {
+			name: 'HDR Area Threshold',
+			description: `HDR area measurement cut off in %. The measurement will use the brightest X% of the picture. Percentage range is 0 - 100. The set threshold is relative to the max Nits value of the frame`,
+			options: [
+				{
+					id: 'mode',
+					type: 'number',
+					label: '%',
+					default: 50,
+					min: 0,
+					max: 100,
+					range: true,
+					step: 1,
+				},
+			],
+			callback: async ({ options }) => {
+				let mode = parseInt(options.mode)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/hdr_area_threshold`, msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		hdr_darkest_area_threshold: {
+			name: 'HDR Darkest Area Threshold',
+			description: `HDR darkest area measurement cut off in %. The measurement will use the darkest X% of the picture. Percentage range is 0 - 100. The set threshold is relative to the max Nits value of the frame`,
+			options: [
+				{
+					id: 'mode',
+					type: 'number',
+					label: '%',
+					default: 50,
+					min: 0,
+					max: 100,
+					range: true,
+					step: 1,
+				},
+			],
+			callback: async ({ options }) => {
+				let mode = parseInt(options.mode)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/hdr_darkest_area_threshold`, msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		centerGratColor: {
+			name: 'Center Graticule Color',
+			description: `Set the Picture Center Graticule color`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Color',
+					default: 'PICTURE_GRAT_COLOR_GRAY',
+					choices: gratColourChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip:
+						'Options: PICTURE_GRAT_COLOR_GRAY, PICTURE_GRAT_COLOR_BLACK, PICTURE_GRAT_COLOR_LIGHT_BLUE, PICTURE_GRAT_COLOR_MAGENTA, PICTURE_GRAT_COLOR_LIMEGREEN, PICTURE_GRAT_COLOR_ORANGE, PICTURE_GRAT_COLOR_TS_BLUE, PICTURE_GRAT_COLOR_WHITE, PICTURE_GRAT_COLOR_YELLOW',
+				},
+			],
+			callback: async ({ options }) => {
+				let mode = await self.parseVariablesInString(options.mode)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/center_grat_color`, msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		afd_grat_color: {
+			name: 'AFD Graticule Color',
+			description: `Set the AFD Graticule color`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Color',
+					default: 'PICTURE_GRAT_COLOR_GRAY',
+					choices: gratColourChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip:
+						'Options: PICTURE_GRAT_COLOR_GRAY, PICTURE_GRAT_COLOR_BLACK, PICTURE_GRAT_COLOR_LIGHT_BLUE, PICTURE_GRAT_COLOR_MAGENTA, PICTURE_GRAT_COLOR_LIMEGREEN, PICTURE_GRAT_COLOR_ORANGE, PICTURE_GRAT_COLOR_TS_BLUE, PICTURE_GRAT_COLOR_WHITE, PICTURE_GRAT_COLOR_YELLOW',
+				},
+			],
+			callback: async ({ options }) => {
+				let mode = await self.parseVariablesInString(options.mode)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/afd_grat_color`, msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		safeArea1Color: {
+			name: 'Safe Area 1 Graticule Color',
+			description: `Set the color for action 1 and title 1`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Color',
+					default: 'PICTURE_GRAT_COLOR_GRAY',
+					choices: gratColourChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip:
+						'Options: PICTURE_GRAT_COLOR_GRAY, PICTURE_GRAT_COLOR_BLACK, PICTURE_GRAT_COLOR_LIGHT_BLUE, PICTURE_GRAT_COLOR_MAGENTA, PICTURE_GRAT_COLOR_LIMEGREEN, PICTURE_GRAT_COLOR_ORANGE, PICTURE_GRAT_COLOR_TS_BLUE, PICTURE_GRAT_COLOR_WHITE, PICTURE_GRAT_COLOR_YELLOW',
+				},
+			],
+			callback: async ({ options }) => {
+				let mode = await self.parseVariablesInString(options.mode)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/safe_area_1_color`, msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		safeArea2Color: {
+			name: 'Safe Area 2 Graticule Color',
+			description: `Set the color for action 2 and title 2`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Color',
+					default: 'PICTURE_GRAT_COLOR_GRAY',
+					choices: gratColourChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip:
+						'Options: PICTURE_GRAT_COLOR_GRAY, PICTURE_GRAT_COLOR_BLACK, PICTURE_GRAT_COLOR_LIGHT_BLUE, PICTURE_GRAT_COLOR_MAGENTA, PICTURE_GRAT_COLOR_LIMEGREEN, PICTURE_GRAT_COLOR_ORANGE, PICTURE_GRAT_COLOR_TS_BLUE, PICTURE_GRAT_COLOR_WHITE, PICTURE_GRAT_COLOR_YELLOW',
+				},
+			],
+			callback: async ({ options }) => {
+				let mode = await self.parseVariablesInString(options.mode)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/safe_area_2_color`, msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		pictureSafeAreaStd: {
+			name: 'Picture Safe Area Standard',
+			description: `Set the picture safe area standard.`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Mode',
+					default: 'PICTURE_SAFE_AREA_STD_S2046',
+					choices: pictureSafeAreaStdChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip:
+						'Options: PICTURE_SAFE_AREA_STD_S2046, PICTURE_SAFE_AREA_STD_SMPTE, PICTURE_SAFE_AREA_STD_ITU, PICTURE_SAFE_AREA_STD_ARIB',
+				},
+			],
+			callback: async ({ options }) => {
+				let mode = await self.parseVariablesInString(options.mode)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/picture_safe_area_std`, msg)
 					console.log(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {

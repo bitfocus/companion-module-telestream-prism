@@ -599,3 +599,130 @@ export const pictureAfdGratOverlayChoices = [
 	{ id: 'PICTURE_AFD_GRAT_OVERLAY_OFF', label: 'Off' },
 	{ id: 'PICTURE_AFD_GRAT_OVERLAY_ON', label: 'On' },
 ]
+
+export const pictureLutChoices = [
+	{ id: 'PICTURE_LUT_OFF', label: 'Off' },
+	{ id: 'PICTURE_LUT_ON', label: 'On' },
+]
+
+export const pictureFormatOverlayChoices = [
+	{ id: 'PICTURE_TIMING_INFO_SWITCH_OFF', label: 'Off' },
+	{ id: 'PICTURE_TIMING_INFO_SWITCH_ON', label: 'On' },
+]
+
+export const pictureFalseColorGamutModeChoices = [
+	{ id: 'PICTURE_OUTSIDE_709_MODE_709_P3', label: '709 - P3' },
+	{ id: 'PICTURE_OUTSIDE_709_MODE_P3_2020', label: 'P3-2020' },
+	{ id: 'PICTURE_OUTSIDE_709_MODE_709_P3_2020', label: 'Both' },
+]
+
+export const pictureFalseColorChoices = [
+	{ id: 'PICTURE_FALSE_COLOR_OFF', label: 'Off' },
+	{ id: 'PICTURE_FALSE_COLOR_ON', label: 'On' },
+]
+
+export const pictureFalseColorModeChoices = [
+	{ id: 'FALSE_COLOR_MODE_LUMA', label: 'Luma' },
+	{ id: 'FALSE_COLOR_MODE_AREA', label: 'Area' },
+	{ id: 'FALSE_COLOR_MODE_GAMUT', label: 'Gamut' },
+]
+
+export const pictureFalseColorBandMeterChoices = [
+	{ id: 'PICTURE_FALSE_COLOR_BAND_METER_HIDE', label: 'Hide' },
+	{ id: 'PICTURE_FALSE_COLOR_BAND_METER_SHOW', label: 'Show' },
+]
+
+export const closedCaptionsInfoEnableChoices = [
+	{ id: 'PICTURE_CC_INFO_SWITCH_OFF', label: 'Off' },
+	{ id: 'PICTURE_CC_INFO_SWITCH_ON', label: 'On' },
+]
+
+export const sourceIdDisplayChoices = [
+	{ id: 'PICTURE_SOURCE_ID_INFO_ENABLE_OFF', label: 'Off' },
+	{ id: 'PICTURE_SOURCE_ID_INFO_ENABLE_ON', label: 'On' },
+]
+
+export const pictureAspectRatioChoices = [
+	{ id: 'PICTURE_ASPECT_RATIO_AUTO', label: 'Auto' },
+	{ id: 'PICTURE_ASPECT_RATIO_16x9', label: '16 x 9' },
+]
+
+export const presetRecallSavedInputsChoices = [
+	{ id: 'PRESET_RECALL_SAVED_INPUTS_OFF', label: 'Off' },
+	{ id: 'PRESET_RECALL_SAVED_INPUTS_ON', label: 'On' },
+]
+
+export const presetEditModeChoices = [
+	{ id: 'PRESET_EDIT_MODE_OFF', label: 'Off' },
+	{ id: 'PRESET_EDIT_MODE_ON', label: 'On' },
+]
+
+export const ptpProfileChoices = [
+	{ id: 'PTP_PROFILE_2059', label: 'ST 2059' },
+	{ id: 'PTP_PROFILE_AES67', label: 'AES 67' },
+	{ id: 'PTP_PROFILE_GENERIC', label: 'Generic' },
+]
+
+export const ptpCommMode2059ProfileChoices = [
+	{ id: 'PTP_COMM_MODE_MULTICAST', label: 'Multicast' },
+	{ id: 'PTP_COMM_MODE_MIXED_SMPTE_NO_NEG', label: 'Mixed SMPTE No Neg' },
+]
+
+export const snmpTrapEnableChoices = [
+	{ id: 'SNMP_TRAP_ENABLE_OFF', label: 'Off' },
+	{ id: 'SNMP_TRAP_ENABLE_ON', label: 'On' },
+]
+
+export const timingMeasureModeChoices = [
+	{ id: 'STATUS_TIMING_MEASURE_MODE_VIDEO_TO_REF', label: 'Video to Reference' },
+	{ id: 'STATUS_TIMING_MEASURE_MODE_ANALOG_TO_PTP', label: 'Analog to PTP' },
+]
+
+export const extendedStatusBarPinnedMenuChoices = [
+	{ id: 'TILE_EXTENDED_STATUS_BAR_PINNED_MENU_OFF', label: 'Off' },
+	{ id: 'TILE_EXTENDED_STATUS_BAR_PINNED_MENU_INPUT', label: 'Input' },
+	{ id: 'TILE_EXTENDED_STATUS_BAR_PINNED_MENU_PRESET', label: 'Preset' },
+]
+
+export const cieColorSpaceChoices = [
+	{ id: 'TILE_CIE_COLOR_SPACE_1931', label: '1931' },
+	{ id: 'TILE_CIE_COLOR_SPACE_1976', label: '1976' },
+]
+
+export const cieTraceAppearanceChoices = [
+	{ id: 'TILE_CIE_COLOR_TRACE_OFF', label: 'Off' },
+	{ id: 'TILE_CIE_COLOR_TRACE_ON', label: 'On' },
+]
+
+export const outOfGamutAlarmChoices = [
+	{ id: 'GAMUT_ERROR_CHECK_OFF', label: 'Off' },
+	{ id: 'GAMUT_ERROR_CHECK_ON', label: 'On' },
+]
+
+export const gamutAlarmThresholdsPresetChoices = [
+	{ id: 'GAMUT_ERROR_PRESET_R103', label: 'EBU R103 Preferred Min/Max' },
+]
+
+export const hdrAlarmsChoices = [
+	{ id: 'HDR_ALARMS_OFF', label: 'Off' },
+	{ id: 'HDR_ALARMS_ON', label: 'On' },
+]
+
+export const gratColourChoices = [
+	{ id: 'PICTURE_GRAT_COLOR_GRAY', label: 'Gray' },
+	{ id: 'PICTURE_GRAT_COLOR_BLACK', label: 'Black' },
+	{ id: 'PICTURE_GRAT_COLOR_LIGHT_BLUE', label: 'Light Blue' },
+	{ id: 'PICTURE_GRAT_COLOR_MAGENTA', label: 'Magenta' },
+	{ id: 'PICTURE_GRAT_COLOR_LIMEGREEN', label: 'Limegreen' },
+	{ id: 'PICTURE_GRAT_COLOR_ORANGE', label: 'Orange' },
+	{ id: 'PICTURE_GRAT_COLOR_TS_BLUE', label: 'TS Blue' },
+	{ id: 'PICTURE_GRAT_COLOR_WHITE', label: 'White' },
+	{ id: 'PICTURE_GRAT_COLOR_YELLOW', label: 'Yellow' },
+]
+
+export const pictureSafeAreaStdChoices = [
+	{ id: 'PICTURE_SAFE_AREA_STD_S2046', label: 'S2046' },
+	{ id: 'PICTURE_SAFE_AREA_STD_SMPTE', label: 'SMPTE' },
+	{ id: 'PICTURE_SAFE_AREA_STD_ITU', label: 'ITU' },
+	{ id: 'PICTURE_SAFE_AREA_STD_ARIB', label: 'ARIB' },
+]

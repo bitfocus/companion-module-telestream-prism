@@ -5,10 +5,11 @@ Control the [Telestream Prism](https://www.telestream.net/video/prism.htm) Wavef
 
 ## Actions
 
-Most actions will accept variables. The tool-tip will indicate valid inputs.
+Most actions accept variables. The tool-tip will indicate valid inputs.
 
 Many actions require a scope to be defined, such as the application tile to perform the command. An incorrect scope selection (such as performing a lightning application command on a tile running eye pattern) will not effect an action.
 
+Some actions apply to specific hardware models, or for licesnced software modules.
 
 ## Variables
 
