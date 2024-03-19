@@ -3,5 +3,5 @@ module.exports = async function (self) {
 		{ variableId: 'activeInputNumber', name: 'Active Input Number' },
 		{ variableId: 'activeInputName', name: 'Active Input Name' },
 	]
-	self.setVariableDefinitions( varList )
+	self.setVariableDefinitions(varList)
 }

@@ -41,7 +41,7 @@ class Telestream_PRISM extends InstanceBase {
 			}
 			let presets = response.data.string
 			presets = presets.split(', ')
-			this.prism.presets = [{ id: 'factory', label: 'Factory Preset'}]
+			this.prism.presets = [{ id: 'factory', label: 'Factory Preset' }]
 			presets.forEach((preset) => {
 				this.prism.presets.push({ id: preset, label: preset })
 				console.log(preset)
@@ -65,15 +65,15 @@ class Telestream_PRISM extends InstanceBase {
 		this.axios = axios.create({
 			baseURL: `http://${this.config.host}:9000/api`,
 			timeout: 1000,
-			headers: {'Content-Type': 'application/json'}
-		});
+			headers: { 'Content-Type': 'application/json' },
+		})
 	}
 
 	async init(config) {
 		this.config = config
 		this.setupAxios()
 		this.prism = {
-			presets : [{ id: 'factory', label: 'Factory Preset'}],
+			presets: [{ id: 'factory', label: 'Factory Preset' }],
 			input: 'unknown',
 		}
 		this.updateActions() // export actions
@@ -94,7 +94,7 @@ class Telestream_PRISM extends InstanceBase {
 		this.config = config
 		this.setupAxios()
 		this.prism = {
-			presets : [{ id: 'factory', label: 'Factory Preset'}],
+			presets: [{ id: 'factory', label: 'Factory Preset' }],
 			input: 'unknown',
 		}
 		this.updateActions() // export actions

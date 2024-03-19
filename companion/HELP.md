@@ -5,26 +5,9 @@ Control the [Telestream Prism](https://www.telestream.net/video/prism.htm) Wavef
 
 ## Actions
 
-**Select Video Input**
+Most actions will accept variables. The tool-tip will indicate valid inputs.
 
-Set or check in input. Accepts variables.
-
-
-**Get Presets**
-
-Get a list of saved presets. Will populate the Load Preset action dropdown.
-
-**Load Preset**
-
-Recall a preset. Accepts variables.
-
-**ANC Session, Audio Session, IP Session, Loudness Session, Video Session**
-
-Stop, Run, or Reset the session. ANC is reset only.
-
-**Tile Select**
-
-Select a tile to expand to full screen.
+Many actions require a scope to be defined, such as the application tile to perform the command. An incorrect scope selection (such as performing a lightning application command on a tile running eye pattern) will not effect an action.
 
 
 ## Variables
