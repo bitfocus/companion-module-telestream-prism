@@ -726,3 +726,20 @@ export const pictureSafeAreaStdChoices = [
 	{ id: 'PICTURE_SAFE_AREA_STD_ITU', label: 'ITU' },
 	{ id: 'PICTURE_SAFE_AREA_STD_ARIB', label: 'ARIB' },
 ]
+
+export const timecodeOverlayChoices = [
+	{ id: 'TILE_UI_TIMECODE_OVERLAY_OFF', label: 'Off' },
+	{ id: 'TILE_UI_TIMECODE_OVERLAY_ON', label: 'On' },
+]
+
+export const timecodeSelectChoices = [
+	{ id: 'OFF', label: 'OFF' },
+	{ id: 'LTC', label: 'LTC' },
+	{ id: 'VITC', label: 'VITC' },
+]
+
+export const timingRefSourceChoices = [
+	{ id: 'TIMING_REF_SOURCE_BLACK', label: 'Black' },
+	{ id: 'TIMING_REF_SOURCE_PTP', label: 'PTP' },
+	{ id: 'TIMING_REF_SOURCE_INTERNAL', label: 'Internal' },
+]

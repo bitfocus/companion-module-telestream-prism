@@ -116,12 +116,15 @@ const {
 	hdrAlarmsChoices,
 	gratColourChoices,
 	pictureSafeAreaStdChoices,
+	timecodeOverlayChoices,
+	timecodeSelectChoices,
+	timingRefSourceChoices,
 } = require('./choices.js')
 
 module.exports = function (self) {
 	self.setActionDefinitions({
-		changeInput: {
-			name: 'Select Video Input',
+		activeInput: {
+			name: 'Active Input',
 			description: `Change the unit's active input`,
 			options: [
 				{
@@ -5142,6 +5145,153 @@ module.exports = function (self) {
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/picture_safe_area_std`, msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		timecodeOverlay: {
+			name: 'Timecode Overlay',
+			description: `Specify an array to enable the timecode overlay on each display if 'timecode_select' api is set to "LTC" or "VITC".`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Mode',
+					default: 'TILE_UI_TIMECODE_OVERLAY_ON',
+					choices: timecodeOverlayChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Options: TILE_UI_TIMECODE_OVERLAY_ON, TILE_UI_TIMECODE_OVERLAY_OFF.',
+				},
+			],
+			callback: async ({ options }) => {
+				let mode = await self.parseVariablesInString(options.mode)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/timecode_overlay`, msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		tileAvAdvancedThreshold: {
+			name: 'AV Advanced Threshold',
+			description: `	Audio Video Advanced Threshold for AV Graph.`,
+			options: [
+				{
+					id: 'mode',
+					type: 'number',
+					label: 'Threshold',
+					default: 1,
+					min: 1,
+					max: 2500,
+					range: true,
+					step: 1,
+					tooltip: ' Threshold value ranges from 1 to 2500',
+				},
+			],
+			callback: async ({ options }) => {
+				let mode = parseInt(options.mode)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/tile_av_advanced_threshold`, msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		tileAvDelayedThreshold: {
+			name: 'AV Advanced Threshold',
+			description: `	Audio Video Delayed Threshold for AV Graph.`,
+			options: [
+				{
+					id: 'mode',
+					type: 'number',
+					label: 'Threshold',
+					default: 1,
+					min: 1,
+					max: 2500,
+					range: true,
+					step: 1,
+					tooltip: ' Threshold value ranges from 1 to 2500',
+				},
+			],
+			callback: async ({ options }) => {
+				let mode = parseInt(options.mode)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/tile_av_delayed_threshold`, msg)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		timecodeSelect: {
+			name: 'Timecode Select',
+			description: `sed to select the displayed timecode format`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Mode',
+					default: 'OFF',
+					choices: timecodeSelectChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Options: "OFF", "LTC", "VITC"',
+				},
+			],
+			callback: async ({ options }) => {
+				try {
+					let preset = JSON.stringify({ string: await self.parseVariablesInString(options.mode) })
+					const response = await self.axios.post('/timecode_select', preset)
+					console.log(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+			subscribe: () => {
+				self.getPresets()
+			},
+		},
+		timingRefSource: {
+			name: 'Timing Reference Source',
+			description: `Reference selection for timing measurements.`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Source',
+					default: 'TIMING_REF_SOURCE_BLACK',
+					choices: timingRefSourceChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Options: TIMING_REF_SOURCE_BLACK, TIMING_REF_SOURCE_PTP, TIMING_REF_SOURCE_INTERNAL',
+				},
+			],
+			callback: async ({ options }) => {
+				let mode = await self.parseVariablesInString(options.mode)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/timing_ref_source`, msg)
 					console.log(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
