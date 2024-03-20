@@ -6508,7 +6508,7 @@ module.exports = function (self) {
 			},
 		},
 		waveformActiveArea: {
-			name: 'Waveform Acctive Area',
+			name: 'Waveform Active Area',
 			description: `Enable/Disable display of Active Picture Area only in line sweeps`,
 			options: [
 				{
