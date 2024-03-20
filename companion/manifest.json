@@ -21,6 +21,6 @@
 	},
 	"legacyIds": [],
 	"manufacturer": "Telestream",
-	"products": ["Prism", "MPX2", "MPP", "MPS", "MPD", "MPI2"],
+	"products": ["Prism", "MPI2", "MPX2", "MPD", "MPP", "MPS"],
 	"keywords": ["SDI", "2110", "Waveform Monitor"]
 }

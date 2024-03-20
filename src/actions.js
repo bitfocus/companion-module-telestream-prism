@@ -1317,7 +1317,7 @@ module.exports = function (self) {
 					id: 'mode',
 					type: 'dropdown',
 					label: 'Mode',
-					default: [25],
+					default: 25,
 					choices: ipVideoPhyBitRateChoices,
 					useVariables: true,
 					allowCustom: true,
@@ -1340,8 +1340,11 @@ module.exports = function (self) {
 				if (self.axios === undefined) {
 					return undefined
 				}
-				let mode = await self.parseVariablesInString(options.mode)
+				let mode = parseInt(await self.parseVariablesInString(options.mode))
 				let scope = await self.parseVariablesInString(options.scope)
+				if (isNaN(mode) || (mode !== 10 && mode !== 25)) {
+					this.log('warn', `IP Video PHY Bite Rate Mode passed out of range value: ${mode}`)
+				}
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/ip_video_phy_bit_rate/${scope}`, msg)
@@ -2553,6 +2556,7 @@ module.exports = function (self) {
 				}
 			},
 		},
+		//audio_pair_aux_out_mode does not respond as described. A GET returns {"ints": [ 0 ]}
 		/* audioPairAuxOutMode: {
 			name: 'Audio Pair Aux Out Mode',
 			description: `Select audio aux out mode for ST2110`,
@@ -2574,7 +2578,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let mode = await self.parseVariablesInString(options.mode)
-				let msg = JSON.stringify({ ints: mode })
+				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/audio_pair_aux_out_mode`, msg)
 					self.logResponse(response)
@@ -2800,6 +2804,7 @@ module.exports = function (self) {
 				}
 			},
 		},
+		//audio_pcm_program POSTs return a "ERROR: S_ioslave_INVALID_SCOPEExecution failed." when pointed at a valid tile which successfully returns a GET.
 		/* audioPcmProgram: {
 			name: 'Audio PCM Program',
 			description: `Enable/Disable custom program configuration for PCM channels`,

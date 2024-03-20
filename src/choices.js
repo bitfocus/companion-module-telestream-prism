@@ -208,8 +208,8 @@ export const sdiLoopThroughChoices = [
 ]
 
 export const ipVideoPhyBitRateChoices = [
-	{ id: [10], label: '10 Gbps' },
-	{ id: [25], label: '25 Gbps' },
+	{ id: 10, label: '10 Gbps' },
+	{ id: 25, label: '25 Gbps' },
 ]
 
 export const ipVideoPhyFecModeChoices = [
