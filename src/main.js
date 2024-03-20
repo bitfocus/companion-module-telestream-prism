@@ -12,7 +12,7 @@ class Telestream_PRISM extends InstanceBase {
 
 	logResponse(response) {
 		if (this.config.verbose) {
-			this.log('debug', JSON.stringify(response))
+			console.log(response)
 		} else {
 			if (response.data !== undefined) {
 				this.log('info', `Data Recieved: ${JSON.stringify(response.data)}`)
@@ -137,6 +137,7 @@ class Telestream_PRISM extends InstanceBase {
 				label: 'Verbose Logging',
 				width: 2,
 				default: false,
+				tooltip: 'Verbose logs written to the console',
 			},
 		]
 	}

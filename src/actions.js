@@ -249,7 +249,7 @@ module.exports = function (self) {
 		},
 		loadPreset: {
 			name: 'Load Preset',
-			description: `Load preset specified by: "/local/[GroupLetter]_[OptionalGroupName]/[PresetNumber]:[OptionalPresetName]". Or recall Factory Preset by sending "factory".`,
+			description: `Load preset specified by: "/local/[GroupLetter]_[OptionalGroupName]/[PresetNumber]:[OptionalPresetName]". Or recall Factory Preset by sending "factory"`,
 			options: [
 				{
 					id: 'preset',
@@ -287,7 +287,7 @@ module.exports = function (self) {
 		},
 		ancSessionControl: {
 			name: 'ANC Session Control',
-			description: `Reset anc session.`,
+			description: `Reset anc session`,
 			options: [],
 			callback: async () => {
 				if (self.axios === undefined) {
@@ -306,7 +306,7 @@ module.exports = function (self) {
 		},
 		audioSessionControl: {
 			name: 'Audio Session Control',
-			description: `Stop, Run or Reset the audio session.`,
+			description: `Stop, Run or Reset the audio session`,
 			options: [
 				{
 					id: 'action',
@@ -333,7 +333,7 @@ module.exports = function (self) {
 		},
 		loudnessSessionControl: {
 			name: 'Loudness Session Control',
-			description: `Stop, Run or Reset the loudness session.`,
+			description: `Stop, Run or Reset the loudness session`,
 			options: [
 				{
 					id: 'action',
@@ -360,7 +360,7 @@ module.exports = function (self) {
 		},
 		videoSessionControl: {
 			name: 'Video Session Control',
-			description: `Stop, Run or Reset the video session.`,
+			description: `Stop, Run or Reset the video session`,
 			options: [
 				{
 					id: 'action',
@@ -387,7 +387,7 @@ module.exports = function (self) {
 		},
 		ipSessionControl: {
 			name: 'IP Session Control',
-			description: `Stop, Run or Reset the IP session.`,
+			description: `Stop, Run or Reset the IP session`,
 			options: [
 				{
 					id: 'action',
@@ -414,7 +414,7 @@ module.exports = function (self) {
 		},
 		tileSelect: {
 			name: 'Tile Select',
-			description: `Select a tile to expand to full screen.`,
+			description: `Select a tile to expand to full screen`,
 			options: [
 				{
 					id: 'tile',
@@ -450,7 +450,7 @@ module.exports = function (self) {
 		},
 		tileFullscreenMode: {
 			name: 'Tile Fullscreen Mode',
-			description: `Set the mode of fullscreen for the secondary display.`,
+			description: `Set the mode of fullscreen for the secondary display`,
 			options: [
 				{
 					id: 'mode',
@@ -477,7 +477,7 @@ module.exports = function (self) {
 		},
 		tileInFocus: {
 			name: 'Tile In Focus',
-			description: `Select a tile to set the context of the application menu. If the application menu is open, a colored ring will appear around the selected tile.`,
+			description: `Select a tile to set the context of the application menu. If the application menu is open, a colored ring will appear around the selected tile`,
 			options: [
 				{
 					id: 'tile',
@@ -513,7 +513,7 @@ module.exports = function (self) {
 		},
 		audioBallistic: {
 			name: 'Audio Ballistic',
-			description: `Ballistic Type for Audio Bars.`,
+			description: `Ballistic Type for Audio Bars`,
 			options: [
 				{
 					id: 'mode',
@@ -545,7 +545,7 @@ module.exports = function (self) {
 		},
 		loudnessMeteringMode: {
 			name: 'Loudness Metering Mode',
-			description: `The mode defines which weighting function and gating techniques are used when loudness metering is performed.`,
+			description: `The mode defines which weighting function and gating techniques are used when loudness metering is performed`,
 			options: [
 				{
 					id: 'mode',
@@ -578,7 +578,7 @@ module.exports = function (self) {
 		},
 		loudnessFullScaleUnits: {
 			name: 'Loudness Full Scale Unit',
-			description: `Full scale unit selection for Loudness Auxiliary Display.`,
+			description: `Full scale unit selection for Loudness Auxiliary Display`,
 			options: [
 				{
 					id: 'mode',
@@ -674,7 +674,7 @@ module.exports = function (self) {
 		},
 		loudnessBallistic: {
 			name: 'Loudness Ballistic',
-			description: `Selection for Program Loudness Bar Ballistic type.`,
+			description: `Selection for Program Loudness Bar Ballistic type`,
 			options: [
 				{
 					id: 'mode',
@@ -707,7 +707,7 @@ module.exports = function (self) {
 		},
 		loudnessShortGatingWindow: {
 			name: 'Loudness Short Gating Window',
-			description: `Set the duration of the Short Term Loudness Gating window.`,
+			description: `Set the duration of the Short Term Loudness Gating window`,
 			options: [
 				{
 					id: 'mode',
@@ -740,7 +740,7 @@ module.exports = function (self) {
 		},
 		loudnessLoadPreset: {
 			name: 'Loudness Load Preset',
-			description: `Load a predefined Loudness Meter Configuration preset.`,
+			description: `Load a predefined Loudness Meter Configuration preset`,
 			options: [
 				{
 					id: 'mode',
@@ -772,7 +772,7 @@ module.exports = function (self) {
 		},
 		audioProgramSurroundOrder: {
 			name: 'Audio Program Surround Order',
-			description: `Select audio program surround order.`,
+			description: `Select audio program surround order`,
 			options: [
 				{
 					id: 'mode',
@@ -804,7 +804,7 @@ module.exports = function (self) {
 		},
 		dolbyMetadataSource: {
 			name: 'Dolby Metadata Source',
-			description: `Dolby metadata source selection.`,
+			description: `Dolby metadata source selection`,
 			options: [
 				{
 					id: 'mode',
@@ -837,7 +837,7 @@ module.exports = function (self) {
 		},
 		audioDownmixMode: {
 			name: 'Audio Downmix Mode',
-			description: `Audio Downmix mode selection.`,
+			description: `Audio Downmix mode selection`,
 			options: [
 				{
 					id: 'mode',
@@ -870,7 +870,7 @@ module.exports = function (self) {
 		},
 		audioSoloMode: {
 			name: 'Audio Solo Mode',
-			description: `Set solo display mode for the Audio App.`,
+			description: `Set solo display mode for the Audio App`,
 			options: [
 				{
 					id: 'mode',
@@ -903,7 +903,7 @@ module.exports = function (self) {
 		},
 		dolbyDrcMode: {
 			name: 'Dolby DRC Mode',
-			description: `Dolby D DRC compression mode selection.`,
+			description: `Dolby D DRC compression mode selection`,
 			options: [
 				{
 					id: 'mode',
@@ -935,7 +935,7 @@ module.exports = function (self) {
 		},
 		analogAudioOutputMode: {
 			name: 'Analog Audio Output Mode',
-			description: `Channels selection mode for Analog audio output.`,
+			description: `Channels selection mode for Analog audio output`,
 			options: [
 				{
 					id: 'mode',
@@ -967,7 +967,7 @@ module.exports = function (self) {
 		},
 		audioAuxDisplayMode: {
 			name: 'Analog Aux Display Mode',
-			description: `Set audio auxiliary display mode for the Audio App.`,
+			description: `Set audio auxiliary display mode for the Audio App`,
 			options: [
 				{
 					id: 'mode',
@@ -1012,7 +1012,7 @@ module.exports = function (self) {
 		},
 		audioDisplayLoudnessMeter: {
 			name: 'Audio Display Loudness Meter',
-			description: `Enable/disable audio Loudness meter.`,
+			description: `Enable/disable audio Loudness meter`,
 			options: [
 				{
 					id: 'mode',
@@ -1056,7 +1056,7 @@ module.exports = function (self) {
 		},
 		audioSessionDisplay: {
 			name: 'Audio Session Display',
-			description: `Enable/disable audio session display.`,
+			description: `Enable/disable audio session display`,
 			options: [
 				{
 					id: 'mode',
@@ -1100,7 +1100,7 @@ module.exports = function (self) {
 		},
 		surroundDominanceIndicator: {
 			name: 'Surrond Dominance Indicator',
-			description: `Enable/disable audio surround dominance indicator.`,
+			description: `Enable/disable audio surround dominance indicator`,
 			options: [
 				{
 					id: 'mode',
@@ -1145,7 +1145,7 @@ module.exports = function (self) {
 		},
 		surroundImmersiveDominanceIndicator: {
 			name: 'Surrond Immersive Dominance Indicator',
-			description: `Enable/disable audio surround immersive dominance indicator.`,
+			description: `Enable/disable audio surround immersive dominance indicator`,
 			options: [
 				{
 					id: 'mode',
@@ -1190,7 +1190,7 @@ module.exports = function (self) {
 		},
 		surroundBedSelect: {
 			name: 'Surrond Bed Select',
-			description: `Select required surround sound bed.`,
+			description: `Select required surround sound bed`,
 			options: [
 				{
 					id: 'mode',
@@ -1235,7 +1235,7 @@ module.exports = function (self) {
 		},
 		surroundImmersivePsiBedSelect: {
 			name: 'Surrond Immersive PSU Bed Select',
-			description: `Select required PSI Bed.`,
+			description: `Select required PSI Bed`,
 			options: [
 				{
 					id: 'mode',
@@ -1280,7 +1280,7 @@ module.exports = function (self) {
 		},
 		avdelayUserOffsetMode: {
 			name: 'A/V Delay User Offset Mode',
-			description: `Apply User Offset to Audio Video Measure.`,
+			description: `Apply User Offset to Audio Video Measure`,
 			options: [
 				{
 					id: 'mode',
@@ -1312,7 +1312,7 @@ module.exports = function (self) {
 		},
 		sdiLoopThrough: {
 			name: 'SDI Loop Through',
-			description: `Enables or Disables SDI loop through functionality.`,
+			description: `Enables or Disables SDI loop through functionality`,
 			options: [
 				{
 					id: 'mode',
@@ -1344,7 +1344,7 @@ module.exports = function (self) {
 		},
 		ipVideoPhyBitRate: {
 			name: 'IP Video PHY Bit Rate',
-			description: `Select the Ethernet bit rate of the IP video ports in Gbps. Setting the bit rate for one port affects both ports.`,
+			description: `Select the Ethernet bit rate of the IP video ports in Gbps. Setting the bit rate for one port affects both ports`,
 			options: [
 				{
 					id: 'mode',
@@ -1388,7 +1388,7 @@ module.exports = function (self) {
 		},
 		ipVideoPhyFecMode: {
 			name: 'IP Video PHY FEC Mode',
-			description: `Enable Ethernet FEC on IP video ports when configured for 25 Gbps. FEC mode is ignored when IP video ports configured for 10 Gbps bit rate. Setting the FEC mode for one port affects both ports.`,
+			description: `Enable Ethernet FEC on IP video ports when configured for 25 Gbps. FEC mode is ignored when IP video ports configured for 10 Gbps bit rate. Setting the FEC mode for one port affects both ports`,
 			options: [
 				{
 					id: 'mode',
@@ -1432,7 +1432,7 @@ module.exports = function (self) {
 		},
 		camappDisplayType: {
 			name: 'Cam App Display Type',
-			description: `Set display type of CAM App traces.`,
+			description: `Set display type of CAM App traces`,
 			options: [
 				{
 					id: 'mode',
@@ -1476,7 +1476,7 @@ module.exports = function (self) {
 		},
 		camappGain: {
 			name: 'Cam App Gain',
-			description: `Set the fixed gain for CAM App traces.`,
+			description: `Set the fixed gain for CAM App traces`,
 			options: [
 				{
 					id: 'mode',
@@ -1520,7 +1520,7 @@ module.exports = function (self) {
 		},
 		camappSweep: {
 			name: 'Cam App Sweep',
-			description: `Set the sweep for CAM App traces.`,
+			description: `Set the sweep for CAM App traces`,
 			options: [
 				{
 					id: 'mode',
@@ -1564,7 +1564,7 @@ module.exports = function (self) {
 		},
 		camappFilter: {
 			name: 'Cam App Filer',
-			description: `Select the filter to be applied to the video - Flat or Low Pass.`,
+			description: `Select the filter to be applied to the video - Flat or Low Pass`,
 			options: [
 				{
 					id: 'mode',
@@ -1608,7 +1608,7 @@ module.exports = function (self) {
 		},
 		camappThumbnail: {
 			name: 'Cam App Thumbnail',
-			description: `Control Thumbnail display in CAM App.`,
+			description: `Control Thumbnail display in CAM App`,
 			options: [
 				{
 					id: 'mode',
@@ -1652,7 +1652,7 @@ module.exports = function (self) {
 		},
 		camappGraticuleUnits: {
 			name: 'Cam App Graticle Units',
-			description: `Set graticule units for CAM App traces. Options depend on the selected display type.`,
+			description: `Set graticule units for CAM App traces. Options depend on the selected display type`,
 			options: [
 				{
 					id: 'mode',
@@ -1697,7 +1697,7 @@ module.exports = function (self) {
 		},
 		diagnosticUrlPreset: {
 			name: 'Diagnostic URL Preset',
-			description: `Navigate to preset URL.`,
+			description: `Navigate to preset URL`,
 			options: [
 				{
 					id: 'mode',
@@ -1730,7 +1730,7 @@ module.exports = function (self) {
 		},
 		extendedDisplayMode: {
 			name: 'Extended Display Mode',
-			description: `Set the display mode for single or dual display mode. Dual display mode requires the secondary display to be plugged into the DP2 port.`,
+			description: `Set the display mode for single or dual display mode. Dual display mode requires the secondary display to be plugged into the DP2 port`,
 			options: [
 				{
 					id: 'mode',
@@ -1762,7 +1762,7 @@ module.exports = function (self) {
 		},
 		diamondMode: {
 			name: 'Diamond Mode',
-			description: `Diamond display mode - normal or split.`,
+			description: `Diamond display mode - normal or split`,
 			options: [
 				{
 					id: 'mode',
@@ -1810,7 +1810,7 @@ module.exports = function (self) {
 		},
 		diamondLut: {
 			name: 'Diamond Lut',
-			description: `Diamond 3D Lut On or Off.`,
+			description: `Diamond 3D Lut On or Off`,
 			options: [
 				{
 					id: 'mode',
@@ -1854,7 +1854,7 @@ module.exports = function (self) {
 		},
 		mpiLedBrightness: {
 			name: 'MPI LED Brightness',
-			description: `	Access LED brightness value. `,
+			description: `Access LED brightness value`,
 			options: [
 				{
 					id: 'brightness',
@@ -1886,7 +1886,7 @@ module.exports = function (self) {
 		},
 		mpiLedColor: {
 			name: 'MPI LED Colour',
-			description: `Set LED color.`,
+			description: `Set LED color`,
 			options: [
 				{
 					id: 'mode',
@@ -1919,7 +1919,7 @@ module.exports = function (self) {
 		},
 		extrefSweep: {
 			name: 'External Reference Sweep',
-			description: `Set/Read External Reference Sweep mode.`,
+			description: `Set/Read External Reference Sweep mode`,
 			options: [
 				{
 					id: 'mode',
@@ -1967,7 +1967,7 @@ module.exports = function (self) {
 		},
 		extrefGain: {
 			name: 'External Reference Gain',
-			description: `Set/Read External Reference Fixed Gain.`,
+			description: `Set/Read External Reference Fixed Gain`,
 			options: [
 				{
 					id: 'mode',
@@ -2127,7 +2127,7 @@ module.exports = function (self) {
 		},
 		eyeSweep: {
 			name: 'Eye Sweep Rate',
-			description: `Sweep rate for eye pattern display. `,
+			description: `Sweep rate for eye pattern display`,
 			options: [
 				{
 					id: 'mode',
@@ -2175,7 +2175,7 @@ module.exports = function (self) {
 		},
 		fpTestMode: {
 			name: 'Front Panel Test Mode',
-			description: `Used to put the front panel into a diagnostic mode. `,
+			description: `Used to put the front panel into a diagnostic mode`,
 			options: [
 				{
 					id: 'mode',
@@ -2207,7 +2207,7 @@ module.exports = function (self) {
 		},
 		stopSweep: {
 			name: 'Stop Sweep',
-			description: `Set/Read Stop Display Style and Sweep. Setting the sweep to a multi-line or field mode will disable line select.`,
+			description: `Set/Read Stop Display Style and Sweep. Setting the sweep to a multi-line or field mode will disable line select`,
 			options: [
 				{
 					id: 'mode',
@@ -2255,7 +2255,7 @@ module.exports = function (self) {
 		},
 		stopColorTrace: {
 			name: 'Stop Colour Trace',
-			description: `Set the appearance of Stop trace color.`,
+			description: `Set the appearance of Stop trace color`,
 			options: [
 				{
 					id: 'mode',
@@ -2299,7 +2299,7 @@ module.exports = function (self) {
 		},
 		stopDisplayGain: {
 			name: 'Stop Display Fixed Gain',
-			description: `Set the stop display fixed gain.`,
+			description: `Set the stop display fixed gain`,
 			options: [
 				{
 					id: 'gain',
@@ -2342,7 +2342,7 @@ module.exports = function (self) {
 		},
 		stopEnableBestGain: {
 			name: 'Stop Enable Best Gain',
-			description: `Enable/Disable best gain for stop display.`,
+			description: `Enable/Disable best gain for stop display`,
 			options: [
 				{
 					id: 'mode',
@@ -2449,7 +2449,7 @@ module.exports = function (self) {
 		},
 		stopActiveArea: {
 			name: 'Stop Active Area',
-			description: `Enable/Disable display of Active Picture Area only in line sweeps in Stop Display.`,
+			description: `Enable/Disable display of Active Picture Area only in line sweeps in Stop Display`,
 			options: [
 				{
 					id: 'mode',
@@ -2493,7 +2493,7 @@ module.exports = function (self) {
 		},
 		stopGammaReference: {
 			name: 'Stop Gamma Reference',
-			description: `Select Camera gamma reference as display light referenced or scene light referenced.`,
+			description: `Select Camera gamma reference as display light referenced or scene light referenced`,
 			options: [
 				{
 					id: 'mode',
@@ -2541,7 +2541,7 @@ module.exports = function (self) {
 		},
 		stopEnableLowPassFilter: {
 			name: 'Stop Enable Low Pass Filter',
-			description: `Enable/Disable the Low Pass Filter.`,
+			description: `Enable/Disable the Low Pass Filter`,
 			options: [
 				{
 					id: 'mode',
@@ -2585,7 +2585,7 @@ module.exports = function (self) {
 		},
 		gpioPresetRecallEnable: {
 			name: 'GPIO Preset Recall Enable',
-			description: `Turns the ability to recall presets via GPIO pins On/Off.`,
+			description: `Turns the ability to recall presets via GPIO pins On/Off`,
 			options: [
 				{
 					id: 'mode',
@@ -2617,7 +2617,7 @@ module.exports = function (self) {
 		},
 		/* audioPairAuxOutMode: {
 			name: 'Audio Pair Aux Out Mode',
-			description: `Select audio aux out mode for ST2110.`,
+			description: `Select audio aux out mode for ST2110`,
 			options: [
 				{
 					id: 'mode',
@@ -3303,7 +3303,7 @@ module.exports = function (self) {
 		},
 		lightningVerticalVarEnable: {
 			name: 'Lightning Vertical Gain - Variable Enable',
-			description: `Enable/disable lightning vertical variable gain.`,
+			description: `Enable/disable lightning vertical variable gain`,
 			options: [
 				{
 					id: 'mode',
@@ -3351,7 +3351,7 @@ module.exports = function (self) {
 		},
 		lightningHorizontalGain: {
 			name: 'Lightning Horizontal Gain - Fixed',
-			description: `Lightning Horizontal fixed gain`,
+			description: `Lightning horizontal fixed gain`,
 			options: [
 				{
 					id: 'gain',
@@ -3394,7 +3394,7 @@ module.exports = function (self) {
 		},
 		lightningHorizontalVarEnable: {
 			name: 'Lightning Horizontal Gain - Variable Enable',
-			description: `Enable/disable lightning horizontal variable gain.`,
+			description: `Enable/disable lightning horizontal variable gain`,
 			options: [
 				{
 					id: 'mode',
@@ -3531,7 +3531,7 @@ module.exports = function (self) {
 		},
 		lineSelectEnable: {
 			name: 'Line Select Enable',
-			description: `Enable line select for a tile. Line select is available for the following apps: picture, waveform, vector, diamond, lightning, CIE, and stop display. Line select can only be enabled for waveform and stop if the sweep selection is "1 line". For 3G(Level B), 4K and 8K signals and for CIE Display, enabling/disabling line select applies to all tiles.`,
+			description: `Enable line select for a tile. Line select is available for the following apps: picture, waveform, vector, diamond, lightning, CIE, and stop display. Line select can only be enabled for waveform and stop if the sweep selection is "1 line". For 3G(Level B), 4K and 8K signals and for CIE Display, enabling/disabling line select applies to all tiles`,
 			options: [
 				{
 					id: 'mode',
@@ -3619,7 +3619,7 @@ module.exports = function (self) {
 		},
 		measureTileMode: {
 			name: 'Measure Tile Mode',
-			description: `Select extended tile mode with in a tile. Tile_select API should be used to select a tile to expand to full screen or to know whether a tile is displayed in full screen.`,
+			description: `Select extended tile mode with in a tile. Tile_select API should be used to select a tile to expand to full screen or to know whether a tile is displayed in full screen`,
 			options: [
 				{
 					id: 'mode',
@@ -3664,7 +3664,7 @@ module.exports = function (self) {
 		},
 		nmosDiscovery: {
 			name: 'NMOS Discovery',
-			description: `Enables/disables NMOS IS-04 Discovery. If enabled, an NMOS node and device are advertised for NMOS registration or Peer-to-Peer operation. NMOS Discovery must be enabled to perform IS-05 receiver connections. Enabling IS-05 is done via the input settings.`,
+			description: `Enables/disables NMOS IS-04 Discovery. If enabled, an NMOS node and device are advertised for NMOS registration or Peer-to-Peer operation. NMOS Discovery must be enabled to perform IS-05 receiver connections. Enabling IS-05 is done via the input settings`,
 			options: [
 				{
 					id: 'mode',
@@ -3696,7 +3696,7 @@ module.exports = function (self) {
 		},
 		nmosDnsType: {
 			name: 'NMOS DNS Type',
-			description: `Selection of DNS Type for NMOS.`,
+			description: `Selection of DNS Type for NMOS`,
 			options: [
 				{
 					id: 'mode',
@@ -3760,7 +3760,7 @@ module.exports = function (self) {
 		},
 		nmosPersistentReceivers: {
 			name: 'NMOS Persistent Recievers',
-			description: `Enables/disables persistent NMOS receiver mode. In this mode, all receivers will remain active, regardless of if the current input is enabled for NMOS. In this mode, any activations will configure the specified target input (see nmos_target_input).`,
+			description: `Enables/disables persistent NMOS receiver mode. In this mode, all receivers will remain active, regardless of if the current input is enabled for NMOS. In this mode, any activations will configure the specified target input (see nmos_target_input)`,
 			options: [
 				{
 					id: 'mode',
@@ -3792,7 +3792,7 @@ module.exports = function (self) {
 		},
 		nmos_target_input: {
 			name: 'NMOS Target Input',
-			description: `Sets the target input for NMOS activations in persistent NMOS receiver mode (see nmos_persistent_receivers). In this mode, any NMOS receiver activations will configure the specified input. This will also convert the target input to an NMOS-enabled 2110 input. A receiver activation WILL NOT set the target input to be the active input.`,
+			description: `Sets the target input for NMOS activations in persistent NMOS receiver mode (see nmos_persistent_receivers). In this mode, any NMOS receiver activations will configure the specified input. This will also convert the target input to an NMOS-enabled 2110 input. A receiver activation WILL NOT set the target input to be the active input`,
 			options: [
 				{
 					id: 'mode',
@@ -3855,7 +3855,7 @@ module.exports = function (self) {
 		},
 		closedCaptionsDisplay: {
 			name: 'Closed Captions Display',
-			description: `The format of captions/subtitles displayed for the picture. The first value in the list is the requested value, the second is the effective value.`,
+			description: `The format of captions/subtitles displayed for the picture. The first value in the list is the requested value, the second is the effective value`,
 			options: [
 				{
 					id: 'mode',
@@ -4511,7 +4511,7 @@ module.exports = function (self) {
 		},
 		pictureFalseColor: {
 			name: 'Picture False Color',
-			description: `Enable or Disable False Color. NOTE: False Color is not applicable if @picture_lut is ON.`,
+			description: `Enable or Disable False Color. NOTE: False Color is not applicable if @picture_lut is ON`,
 			options: [
 				{
 					id: 'mode',
@@ -4765,7 +4765,7 @@ module.exports = function (self) {
 		},
 		presetRecallSavedInputs: {
 			name: 'Preset Recall Saved Inputs',
-			description: `Include/Exclude input settings and configuration from Preset recall.`,
+			description: `Include/Exclude input settings and configuration from Preset recall`,
 			options: [
 				{
 					id: 'mode',
@@ -4797,7 +4797,7 @@ module.exports = function (self) {
 		},
 		presetEditMode: {
 			name: 'Preset Edit Mode',
-			description: `Hides the menu options (Recall, Save, Rename) in the UI that appear on pressing a preset button and enables recalling the preset directly. Note: This selection is only applicable for the user interface preset control menu; Preset Recall, Save or Rename will be functional from the API irrespective of this selection.`,
+			description: `Hides the menu options (Recall, Save, Rename) in the UI that appear on pressing a preset button and enables recalling the preset directly. Note: This selection is only applicable for the user interface preset control menu; Preset Recall, Save or Rename will be functional from the API irrespective of this selection`,
 			options: [
 				{
 					id: 'mode',
@@ -4829,7 +4829,7 @@ module.exports = function (self) {
 		},
 		ptpProfile: {
 			name: 'PTP Profile',
-			description: `Set or get the current PTP profile.`,
+			description: `Set or get the current PTP profile`,
 			options: [
 				{
 					id: 'mode',
@@ -4861,7 +4861,7 @@ module.exports = function (self) {
 		},
 		ptpDomain2059Profile: {
 			name: 'PTP Domain ST 2059 Profile',
-			description: `Set or get the PTP domain (0-127) for the ST2059 profile.`,
+			description: `Set or get the PTP domain (0-127) for the ST2059 profile`,
 			options: [
 				{
 					id: 'mode',
@@ -4924,7 +4924,7 @@ module.exports = function (self) {
 		},
 		ptpDomainAes67Profile: {
 			name: 'PTP Domain AES 67 Profile',
-			description: `Set or get the PTP domain (0-127) for the AES 67 profile.`,
+			description: `Set or get the PTP domain (0-127) for the AES 67 profile`,
 			options: [
 				{
 					id: 'mode',
@@ -4955,7 +4955,7 @@ module.exports = function (self) {
 		},
 		ptpDomainGeneralProfile: {
 			name: 'PTP Domain Generic Profile',
-			description: `Set or get the PTP domain (0-127) for the generic profile.`,
+			description: `Set or get the PTP domain (0-127) for the generic profile`,
 			options: [
 				{
 					id: 'mode',
@@ -4986,7 +4986,7 @@ module.exports = function (self) {
 		},
 		snmpTrapEnable: {
 			name: 'SNMP Trap Enable',
-			description: `Enable/disable sending SNMP traps.`,
+			description: `Enable/disable sending SNMP traps`,
 			options: [
 				{
 					id: 'mode',
@@ -5606,7 +5606,7 @@ module.exports = function (self) {
 		},
 		timecodeOverlay: {
 			name: 'Timecode Overlay',
-			description: `Specify an array to enable the timecode overlay on each display if 'timecode_select' api is set to "LTC" or "VITC".`,
+			description: `Specify an array to enable the timecode overlay on each display if 'timecode_select' api is set to "LTC" or "VITC"`,
 			options: [
 				{
 					id: 'mode',
@@ -5638,7 +5638,7 @@ module.exports = function (self) {
 		},
 		tileAvAdvancedThreshold: {
 			name: 'AV Advanced Threshold',
-			description: `	Audio Video Advanced Threshold for AV Graph.`,
+			description: `	Audio Video Advanced Threshold for AV Graph`,
 			options: [
 				{
 					id: 'mode',
@@ -5670,7 +5670,7 @@ module.exports = function (self) {
 		},
 		tileAvDelayedThreshold: {
 			name: 'AV Advanced Threshold',
-			description: `	Audio Video Delayed Threshold for AV Graph.`,
+			description: `	Audio Video Delayed Threshold for AV Graph`,
 			options: [
 				{
 					id: 'mode',
@@ -5702,7 +5702,7 @@ module.exports = function (self) {
 		},
 		timecodeSelect: {
 			name: 'Timecode Select',
-			description: `sed to select the displayed timecode format`,
+			description: `Used to select the displayed timecode format`,
 			options: [
 				{
 					id: 'mode',
@@ -5736,7 +5736,7 @@ module.exports = function (self) {
 		},
 		timingRefSource: {
 			name: 'Timing Reference Source',
-			description: `Reference selection for timing measurements.`,
+			description: `Reference selection for timing measurements`,
 			options: [
 				{
 					id: 'mode',
@@ -5768,7 +5768,7 @@ module.exports = function (self) {
 		},
 		vectorGain: {
 			name: 'Vector Fixed Gain',
-			description: `Set the fixed gain for Vectorscope traces.`,
+			description: `Set the fixed gain for Vectorscope traces`,
 			options: [
 				{
 					id: 'mode',
@@ -5812,7 +5812,7 @@ module.exports = function (self) {
 		},
 		vectorVarEnable: {
 			name: 'Vector Gain - Variable Enable',
-			description: `Enable/disable vectorscope variable gain.`,
+			description: `Enable/disable vectorscope variable gain`,
 			options: [
 				{
 					id: 'mode',
@@ -6052,7 +6052,7 @@ module.exports = function (self) {
 		},
 		sdiGenVideoMovingPix: {
 			name: 'SDI Generator Moving Picture Mode',
-			description: `Turn off/on video output moving picture mode for the SDI generator.`,
+			description: `Turn off/on video output moving picture mode for the SDI generator`,
 			options: [
 				{
 					id: 'mode',

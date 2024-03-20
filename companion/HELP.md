@@ -2,6 +2,7 @@
 
 Control the [Telestream Prism](https://www.telestream.net/video/prism.htm) Waveform monitor. Tested against a MPX 2-25 with Firmware 4.1.
 
+Connection is made on TCP:9000.
 
 ## Actions
 
