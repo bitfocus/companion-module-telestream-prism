@@ -10,11 +10,23 @@ class Telestream_PRISM extends InstanceBase {
 		super(internal)
 	}
 
+	logResponse(response) {
+		if (this.config.verbose) {
+			this.log('debug', JSON.stringify(response))
+		} else {
+			if (response.data !== undefined) {
+				this.log('info', `Data Recieved: ${JSON.stringify(response.data)}`)
+			} else {
+				this.log('warn', `Response contains no data`)
+			}
+		}
+	}
+
 	async getInput() {
 		let varList = []
 		try {
 			const response = await this.axios.get('/activeinput')
-			console.log(response)
+			this.logResponse(response)
 			this.updateStatus(InstanceStatus.Ok)
 			if (response.data === undefined || response.data.input === undefined || response.data.name === undefined) {
 				this.log('warn', 'activeinput response contains no data')
@@ -33,7 +45,7 @@ class Telestream_PRISM extends InstanceBase {
 	async getPresets() {
 		try {
 			const response = await this.axios.get('/getpresets')
-			console.log(response)
+			this.logResponse(response)
 			this.updateStatus(InstanceStatus.Ok)
 			if (response.data.string === undefined) {
 				this.log('warn', 'getpresets response contains no data')
@@ -44,7 +56,6 @@ class Telestream_PRISM extends InstanceBase {
 			this.prism.presets = [{ id: 'factory', label: 'Factory Preset' }]
 			presets.forEach((preset) => {
 				this.prism.presets.push({ id: preset, label: preset })
-				console.log(preset)
 			})
 			this.updateActions()
 		} catch (error) {
@@ -54,19 +65,25 @@ class Telestream_PRISM extends InstanceBase {
 	}
 
 	async queryPrism() {
-		this.getInput()
-		this.getPresets()
+		if (this.axios) {
+			this.getInput()
+			this.getPresets()
+		}
 	}
 
 	setupAxios() {
 		if (this.axios) {
 			delete this.axios
 		}
-		this.axios = axios.create({
-			baseURL: `http://${this.config.host}:9000/api`,
-			timeout: 1000,
-			headers: { 'Content-Type': 'application/json' },
-		})
+		if (this.config.host !== undefined) {
+			this.axios = axios.create({
+				baseURL: `http://${this.config.host}:9000/api`,
+				timeout: 1000,
+				headers: { 'Content-Type': 'application/json' },
+			})
+		} else {
+			this.log('warn', `Host undefined`)
+		}
 	}
 
 	async init(config) {
@@ -113,6 +130,13 @@ class Telestream_PRISM extends InstanceBase {
 				label: 'Target IP',
 				width: 8,
 				regex: Regex.IP,
+			},
+			{
+				type: 'checkbox',
+				id: 'verbose',
+				label: 'Verbose Logging',
+				width: 2,
+				default: false,
 			},
 		]
 	}

@@ -743,3 +743,109 @@ export const timingRefSourceChoices = [
 	{ id: 'TIMING_REF_SOURCE_PTP', label: 'PTP' },
 	{ id: 'TIMING_REF_SOURCE_INTERNAL', label: 'Internal' },
 ]
+
+export const vectorGainChoices = [
+	{ id: 'VECTOR_GAIN_X1', label: 'x1' },
+	{ id: 'VECTOR_GAIN_X2', label: 'x2' },
+	{ id: 'VECTOR_GAIN_X5', label: 'x5' },
+	{ id: 'VECTOR_GAIN_X10', label: 'x10' },
+]
+
+export const vectorVarEnableChoices = [
+	{ id: 'VECTOR_VAR_ENABLE_OFF', label: 'Off' },
+	{ id: 'VECTOR_VAR_ENABLE_ON', label: 'On' },
+]
+
+export const vectorLutChoices = [
+	{ id: 'VECTOR_LUT_OFF', label: 'Off' },
+	{ id: 'VECTOR_LUT_ON', label: 'On' },
+]
+
+export const vectorIqAxisChoices = [
+	{ id: 0, label: 'Off' },
+	{ id: 1, label: 'On' },
+]
+
+export const vectorSdiCompassRoseChoices = [
+	{ id: 0, label: 'Off' },
+	{ id: 1, label: 'On' },
+]
+
+export const sdiVidOutChoices = [
+	{ id: 'VID_OUT_MODE_LOOPOUT', label: 'Loop' },
+	{ id: 'VID_OUT_MODE_GEN', label: 'Generator' },
+]
+
+export const sdiGenEnableChoices = [
+	{ id: 'VID_OUT_SDI_GEN_ENABLE_OFF', label: 'Off' },
+	{ id: 'VID_OUT_SDI_GEN_ENABLE_ON', label: 'On' },
+]
+
+export const sdiGenVideoMovingPixChoices = [
+	{ id: 'VID_OUT_SDI_MOVING_PIX_MODE_OFF', label: 'Off' },
+	{ id: 'VID_OUT_SDI_MOVING_PIX_MODE_ON', label: 'On' },
+]
+
+export const waveformModeChoices = [
+	{ id: 'WAVEFORM_MODE_YPBPR', label: 'YPbPr' },
+	{ id: 'WAVEFORM_MODE_RGB', label: 'RGB' },
+	{ id: 'WAVEFORM_MODE_YRGB', label: 'YRGB' },
+]
+
+export const waveformFilterChoices = [
+	{ id: 'WAVEFORM_FILTER_FLAT', label: 'Flat' },
+	{ id: 'WAVEFORM_FILTER_LOW_PASS', label: 'Low Pass' },
+]
+
+export const waveformSweepChoices = [
+	{ id: 16, label: 'Parade style 1 line sweep' },
+	{ id: 18, label: 'Parade style 1 field sweep' },
+	{ id: 0, label: 'Overlay style 1 line sweep' },
+	{ id: 1, label: 'Overlay style 2 line sweep' },
+	{ id: 2, label: 'Overlay style 1 field sweep' },
+	{ id: 3, label: 'Overlay style 2 field sweep' },
+]
+
+export const waveformColorTraceChoices = [
+	{ id: 'WAVEFORM_COLOR_TRACE_OFF', label: 'Off' },
+	{ id: 'WAVEFORM_COLOR_TRACE_ON', label: 'On' },
+]
+
+export const waveformVarEnableChoices = [
+	{ id: 'WAVEFORM_VAR_ENABLE_OFF', label: 'Off' },
+	{ id: 'WAVEFORM_VAR_ENABLE_ON', label: 'On' },
+]
+
+export const waveformHmagChoices = [
+	{ id: 0, label: 'Disable' },
+	{ id: 1, label: 'Enable' },
+]
+
+export const waveformVerticalCursorEnableChoices = [
+	{ id: 'WAVEFORM_VERTICAL_CURSOR_ENABLE_OFF', label: 'Off' },
+	{ id: 'WAVEFORM_VERTICAL_CURSOR_ENABLE_ON', label: 'On' },
+]
+
+export const waveformHorizontalCursorEnableChoices = [
+	{ id: 'WAVEFORM_HORIZONTAL_CURSOR_ENABLE_OFF', label: 'Off' },
+	{ id: 'WAVEFORM_HORIZONTAL_CURSOR_ENABLE_ON', label: 'On' },
+]
+
+export const waveformGratSdiUnits = [
+	{ id: 'WAVEFORM_GRAT_SDI_UNITS_MV', label: 'mV' },
+	{ id: 'WAVEFORM_GRAT_SDI_UNITS_PERCENT', label: 'Percent' },
+	{ id: 'WAVEFORM_GRAT_SDI_UNITS_NITS', label: 'Nits' },
+	{ id: 'WAVEFORM_GRAT_SDI_UNITS_REFLECTANCE', label: 'Reflectance' },
+	{ id: 'WAVEFORM_GRAT_SDI_UNITS_STOP', label: 'Stop' },
+	{ id: 'WAVEFORM_GRAT_SDI_UNITS_CV', label: 'CV' },
+]
+
+export const waveformLutChoices = [
+	{ id: 'WAVEFORM_LUT_OFF', label: 'Off' },
+	{ id: 'WAVEFORM_LUT_ON', label: 'On' },
+]
+
+export const waveformActiveAreaChoices = [
+	{ id: 'WAVEFORM_LUT_OFF', label: 'Off' },
+	{ id: 'WAVEFORM_ACTIVE_AREA_ON', label: 'On' },
+]

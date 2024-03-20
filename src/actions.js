@@ -119,6 +119,25 @@ const {
 	timecodeOverlayChoices,
 	timecodeSelectChoices,
 	timingRefSourceChoices,
+	vectorGainChoices,
+	vectorVarEnableChoices,
+	vectorLutChoices,
+	vectorIqAxisChoices,
+	vectorSdiCompassRoseChoices,
+	sdiVidOutChoices,
+	sdiGenEnableChoices,
+	sdiGenVideoMovingPixChoices,
+	waveformModeChoices,
+	waveformFilterChoices,
+	waveformSweepChoices,
+	waveformColorTraceChoices,
+	waveformVarEnableChoices,
+	waveformHmagChoices,
+	waveformVerticalCursorEnableChoices,
+	waveformHorizontalCursorEnableChoices,
+	waveformGratSdiUnits,
+	waveformLutChoices,
+	waveformActiveAreaChoices,
 } = require('./choices.js')
 
 module.exports = function (self) {
@@ -169,6 +188,9 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let prismInput
 				switch (options.action) {
 					case 'set':
@@ -193,7 +215,7 @@ module.exports = function (self) {
 				let msg = JSON.stringify({ input: prismInput })
 				try {
 					const response = await self.axios.post('/activeinput', msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 					self.getInput()
 				} catch (error) {
@@ -202,6 +224,9 @@ module.exports = function (self) {
 				}
 			},
 			subscribe: () => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				self.getInput()
 			},
 		},
@@ -210,9 +235,15 @@ module.exports = function (self) {
 			description: `Get list of presets`,
 			options: [],
 			callback: () => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				self.getPresets()
 			},
 			subscribe: () => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				self.getPresets()
 			},
 		},
@@ -234,10 +265,13 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				try {
 					let preset = JSON.stringify({ string: await self.parseVariablesInString(options.preset) })
 					const response = await self.axios.post('/loadpreset', preset)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -245,6 +279,9 @@ module.exports = function (self) {
 				}
 			},
 			subscribe: () => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				self.getPresets()
 			},
 		},
@@ -253,10 +290,13 @@ module.exports = function (self) {
 			description: `Reset anc session.`,
 			options: [],
 			callback: async () => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let msg = JSON.stringify({ ints: ['ANC_ENGINE_SESSION_CONTROL_RESET'] })
 				try {
 					const response = await self.axios.post('/anc_session_control', msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -277,10 +317,13 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let msg = JSON.stringify({ ints: [options.action] })
 				try {
 					const response = await self.axios.post('/audio_session_control', msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -301,10 +344,13 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let msg = JSON.stringify({ ints: [options.action] })
 				try {
 					const response = await self.axios.post('/loudness_session_control', msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -325,10 +371,13 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let msg = JSON.stringify({ ints: [options.action] })
 				try {
 					const response = await self.axios.post('/video_session_control', msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -349,10 +398,13 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let msg = JSON.stringify({ ints: [options.action] })
 				try {
 					const response = await self.axios.post('/ip_session_control', msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -377,6 +429,9 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let tile = parseInt(await self.parseVariablesInString(options.tile))
 				if (isNaN(tile) || tile < 0 || tile > 8) {
 					self.log('warn', `An out of range variable has been passed to Tile Select: ${tile}`)
@@ -385,7 +440,7 @@ module.exports = function (self) {
 				let msg = JSON.stringify({ ints: [tile] })
 				try {
 					const response = await self.axios.post('/tile_select', msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -406,10 +461,13 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let msg = JSON.stringify({ ints: [options.mode] })
 				try {
 					const response = await self.axios.post('/tile_fullscreen_mode', msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -434,6 +492,9 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let tile = parseInt(await self.parseVariablesInString(options.tile))
 				if (isNaN(tile) || tile < 1 || tile > 8) {
 					self.log('warn', `An out of range variable has been passed to Tile In Focus: ${tile}`)
@@ -442,7 +503,7 @@ module.exports = function (self) {
 				let msg = JSON.stringify({ ints: [tile] })
 				try {
 					const response = await self.axios.post('/tile_in_focus', msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -467,11 +528,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let ballistic = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [ballistic] })
 				try {
 					const response = await self.axios.post('/audio_ballistic', msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -497,11 +561,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post('/loudness_metering_mode', msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -526,11 +593,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post('/loudness_full_scale_units', msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -555,11 +625,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post('/loudness_true_peak_dc_block', msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -584,11 +657,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post('/loudness_true_peak_emphasis', msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -614,11 +690,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post('/loudness_ballistic', msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -644,11 +723,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post('/loudness_short_gating_window', msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -673,11 +755,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post('/loudness_load_preset', msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -702,11 +787,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post('/audio_program_surround_order', msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -732,11 +820,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post('/dolby_metadata_source', msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -762,11 +853,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post('/audio_downmix_mode', msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -792,11 +886,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post('/audio_solo_mode', msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -821,11 +918,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post('/dolby_drc_mode', msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -850,11 +950,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post('/analog_audio_output_mode', msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -891,12 +994,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/audio_aux_display_mode/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -932,12 +1038,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/audio_display_loudness_meter/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -973,12 +1082,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/audio_session_display/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -1015,12 +1127,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/surround_dominance_indicator/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -1057,12 +1172,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/surround_immersive_dominance_indicator/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -1099,12 +1217,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/surround_bed_select/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -1141,12 +1262,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/surround_immersive_psi_bed_select/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -1171,11 +1295,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post('/avdelay_user_offset_mode', msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -1200,11 +1327,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post('/sdi_loop_through', msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -1240,12 +1370,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/ip_video_phy_bit_rate/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -1281,12 +1414,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/ip_video_phy_fec_mode/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -1322,12 +1458,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/camapp_display_type/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -1363,12 +1502,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/camapp_gain/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -1404,12 +1546,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/camapp_sweep/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -1445,12 +1590,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/camapp_filter/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -1486,12 +1634,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/camapp_thumbnail/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -1528,12 +1679,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/camapp_graticule_units/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -1559,11 +1713,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post('/diagnostic_url_preset', msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -1588,11 +1745,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post('/extended_display_mode', msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -1628,6 +1788,9 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = parseInt(await self.parseVariablesInString(options.mode))
 				let scope = await self.parseVariablesInString(options.scope)
 				if (isNaN(mode || mode < 0 || mode > 1)) {
@@ -1637,7 +1800,7 @@ module.exports = function (self) {
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/diamond_mode/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -1673,12 +1836,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/diamond_lut/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -1703,10 +1869,13 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let msg = JSON.stringify({ ints: [parseInt(options.brightness)] })
 				try {
 					const response = await self.axios.post('/mpi_led_brightness', msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 					self.getInput()
 				} catch (error) {
@@ -1733,11 +1902,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: mode })
 				try {
 					const response = await self.axios.post('/mpi_led_color', msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -1773,6 +1945,9 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = parseInt(await self.parseVariablesInString(options.mode))
 				let scope = await self.parseVariablesInString(options.scope)
 				if (isNaN(mode) || mode < 0 || mode > 3) {
@@ -1782,7 +1957,7 @@ module.exports = function (self) {
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/extref_sweep/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -1818,6 +1993,9 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = parseInt(await self.parseVariablesInString(options.mode))
 				let scope = await self.parseVariablesInString(options.scope)
 				if (isNaN(mode) || (mode !== 1 && mode !== 2 && mode !== 5)) {
@@ -1827,7 +2005,7 @@ module.exports = function (self) {
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/extref_gain/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -1874,6 +2052,9 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let hmag = parseInt(await self.parseVariablesInString(options.hmag))
 				let bestView = parseInt(await self.parseVariablesInString(options.bestView))
 				let scope = await self.parseVariablesInString(options.scope)
@@ -1888,7 +2069,7 @@ module.exports = function (self) {
 				let msg = JSON.stringify({ ints: [hmag, bestView] })
 				try {
 					const response = await self.axios.post(`/extref_hmag/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -1924,6 +2105,9 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = parseInt(await self.parseVariablesInString(options.mode))
 				let scope = await self.parseVariablesInString(options.scope)
 				if (isNaN(mode) || mode < 0 || mode > 1) {
@@ -1933,7 +2117,7 @@ module.exports = function (self) {
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/eye_meter_enable/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -1969,6 +2153,9 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = parseInt(await self.parseVariablesInString(options.mode))
 				let scope = await self.parseVariablesInString(options.scope)
 				if (isNaN(mode) || mode < 0 || mode > 3) {
@@ -1978,7 +2165,7 @@ module.exports = function (self) {
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/eye_sweep/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -2003,11 +2190,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/eye_sweep`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -2043,6 +2233,9 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = parseInt(await self.parseVariablesInString(options.mode))
 				let scope = await self.parseVariablesInString(options.scope)
 				if (isNaN(mode) || mode < 0 || mode > 18) {
@@ -2052,7 +2245,7 @@ module.exports = function (self) {
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/stop_sweep/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -2088,12 +2281,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/stop_color_trace/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -2128,12 +2324,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let gain = parseInt(await self.parseVariablesInString(options.gain))
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [gain] })
 				try {
 					const response = await self.axios.post(`/stop_display_gain/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -2169,12 +2368,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/stop_enable_best_gain/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -2220,6 +2422,9 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let hmag = parseInt(options.hmag)
 				let bestView = parseInt(await self.parseVariablesInString(options.bestView))
 				let scope = await self.parseVariablesInString(options.scope)
@@ -2234,7 +2439,7 @@ module.exports = function (self) {
 				let msg = JSON.stringify({ ints: [hmag, bestView] })
 				try {
 					const response = await self.axios.post(`/stop_hmag/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -2270,12 +2475,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/stop_active_area/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -2311,6 +2519,9 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = parseInt(await self.parseVariablesInString(options.mode))
 				let scope = await self.parseVariablesInString(options.scope)
 				if (isNaN(mode) || mode < 0 || mode > 1) {
@@ -2320,7 +2531,7 @@ module.exports = function (self) {
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/stop_gamma_reference/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -2356,12 +2567,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/stop_enable_low_pass_filter/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -2386,11 +2600,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/gpio_preset_recall_enable`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -2415,11 +2632,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: mode })
 				try {
 					const response = await self.axios.post(`/audio_pair_aux_out_mode`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -2455,12 +2675,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/source_config_vid_links/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -2496,12 +2719,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/source_config_colorimetry/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -2538,12 +2764,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/source_config_eotf/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -2579,12 +2808,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/audio_input_type/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -2620,12 +2852,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = parseInt(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/dolby_aes_pair/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -2661,12 +2896,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: mode })
 				try {
 					const response = await self.axios.post(`/audio_pcm_program/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -2703,12 +2941,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/xmit_mode_2110/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -2744,12 +2985,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = parseInt(await self.parseVariablesInString(options.mode))
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/tr_offset_2110/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -2785,12 +3029,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/remote_config_mode/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -2815,11 +3062,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/input_edit_mode`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -2845,11 +3095,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/ext_ref_out`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -2874,11 +3127,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/ip_fast_switch_enable`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -2903,11 +3159,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/ignore_rtp_sequence_error`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -2932,6 +3191,9 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = parseInt(await self.parseVariablesInString(options.mode))
 				if (isNaN(mode) || mode < 0 || mode > 1) {
 					self.log('warn', `Jitter Meter Mode passed out of range value: ${mode}`)
@@ -2940,7 +3202,7 @@ module.exports = function (self) {
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/jitter_meter_enable`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -2976,6 +3238,9 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = parseInt(await self.parseVariablesInString(options.mode))
 				let scope = await self.parseVariablesInString(options.scope)
 				if (isNaN(mode) || mode < 0 || mode > 3) {
@@ -2985,7 +3250,7 @@ module.exports = function (self) {
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/jitter_sweep/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -3020,12 +3285,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = parseInt(options.gain)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/lightning_vertical_gain/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -3061,6 +3329,9 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = parseInt(await self.parseVariablesInString(options.mode))
 				let scope = await self.parseVariablesInString(options.scope)
 				if (isNaN(mode) || mode < 0 || mode > 3) {
@@ -3070,7 +3341,7 @@ module.exports = function (self) {
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/lightning_vertical_var_enable/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -3105,12 +3376,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = parseInt(options.gain)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/lightning_horizontal_gain/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -3146,6 +3420,9 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = parseInt(await self.parseVariablesInString(options.mode))
 				let scope = await self.parseVariablesInString(options.scope)
 				if (isNaN(mode) || mode < 0 || mode > 3) {
@@ -3155,7 +3432,7 @@ module.exports = function (self) {
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/lightning_horizontal_var_enable/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -3191,12 +3468,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/lightning_lut/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -3233,12 +3513,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/measure_assign/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -3274,12 +3557,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/line_select_enable/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -3315,12 +3601,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/measure_bar_target/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -3357,12 +3646,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/measure_tile_mode/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -3387,11 +3679,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/nmos_discovery`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -3416,11 +3711,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/nmos_dns_type`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -3445,11 +3743,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/nmos_api_version`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -3474,11 +3775,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/nmos_persistent_receivers`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -3502,11 +3806,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = parseInt(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/nmos_persistent_receivers`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -3531,11 +3838,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = parseInt(await self.parseVariablesInString(options.mode))
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/jitter_hpf`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -3572,12 +3882,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/closed_captions_display/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -3614,12 +3927,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/picture_safe_action_1/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -3656,12 +3972,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/picture_safe_action_2/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -3698,12 +4017,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/picture_safe_title_1/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -3740,12 +4062,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/picture_safe_title_2/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -3781,12 +4106,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/picture_center_grat/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -3823,12 +4151,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/closed_captions_608_channel/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -3865,12 +4196,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/closed_captions_708_service/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -3905,12 +4239,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = parseInt(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/closed_captions_wst_page/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -3946,12 +4283,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/closed_captions_arib_type/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -3987,12 +4327,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/picture_afd_grat/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -4028,12 +4371,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/picture_afd_grat_overlay/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -4069,12 +4415,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/picture_lut/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -4111,12 +4460,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/picture_format_overlay/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -4142,11 +4494,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/picture_false_color_gamut_mode`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -4183,12 +4538,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/picture_false_color/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -4225,12 +4583,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/picture_false_color_mode/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -4266,12 +4627,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/picture_false_color_band_meter/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -4307,12 +4671,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/closed_captions_info_enable/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -4348,12 +4715,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/source_id_display/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -4378,11 +4748,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/picture_aspect_ratio`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -4407,11 +4780,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/preset_recall_saved_inputs`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -4436,11 +4812,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/preset_edit_mode`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -4465,11 +4844,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/ptp_profile`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -4493,11 +4875,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = parseInt(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/ptp_domain_2059_profile`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -4522,11 +4907,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/ptp_comm_mode_2059_profile`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -4550,11 +4938,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = parseInt(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/ptp_domain_aes67_profile`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -4578,11 +4969,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = parseInt(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/ptp_domain_general_profile`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -4607,11 +5001,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = parseInt(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/snmp_trap_enable`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -4647,12 +5044,15 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/timing_measure_mode/${scope}`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -4676,11 +5076,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = parseInt(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/tile_grat_intensity`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -4704,11 +5107,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = parseInt(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/trace_intensity`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -4734,11 +5140,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/extended_status_bar_pinned_menu`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -4763,11 +5172,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/cie_color_space`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -4792,11 +5204,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/cie_trace_appearance`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -4821,11 +5236,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/out_of_gamut_alarm`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -4850,11 +5268,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/gamut_alarm_thresholds_preset`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -4879,11 +5300,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/hdr_alarms`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -4907,11 +5331,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = parseInt(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/hdr_total_area_threshold`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -4935,11 +5362,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = parseInt(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/hdr_brightest_area_threshold`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -4963,11 +5393,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = parseInt(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/hdr_area_threshold`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -4991,11 +5424,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = parseInt(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/hdr_darkest_area_threshold`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -5021,11 +5457,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/center_grat_color`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -5051,11 +5490,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/afd_grat_color`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -5081,11 +5523,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/safe_area_1_color`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -5111,11 +5556,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/safe_area_2_color`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -5141,11 +5589,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/picture_safe_area_std`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -5170,11 +5621,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/timecode_overlay`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -5199,11 +5653,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = parseInt(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/tile_av_advanced_threshold`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -5228,11 +5685,14 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = parseInt(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/tile_av_delayed_threshold`, msg)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -5257,10 +5717,13 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				try {
 					let preset = JSON.stringify({ string: await self.parseVariablesInString(options.mode) })
 					const response = await self.axios.post('/timecode_select', preset)
-					console.log(response)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
@@ -5288,11 +5751,965 @@ module.exports = function (self) {
 				},
 			],
 			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/timing_ref_source`, msg)
-					console.log(response)
+					self.logResponse(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		vectorGain: {
+			name: 'Vector Fixed Gain',
+			description: `Set the fixed gain for Vectorscope traces.`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Gain',
+					default: 'VECTOR_GAIN_X1',
+					choices: vectorGainChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Options: VECTOR_GAIN_X1, VECTOR_GAIN_X2, VECTOR_GAIN_X5, VECTOR_GAIN_X10',
+				},
+				{
+					id: 'scope',
+					type: 'dropdown',
+					label: 'Scope',
+					default: 'tile1',
+					choices: tiles,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Requires Tile Scope of tile1 through tile8.',
+				},
+			],
+			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
+				let mode = await self.parseVariablesInString(options.mode)
+				let scope = await self.parseVariablesInString(options.scope)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/vector_gain/${scope}`, msg)
+					self.logResponse(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		vectorVarEnable: {
+			name: 'Vector Gain - Variable Enable',
+			description: `Enable/disable vectorscope variable gain.`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Enable',
+					default: 'VECTOR_VAR_ENABLE_ON',
+					choices: vectorVarEnableChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Options are VECTOR_VAR_ENABLE_ON or VECTOR_VAR_ENABLE_OFF',
+				},
+				{
+					id: 'scope',
+					type: 'dropdown',
+					label: 'Scope',
+					default: 'tile1',
+					choices: tiles,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Tile Scope: tile1 to tile8',
+				},
+			],
+			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
+				let mode = await self.parseVariablesInString(options.mode)
+				let scope = await self.parseVariablesInString(options.scope)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/vector_var_enable/${scope}`, msg)
+					self.logResponse(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		vectorLut: {
+			name: 'Vector LUT',
+			description: `Vector - Conversion to Rec.709(LUT)`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Enable',
+					default: 'VECTOR_LUT_ON',
+					choices: vectorLutChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Options: VECTOR_LUT_OFF, VECTOR_LUT_ON',
+				},
+				{
+					id: 'scope',
+					type: 'dropdown',
+					label: 'Scope',
+					default: 'tile1',
+					choices: tiles,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Tile Scope: tile1 to tile8',
+				},
+			],
+			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
+				let mode = await self.parseVariablesInString(options.mode)
+				let scope = await self.parseVariablesInString(options.scope)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/vector_lut/${scope}`, msg)
+					self.logResponse(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		vectorIqAxis: {
+			name: 'Vector IQ Axis',
+			description: `Show/Hide Vectorscope IQ Axis`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Enable',
+					default: 1,
+					choices: vectorIqAxisChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Options: 0 to Hide Axis, 1 to Show Axis',
+				},
+				{
+					id: 'scope',
+					type: 'dropdown',
+					label: 'Scope',
+					default: 'tile1',
+					choices: tiles,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Tile Scope: tile1 to tile8',
+				},
+			],
+			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
+				let mode = parseInt(await self.parseVariablesInString(options.mode))
+				let scope = await self.parseVariablesInString(options.scope)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/vector_iq_axis/${scope}`, msg)
+					self.logResponse(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		vectorSdiCompassRose: {
+			name: 'Vector SDI Compass Rose',
+			description: `Show/Hide Vectorscope SDI Compass Rose`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Enable',
+					default: 1,
+					choices: vectorSdiCompassRoseChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Options: 0 to Hide Compass Rose, 1 to Show Compass Rose',
+				},
+				{
+					id: 'scope',
+					type: 'dropdown',
+					label: 'Scope',
+					default: 'tile1',
+					choices: tiles,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Tile Scope: tile1 to tile8',
+				},
+			],
+			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
+				let mode = parseInt(await self.parseVariablesInString(options.mode))
+				let scope = await self.parseVariablesInString(options.scope)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/vector_sdi_compass_rose/${scope}`, msg)
+					self.logResponse(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		sdiVidOut: {
+			name: 'SDI Video Out',
+			description: `Configure the output mode for the SDI generator`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Mode',
+					default: 'VID_OUT_MODE_GEN',
+					choices: sdiVidOutChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Options are VID_OUT_MODE_LOOPOUT and VID_OUT_MODE_GEN',
+				},
+			],
+			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
+				let mode = await self.parseVariablesInString(options.mode)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/sdi_vid_out`, msg)
+					self.logResponse(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		sdiGenEnable: {
+			name: 'SDI Generator',
+			description: `Enable/disable SDI signal generation`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Mode',
+					default: 'VID_OUT_SDI_GEN_ENABLE_ON',
+					choices: sdiGenEnableChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Options: VID_OUT_SDI_GEN_ENABLE_ON, VID_OUT_SDI_GEN_ENABLE_OFF',
+				},
+			],
+			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
+				let mode = await self.parseVariablesInString(options.mode)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/sdi_gen_enable`, msg)
+					self.logResponse(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		sdiGenVideoMovingPix: {
+			name: 'SDI Generator Moving Picture Mode',
+			description: `Turn off/on video output moving picture mode for the SDI generator.`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Mode',
+					default: 'VID_OUT_SDI_MOVING_PIX_MODE_ON',
+					choices: sdiGenVideoMovingPixChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Options: VID_OUT_SDI_MOVING_PIX_MODE_OFF, VID_OUT_SDI_MOVING_PIX_MODE_ON',
+				},
+			],
+			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
+				let mode = await self.parseVariablesInString(options.mode)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/sdi_gen_enable`, msg)
+					self.logResponse(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		waveformMode: {
+			name: 'Waveform Mode',
+			description: `Set/Read Waveform Display Mode`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Mode',
+					default: 'WAVEFORM_MODE_YPBPR',
+					choices: waveformModeChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Options: WAVEFORM_MODE_YPBPR, WAVEFORM_MODE_RGB, WAVEFORM_MODE_YRGB',
+				},
+				{
+					id: 'scope',
+					type: 'dropdown',
+					label: 'Scope',
+					default: 'tile1',
+					choices: tiles,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Tile Scope: tile1 to tile8',
+				},
+			],
+			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
+				let mode = await self.parseVariablesInString(options.mode)
+				let scope = await self.parseVariablesInString(options.scope)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/waveform_mode/${scope}`, msg)
+					self.logResponse(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		waveformFilterYpbpr: {
+			name: 'Waveform Filter YPbRr',
+			description: `Waveform Filter for YPbPr mode - Select filter to be applied to the video`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Mode',
+					default: 'WAVEFORM_FILTER_FLAT',
+					choices: waveformFilterChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Options are WAVEFORM_FILTER_FLAT : Flat Filter and WAVEFORM_FILTER_LOW_PASS : Low Pass Filter',
+				},
+				{
+					id: 'scope',
+					type: 'dropdown',
+					label: 'Scope',
+					default: 'tile1',
+					choices: tiles,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Tile Scope: tile1 to tile8',
+				},
+			],
+			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
+				let mode = await self.parseVariablesInString(options.mode)
+				let scope = await self.parseVariablesInString(options.scope)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/waveform_filter_ypbpr/${scope}`, msg)
+					self.logResponse(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		waveformFilterRgb: {
+			name: 'Waveform Filter RGB',
+			description: `Waveform Filter for RGB mode - Select filter to be applied to the video`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Mode',
+					default: 'WAVEFORM_FILTER_FLAT',
+					choices: waveformFilterChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Options are WAVEFORM_FILTER_FLAT : Flat Filter and WAVEFORM_FILTER_LOW_PASS : Low Pass Filter',
+				},
+				{
+					id: 'scope',
+					type: 'dropdown',
+					label: 'Scope',
+					default: 'tile1',
+					choices: tiles,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Tile Scope: tile1 to tile8',
+				},
+			],
+			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
+				let mode = await self.parseVariablesInString(options.mode)
+				let scope = await self.parseVariablesInString(options.scope)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/waveform_filter_rgb/${scope}`, msg)
+					self.logResponse(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		waveformFilterYrgb: {
+			name: 'Waveform Filter YRGB',
+			description: `Waveform Filter for YRGB mode - Select filter to be applied to the video`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Mode',
+					default: 'WAVEFORM_FILTER_FLAT',
+					choices: waveformFilterChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Options are WAVEFORM_FILTER_FLAT : Flat Filter and WAVEFORM_FILTER_LOW_PASS : Low Pass Filter',
+				},
+				{
+					id: 'scope',
+					type: 'dropdown',
+					label: 'Scope',
+					default: 'tile1',
+					choices: tiles,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Tile Scope: tile1 to tile8',
+				},
+			],
+			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
+				let mode = await self.parseVariablesInString(options.mode)
+				let scope = await self.parseVariablesInString(options.scope)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/waveform_filter_yrgb/${scope}`, msg)
+					self.logResponse(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		waveformSweep: {
+			name: 'Waveform Sweep',
+			description: `Set/Read Waveform Display Style and Sweep. Setting the sweep to a multi-line or field mode will disable line select`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Mode',
+					default: 16,
+					choices: waveformSweepChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Options are WAVEFORM_FILTER_FLAT : Flat Filter and WAVEFORM_FILTER_LOW_PASS : Low Pass Filter',
+				},
+				{
+					id: 'scope',
+					type: 'dropdown',
+					label: 'Scope',
+					default: 'tile1',
+					choices: tiles,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Tile Scope: tile1 to tile8',
+				},
+			],
+			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
+				let mode = parseInt(await self.parseVariablesInString(options.mode))
+				let scope = await self.parseVariablesInString(options.scope)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/waveform_sweep/${scope}`, msg)
+					self.logResponse(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		waveformColorTrace: {
+			name: 'Waveform Color Trace',
+			description: `Set the appearance of Waveform trace`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Mode',
+					default: 'WAVEFORM_COLOR_TRACE_ON',
+					choices: waveformColorTraceChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Options are WAVEFORM_COLOR_TRACE_OFF or WAVEFORM_COLOR_TRACE_ON',
+				},
+				{
+					id: 'scope',
+					type: 'dropdown',
+					label: 'Scope',
+					default: 'tile1',
+					choices: tiles,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Tile Scope: tile1 to tile8',
+				},
+			],
+			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
+				let mode = await self.parseVariablesInString(options.mode)
+				let scope = await self.parseVariablesInString(options.scope)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/waveform_color_trace/${scope}`, msg)
+					self.logResponse(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		waveformGain: {
+			name: 'Waveform Fixed Gain',
+			description: `Set/Read Waveform Fixed Gain`,
+			options: [
+				{
+					id: 'mode',
+					type: 'number',
+					label: 'Gain',
+					default: 1,
+					min: 1,
+					max: 10,
+					range: true,
+					step: 1,
+				},
+				{
+					id: 'scope',
+					type: 'dropdown',
+					label: 'Scope',
+					default: 'tile1',
+					choices: tiles,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Tile Scope: tile1 to tile8',
+				},
+			],
+			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
+				let mode = parseInt(await self.parseVariablesInString(options.mode))
+				let scope = await self.parseVariablesInString(options.scope)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/waveform_gain/${scope}`, msg)
+					self.logResponse(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		waveformVarEnable: {
+			name: 'Waveform Variable Gain Enable',
+			description: `Enable/disable waveform variable Gain`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Enable',
+					default: 'WAVEFORM_VAR_ENABLE_ON',
+					choices: waveformVarEnableChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Options: WAVEFORM_VAR_ENABLE_OFF to Disable, WAVEFORM_VAR_ENABLE_ON',
+				},
+				{
+					id: 'scope',
+					type: 'dropdown',
+					label: 'Scope',
+					default: 'tile1',
+					choices: tiles,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Tile Scope: tile1 to tile8',
+				},
+			],
+			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
+				let mode = await self.parseVariablesInString(options.mode)
+				let scope = await self.parseVariablesInString(options.scope)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/waveform_var_enable/${scope}`, msg)
+					self.logResponse(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		waveformHmag: {
+			name: 'Waveform Hmag',
+			description: `Waveform Hmag & Best View`,
+			options: [
+				{
+					id: 'hmag',
+					type: 'number',
+					label: 'Hmag',
+					default: 1,
+					min: 1,
+					max: 25,
+					range: true,
+					step: 1,
+				},
+				{
+					id: 'bestView',
+					type: 'dropdown',
+					label: 'Best view',
+					default: 0,
+					choices: waveformHmagChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Options Best View: 0 for Disable, 1 for Enable.',
+				},
+				{
+					id: 'scope',
+					type: 'dropdown',
+					label: 'Scope',
+					default: 'tile1',
+					choices: tiles,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Requires Tile Scope of tile1 through tile8.',
+				},
+			],
+			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
+				let hmag = parseInt(options.hmag)
+				let bestView = parseInt(await self.parseVariablesInString(options.bestView))
+				let scope = await self.parseVariablesInString(options.scope)
+				if (isNaN(hmag) || hmag < 1 || hmag > 25) {
+					self.log('warn', `Hmag out of range: ${hmag}`)
+					return undefined
+				}
+				if (isNaN(bestView) || bestView < 0 || bestView > 1) {
+					self.log('warn', `Best View out of range: ${bestView}`)
+					return undefined
+				}
+				let msg = JSON.stringify({ ints: [hmag, bestView] })
+				try {
+					const response = await self.axios.post(`/waveform_hmag/${scope}`, msg)
+					self.logResponse(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		waveformVerticalCursorEnable: {
+			name: 'Waveform Verticle Cursor',
+			description: `Enable/disable waveform verticle cursor`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Enable',
+					default: 'WAVEFORM_VERTICAL_CURSOR_ENABLE_ON',
+					choices: waveformVerticalCursorEnableChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Valid options are WAVEFORM_VERTICAL_CURSOR_ENABLE_ON or WAVEFORM_VERTICAL_CURSOR_ENABLE_OFF',
+				},
+				{
+					id: 'scope',
+					type: 'dropdown',
+					label: 'Scope',
+					default: 'tile1',
+					choices: tiles,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Tile Scope: tile1 to tile8',
+				},
+			],
+			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
+				let mode = await self.parseVariablesInString(options.mode)
+				let scope = await self.parseVariablesInString(options.scope)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/waveform_vertical_cursor_enable/${scope}`, msg)
+					self.logResponse(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		waveformHorizontalCursorEnable: {
+			name: 'Waveform Horizontal Cursor',
+			description: `Enable/disable waveform horizontal cursor`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Enable',
+					default: 'WAVEFORM_HORIZONTAL_CURSOR_ENABLE_ON',
+					choices: waveformHorizontalCursorEnableChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Valid options are WAVEFORM_HORIZONTAL_CURSOR_ENABLE_ON or WAVEFORM_HORIZONTAL_CURSOR_ENABLE_OFF',
+				},
+				{
+					id: 'scope',
+					type: 'dropdown',
+					label: 'Scope',
+					default: 'tile1',
+					choices: tiles,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Tile Scope: tile1 to tile8',
+				},
+			],
+			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
+				let mode = await self.parseVariablesInString(options.mode)
+				let scope = await self.parseVariablesInString(options.scope)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/waveform_horizontal_cursor_enable/${scope}`, msg)
+					self.logResponse(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		waveformGratSdiUnits: {
+			name: 'Waveform SDI Graticle Units',
+			description: `SDI graticule units`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Mode',
+					default: 'WAVEFORM_GRAT_SDI_UNITS_MV',
+					choices: waveformGratSdiUnits,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip:
+						'Options: WAVEFORM_GRAT_SDI_UNITS_MV, WAVEFORM_GRAT_SDI_UNITS_PERCENT, WAVEFORM_GRAT_SDI_UNITS_NITS, WAVEFORM_GRAT_SDI_UNITS_REFLECTANCE, WAVEFORM_GRAT_SDI_UNITS_STOP, WAVEFORM_GRAT_SDI_UNITS_CV',
+				},
+				{
+					id: 'scope',
+					type: 'dropdown',
+					label: 'Scope',
+					default: 'tile1',
+					choices: tiles,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Tile Scope: tile1 to tile8',
+				},
+			],
+			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
+				let mode = await self.parseVariablesInString(options.mode)
+				let scope = await self.parseVariablesInString(options.scope)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/waveform_horizontal_cursor_enable/${scope}`, msg)
+					self.logResponse(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		waveformLut: {
+			name: 'Waveform LUT',
+			description: `Waveform - Conversion to Rec.709(LUT)`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Mode',
+					default: 'WAVEFORM_LUT_OFF',
+					choices: waveformLutChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Options: WAVEFORM_LUT_OFF, WAVEFORM_LUT_ON. Default: WAVEFORM_LUT_OFF',
+				},
+				{
+					id: 'scope',
+					type: 'dropdown',
+					label: 'Scope',
+					default: 'tile1',
+					choices: tiles,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Tile Scope: tile1 to tile8',
+				},
+			],
+			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
+				let mode = await self.parseVariablesInString(options.mode)
+				let scope = await self.parseVariablesInString(options.scope)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/waveform_lut/${scope}`, msg)
+					self.logResponse(response)
+					self.updateStatus(InstanceStatus.Ok)
+				} catch (error) {
+					console.log(error)
+					self.updateStatus(InstanceStatus.Error)
+				}
+			},
+		},
+		waveformActiveArea: {
+			name: 'Waveform Acctive Area',
+			description: `Enable/Disable display of Active Picture Area only in line sweeps`,
+			options: [
+				{
+					id: 'mode',
+					type: 'dropdown',
+					label: 'Mode',
+					default: 'WAVEFORM_ACTIVE_AREA_ON',
+					choices: waveformActiveAreaChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Options : WAVEFORM_ACTIVE_AREA_OFF, WAVEFORM_ACTIVE_AREA_ON',
+				},
+				{
+					id: 'scope',
+					type: 'dropdown',
+					label: 'Scope',
+					default: 'tile1',
+					choices: tiles,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Tile Scope: tile1 to tile8',
+				},
+			],
+			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
+				let mode = await self.parseVariablesInString(options.mode)
+				let scope = await self.parseVariablesInString(options.scope)
+				let msg = JSON.stringify({ ints: [mode] })
+				try {
+					const response = await self.axios.post(`/waveform_active_area/${scope}`, msg)
+					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					console.log(error)
