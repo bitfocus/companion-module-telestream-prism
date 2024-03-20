@@ -22,6 +22,21 @@ class Telestream_PRISM extends InstanceBase {
 		}
 	}
 
+	logError(error) {
+		if (this.config.verbose) {
+			console.log(error)
+			this.updateStatus(InstanceStatus.ConnectionFailure)
+		} else {
+			if (error.code !== undefined) {
+				this.log('error', `Error: ${JSON.stringify(error.code)}`)
+				this.updateStatus(InstanceStatus.ConnectionFailure, JSON.stringify(error.code))
+			} else {
+				this.log('error', `No error code`)
+				this.updateStatus(InstanceStatus.ConnectionFailure)
+			}
+		}
+	}
+
 	async getInput() {
 		let varList = []
 		try {
@@ -37,8 +52,7 @@ class Telestream_PRISM extends InstanceBase {
 			varList['activeInputName'] = response.data.name
 			this.setVariableValues(varList)
 		} catch (error) {
-			console.log(error)
-			this.updateStatus(InstanceStatus.Error)
+			this.logError(error)
 		}
 	}
 
@@ -59,8 +73,7 @@ class Telestream_PRISM extends InstanceBase {
 			})
 			this.updateActions()
 		} catch (error) {
-			console.log(error)
-			this.updateStatus(InstanceStatus.Error)
+			this.logError(error)
 		}
 	}
 

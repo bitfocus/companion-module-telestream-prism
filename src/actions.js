@@ -219,8 +219,7 @@ module.exports = function (self) {
 					self.updateStatus(InstanceStatus.Ok)
 					self.getInput()
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 			subscribe: () => {
@@ -274,8 +273,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 			subscribe: () => {
@@ -299,8 +297,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -326,8 +323,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -353,8 +349,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -380,8 +375,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -407,8 +401,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -443,8 +436,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -470,8 +462,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -506,8 +497,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -538,8 +528,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -571,8 +560,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -603,8 +591,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -635,8 +622,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -667,8 +653,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -700,8 +685,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -733,8 +717,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -765,8 +748,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -797,8 +779,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -830,8 +811,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -863,8 +843,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -896,8 +875,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -928,8 +906,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -960,8 +937,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -1005,8 +981,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -1049,8 +1024,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -1093,8 +1067,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -1138,8 +1111,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -1183,8 +1155,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -1228,8 +1199,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -1273,8 +1243,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -1305,8 +1274,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -1337,8 +1305,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -1381,8 +1348,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -1425,8 +1391,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -1469,8 +1434,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -1513,8 +1477,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -1557,8 +1520,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -1601,8 +1563,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -1645,8 +1606,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -1690,8 +1650,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -1723,8 +1682,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -1755,8 +1713,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -1803,8 +1760,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -1847,8 +1803,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -1879,8 +1834,7 @@ module.exports = function (self) {
 					self.updateStatus(InstanceStatus.Ok)
 					self.getInput()
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -1912,8 +1866,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -1960,8 +1913,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -2008,8 +1960,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -2072,8 +2023,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -2120,8 +2070,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -2168,8 +2117,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -2200,8 +2148,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -2248,8 +2195,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -2292,8 +2238,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -2335,8 +2280,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -2379,8 +2323,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -2442,8 +2385,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -2486,8 +2428,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -2534,8 +2475,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -2578,8 +2518,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -2610,8 +2549,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -2642,8 +2580,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		}, */
@@ -2686,8 +2623,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -2730,8 +2666,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -2775,8 +2710,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -2819,8 +2753,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -2863,8 +2796,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -2907,8 +2839,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		}, */
@@ -2952,8 +2883,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -2996,8 +2926,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -3040,8 +2969,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -3072,8 +3000,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -3105,8 +3032,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -3137,8 +3063,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -3169,8 +3094,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -3205,8 +3129,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -3253,8 +3176,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -3296,8 +3218,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -3344,8 +3265,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -3387,8 +3307,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -3435,8 +3354,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -3479,8 +3397,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -3524,8 +3441,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -3568,8 +3484,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -3612,8 +3527,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -3657,8 +3571,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -3689,8 +3602,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -3721,8 +3633,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -3753,8 +3664,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -3785,8 +3695,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -3816,8 +3725,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -3848,8 +3756,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -3893,8 +3800,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -3938,8 +3844,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -3983,8 +3888,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -4028,8 +3932,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -4073,8 +3976,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -4117,8 +4019,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -4162,8 +4063,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -4207,8 +4107,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -4250,8 +4149,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -4294,8 +4192,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -4338,8 +4235,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -4382,8 +4278,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -4426,8 +4321,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -4471,8 +4365,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -4504,8 +4397,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -4549,8 +4441,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -4594,8 +4485,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -4638,8 +4528,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -4682,8 +4571,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -4726,8 +4614,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -4758,8 +4645,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -4790,8 +4676,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -4822,8 +4707,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -4854,8 +4738,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -4885,8 +4768,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -4917,8 +4799,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -4948,8 +4829,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -4979,8 +4859,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -5011,8 +4890,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -5055,8 +4933,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -5086,8 +4963,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -5117,8 +4993,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -5150,8 +5025,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -5182,8 +5056,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -5214,8 +5087,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -5246,8 +5118,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -5278,8 +5149,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -5310,8 +5180,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -5341,8 +5210,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -5372,8 +5240,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -5403,8 +5270,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -5434,8 +5300,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -5467,8 +5332,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -5500,8 +5364,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -5533,8 +5396,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -5566,8 +5428,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -5599,8 +5460,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -5631,8 +5491,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -5663,8 +5522,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -5695,8 +5553,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -5726,8 +5583,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 			subscribe: () => {
@@ -5761,8 +5617,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -5805,8 +5660,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -5849,8 +5703,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -5893,8 +5746,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -5937,8 +5789,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -5981,8 +5832,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -6013,8 +5863,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -6045,8 +5894,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -6077,8 +5925,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -6121,8 +5968,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -6165,8 +6011,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -6209,8 +6054,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -6253,8 +6097,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -6297,8 +6140,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -6341,8 +6183,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -6384,8 +6225,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -6428,8 +6268,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -6491,8 +6330,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -6535,8 +6373,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -6579,8 +6416,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -6624,8 +6460,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -6668,8 +6503,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
@@ -6712,8 +6546,7 @@ module.exports = function (self) {
 					self.logResponse(response)
 					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
-					console.log(error)
-					self.updateStatus(InstanceStatus.Error)
+					self.logError(error)
 				}
 			},
 		},
