@@ -13,10 +13,13 @@ class Telestream_PRISM extends InstanceBase {
 	logResponse(response) {
 		if (this.config.verbose) {
 			console.log(response)
+			this.updateStatus(InstanceStatus.Ok)
 		} else {
 			if (response.data !== undefined) {
+				this.updateStatus(InstanceStatus.Ok)
 				this.log('info', `Data Recieved: ${JSON.stringify(response.data)}`)
 			} else {
+				this.updateStatus(InstanceStatus.UnknownWarning, 'No Data')
 				this.log('warn', `Response contains no data`)
 			}
 		}
@@ -25,15 +28,13 @@ class Telestream_PRISM extends InstanceBase {
 	logError(error) {
 		if (this.config.verbose) {
 			console.log(error)
-			this.updateStatus(InstanceStatus.ConnectionFailure)
+		}
+		if (error.code !== undefined) {
+			this.log('error', `Error: ${JSON.stringify(error.code)}`)
+			this.updateStatus(InstanceStatus.ConnectionFailure, JSON.stringify(error.code))
 		} else {
-			if (error.code !== undefined) {
-				this.log('error', `Error: ${JSON.stringify(error.code)}`)
-				this.updateStatus(InstanceStatus.ConnectionFailure, JSON.stringify(error.code))
-			} else {
-				this.log('error', `No error code`)
-				this.updateStatus(InstanceStatus.ConnectionFailure)
-			}
+			this.log('error', `No error code`)
+			this.updateStatus(InstanceStatus.UnknownError)
 		}
 	}
 
@@ -42,7 +43,6 @@ class Telestream_PRISM extends InstanceBase {
 		try {
 			const response = await this.axios.get('/activeinput')
 			this.logResponse(response)
-			this.updateStatus(InstanceStatus.Ok)
 			if (response.data === undefined || response.data.input === undefined || response.data.name === undefined) {
 				this.log('warn', 'activeinput response contains no data')
 				return undefined
@@ -60,7 +60,6 @@ class Telestream_PRISM extends InstanceBase {
 		try {
 			const response = await this.axios.get('/getpresets')
 			this.logResponse(response)
-			this.updateStatus(InstanceStatus.Ok)
 			if (response.data.string === undefined) {
 				this.log('warn', 'getpresets response contains no data')
 				return undefined
@@ -84,6 +83,16 @@ class Telestream_PRISM extends InstanceBase {
 		}
 	}
 
+	initPrism() {
+		if (this.prism) {
+			delete this.prism
+		}
+		this.prism = {
+			presets: [{ id: 'factory', label: 'Factory Preset' }],
+			input: 'unknown',
+		}
+	}
+
 	setupAxios() {
 		if (this.axios) {
 			delete this.axios
@@ -96,20 +105,18 @@ class Telestream_PRISM extends InstanceBase {
 			})
 		} else {
 			this.log('warn', `Host undefined`)
+			this.updateStatus(InstanceStatus.BadConfig)
 		}
 	}
 
 	async init(config) {
+		this.updateStatus(InstanceStatus.Connecting)
 		this.config = config
 		this.setupAxios()
-		this.prism = {
-			presets: [{ id: 'factory', label: 'Factory Preset' }],
-			input: 'unknown',
-		}
+		this.initPrism()
 		this.updateActions() // export actions
 		this.updateFeedbacks() // export feedbacks
 		this.updateVariableDefinitions() // export variable definitions
-		this.updateStatus(InstanceStatus.Ok)
 		this.queryPrism()
 	}
 	// When module gets deleted
@@ -118,19 +125,19 @@ class Telestream_PRISM extends InstanceBase {
 		if (this.axios) {
 			delete this.axios
 		}
+		if (this.prism) {
+			delete this.prism
+		}
 	}
 
 	async configUpdated(config) {
+		this.updateStatus(InstanceStatus.Connecting)
 		this.config = config
 		this.setupAxios()
-		this.prism = {
-			presets: [{ id: 'factory', label: 'Factory Preset' }],
-			input: 'unknown',
-		}
+		this.initPrism()
 		this.updateActions() // export actions
 		this.updateFeedbacks() // export feedbacks
 		this.updateVariableDefinitions() // export variable definitions
-		this.updateStatus(InstanceStatus.Ok)
 		this.queryPrism()
 	}
 

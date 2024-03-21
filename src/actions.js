@@ -1,4 +1,4 @@
-const { InstanceStatus, Regex } = require('@companion-module/base')
+const { Regex } = require('@companion-module/base')
 const {
 	tiles,
 	ip,
@@ -216,7 +216,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post('/activeinput', msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 					self.getInput()
 				} catch (error) {
 					self.logError(error)
@@ -271,7 +270,6 @@ module.exports = function (self) {
 					let preset = JSON.stringify({ string: await self.parseVariablesInString(options.preset) })
 					const response = await self.axios.post('/loadpreset', preset)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -295,7 +293,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post('/anc_session_control', msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -321,7 +318,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post('/audio_session_control', msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -347,7 +343,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post('/loudness_session_control', msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -373,7 +368,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post('/video_session_control', msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -399,7 +393,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post('/ip_session_control', msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -434,7 +427,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post('/tile_select', msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -460,7 +452,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post('/tile_fullscreen_mode', msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -495,7 +486,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post('/tile_in_focus', msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -526,7 +516,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post('/audio_ballistic', msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -558,7 +547,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post('/loudness_metering_mode', msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -589,7 +577,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post('/loudness_full_scale_units', msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -620,7 +607,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post('/loudness_true_peak_dc_block', msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -651,7 +637,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post('/loudness_true_peak_emphasis', msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -683,7 +668,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post('/loudness_ballistic', msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -715,7 +699,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post('/loudness_short_gating_window', msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -746,7 +729,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post('/loudness_load_preset', msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -777,7 +759,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post('/audio_program_surround_order', msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -809,7 +790,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post('/dolby_metadata_source', msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -841,7 +821,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post('/audio_downmix_mode', msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -873,7 +852,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post('/audio_solo_mode', msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -904,7 +882,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post('/dolby_drc_mode', msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -935,7 +912,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post('/analog_audio_output_mode', msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -979,7 +955,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/audio_aux_display_mode/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -1022,7 +997,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/audio_display_loudness_meter/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -1065,7 +1039,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/audio_session_display/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -1109,7 +1082,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/surround_dominance_indicator/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -1153,7 +1125,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/surround_immersive_dominance_indicator/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -1197,7 +1168,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/surround_bed_select/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -1241,7 +1211,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/surround_immersive_psi_bed_select/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -1272,7 +1241,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post('/avdelay_user_offset_mode', msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -1303,7 +1271,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post('/sdi_loop_through', msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -1349,7 +1316,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/ip_video_phy_bit_rate/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -1392,7 +1358,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/ip_video_phy_fec_mode/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -1435,7 +1400,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/camapp_display_type/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -1478,7 +1442,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/camapp_gain/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -1521,7 +1484,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/camapp_sweep/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -1564,7 +1526,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/camapp_filter/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -1607,7 +1568,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/camapp_thumbnail/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -1651,7 +1611,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/camapp_graticule_units/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -1683,7 +1642,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post('/diagnostic_url_preset', msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -1714,7 +1672,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post('/extended_display_mode', msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -1761,7 +1718,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/diamond_mode/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -1804,7 +1760,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/diamond_lut/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -1834,7 +1789,7 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post('/mpi_led_brightness', msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
+
 					self.getInput()
 				} catch (error) {
 					self.logError(error)
@@ -1867,7 +1822,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post('/mpi_led_color', msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -1914,7 +1868,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/extref_sweep/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -1961,7 +1914,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/extref_gain/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -2024,7 +1976,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/extref_hmag/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -2071,7 +2022,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/eye_meter_enable/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -2118,7 +2068,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/eye_sweep/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -2149,7 +2098,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/eye_sweep`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -2196,7 +2144,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/stop_sweep/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -2239,7 +2186,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/stop_color_trace/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -2281,7 +2227,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/stop_display_gain/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -2324,7 +2269,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/stop_enable_best_gain/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -2386,7 +2330,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/stop_hmag/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -2429,7 +2372,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/stop_active_area/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -2476,7 +2418,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/stop_gamma_reference/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -2519,7 +2460,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/stop_enable_low_pass_filter/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -2550,7 +2490,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/gpio_preset_recall_enable`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -2582,7 +2521,7 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/audio_pair_aux_out_mode`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
+					
 				} catch (error) {
 					self.logError(error)
 				}
@@ -2625,7 +2564,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/source_config_vid_links/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -2668,7 +2606,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/source_config_colorimetry/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -2712,7 +2649,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/source_config_eotf/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -2755,7 +2691,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/audio_input_type/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -2798,7 +2733,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/dolby_aes_pair/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -2842,7 +2776,7 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/audio_pcm_program/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
+					
 				} catch (error) {
 					self.logError(error)
 				}
@@ -2886,7 +2820,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/xmit_mode_2110/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -2929,7 +2862,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/tr_offset_2110/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -2972,7 +2904,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/remote_config_mode/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -3003,7 +2934,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/input_edit_mode`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -3035,7 +2965,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/ext_ref_out`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -3066,7 +2995,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/ip_fast_switch_enable`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -3097,7 +3025,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/ignore_rtp_sequence_error`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -3132,7 +3059,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/jitter_meter_enable`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -3179,7 +3105,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/jitter_sweep/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -3221,7 +3146,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/lightning_vertical_gain/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -3268,7 +3192,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/lightning_vertical_var_enable/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -3310,7 +3233,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/lightning_horizontal_gain/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -3357,7 +3279,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/lightning_horizontal_var_enable/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -3400,7 +3321,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/lightning_lut/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -3444,7 +3364,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/measure_assign/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -3487,7 +3406,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/line_select_enable/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -3530,7 +3448,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/measure_bar_target/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -3574,7 +3491,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/measure_tile_mode/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -3605,7 +3521,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/nmos_discovery`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -3636,7 +3551,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/nmos_dns_type`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -3667,7 +3581,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/nmos_api_version`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -3698,7 +3611,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/nmos_persistent_receivers`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -3728,7 +3640,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/nmos_persistent_receivers`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -3759,7 +3670,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/jitter_hpf`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -3803,7 +3713,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/closed_captions_display/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -3847,7 +3756,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/picture_safe_action_1/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -3891,7 +3799,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/picture_safe_action_2/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -3935,7 +3842,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/picture_safe_title_1/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -3979,7 +3885,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/picture_safe_title_2/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -4022,7 +3927,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/picture_center_grat/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -4066,7 +3970,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/closed_captions_608_channel/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -4110,7 +4013,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/closed_captions_708_service/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -4152,7 +4054,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/closed_captions_wst_page/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -4195,7 +4096,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/closed_captions_arib_type/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -4238,7 +4138,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/picture_afd_grat/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -4281,7 +4180,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/picture_afd_grat_overlay/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -4324,7 +4222,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/picture_lut/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -4368,7 +4265,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/picture_format_overlay/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -4400,7 +4296,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/picture_false_color_gamut_mode`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -4444,7 +4339,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/picture_false_color/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -4488,7 +4382,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/picture_false_color_mode/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -4531,7 +4424,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/picture_false_color_band_meter/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -4574,7 +4466,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/closed_captions_info_enable/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -4617,7 +4508,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/source_id_display/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -4648,7 +4538,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/picture_aspect_ratio`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -4679,7 +4568,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/preset_recall_saved_inputs`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -4710,7 +4598,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/preset_edit_mode`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -4741,7 +4628,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/ptp_profile`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -4771,7 +4657,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/ptp_domain_2059_profile`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -4802,7 +4687,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/ptp_comm_mode_2059_profile`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -4832,7 +4716,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/ptp_domain_aes67_profile`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -4862,7 +4745,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/ptp_domain_general_profile`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -4893,7 +4775,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/snmp_trap_enable`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -4936,7 +4817,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/timing_measure_mode/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -4966,7 +4846,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/tile_grat_intensity`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -4996,7 +4875,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/trace_intensity`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -5028,7 +4906,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/extended_status_bar_pinned_menu`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -5059,7 +4936,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/cie_color_space`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -5090,7 +4966,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/cie_trace_appearance`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -5121,7 +4996,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/out_of_gamut_alarm`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -5152,7 +5026,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/gamut_alarm_thresholds_preset`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -5183,7 +5056,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/hdr_alarms`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -5213,7 +5085,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/hdr_total_area_threshold`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -5243,7 +5114,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/hdr_brightest_area_threshold`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -5273,7 +5143,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/hdr_area_threshold`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -5303,7 +5172,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/hdr_darkest_area_threshold`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -5335,7 +5203,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/center_grat_color`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -5367,7 +5234,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/afd_grat_color`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -5399,7 +5265,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/safe_area_1_color`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -5431,7 +5296,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/safe_area_2_color`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -5463,7 +5327,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/picture_safe_area_std`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -5494,7 +5357,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/timecode_overlay`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -5525,7 +5387,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/tile_av_advanced_threshold`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -5556,7 +5417,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/tile_av_delayed_threshold`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -5586,7 +5446,6 @@ module.exports = function (self) {
 					let preset = JSON.stringify({ string: await self.parseVariablesInString(options.mode) })
 					const response = await self.axios.post('/timecode_select', preset)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -5620,7 +5479,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/timing_ref_source`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -5663,7 +5521,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/vector_gain/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -5706,7 +5563,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/vector_var_enable/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -5749,7 +5605,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/vector_lut/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -5792,7 +5647,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/vector_iq_axis/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -5835,7 +5689,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/vector_sdi_compass_rose/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -5866,7 +5719,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/sdi_vid_out`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -5897,7 +5749,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/sdi_gen_enable`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -5928,7 +5779,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/sdi_gen_enable`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -5971,7 +5821,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/waveform_mode/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -6014,7 +5863,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/waveform_filter_ypbpr/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -6057,7 +5905,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/waveform_filter_rgb/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -6100,7 +5947,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/waveform_filter_yrgb/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -6143,7 +5989,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/waveform_sweep/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -6186,7 +6031,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/waveform_color_trace/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -6228,7 +6072,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/waveform_gain/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -6271,7 +6114,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/waveform_var_enable/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -6333,7 +6175,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/waveform_hmag/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -6376,7 +6217,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/waveform_vertical_cursor_enable/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -6419,7 +6259,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/waveform_horizontal_cursor_enable/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -6463,7 +6302,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/waveform_horizontal_cursor_enable/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -6506,7 +6344,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/waveform_lut/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
@@ -6549,7 +6386,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/waveform_active_area/${scope}`, msg)
 					self.logResponse(response)
-					self.updateStatus(InstanceStatus.Ok)
 				} catch (error) {
 					self.logError(error)
 				}
