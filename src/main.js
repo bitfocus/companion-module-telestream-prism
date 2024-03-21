@@ -13,15 +13,13 @@ class Telestream_PRISM extends InstanceBase {
 	logResponse(response) {
 		if (this.config.verbose) {
 			console.log(response)
+		}
+		if (response.data !== undefined) {
 			this.updateStatus(InstanceStatus.Ok)
+			this.log('info', `Data Recieved: ${JSON.stringify(response.data)}`)
 		} else {
-			if (response.data !== undefined) {
-				this.updateStatus(InstanceStatus.Ok)
-				this.log('info', `Data Recieved: ${JSON.stringify(response.data)}`)
-			} else {
-				this.updateStatus(InstanceStatus.UnknownWarning, 'No Data')
-				this.log('warn', `Response contains no data`)
-			}
+			this.updateStatus(InstanceStatus.UnknownWarning, 'No Data')
+			this.log('warn', `Response contains no data`)
 		}
 	}
 

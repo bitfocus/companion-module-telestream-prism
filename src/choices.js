@@ -113,12 +113,12 @@ export const loudnessTruePeakEmphasisChoices = [
 export const loudnessBallisticChoices = [
 	{ id: 'LOUDNESS_BALLISTIC_SHORT_AVERAGE', label: 'Short Average' },
 	{ id: 'LOUDNESS_BALLISTIC_LONG_AVERAGE', label: 'Long Average' },
-	{ id: 'LOUDNESS_BALLISTIC_EBU_R128_M', label: 'Long EBU R128 M' },
+	{ id: 'LOUDNESS_BALLISTIC_EBU_R128_M', label: 'EBU R128 M' },
 ]
 
 export const loudnessShortGatingWindowChoices = [
-	{ id: 'LOUDNESS_SHORT_GATING_WINDOW_EBU_R128_3S', label: 'EBU R128 3S' },
-	{ id: 'LOUDNESS_SHORT_GATING_WINDOW_LEGACY_10S', label: 'Legacy 10S' },
+	{ id: 'LOUDNESS_SHORT_GATING_WINDOW_EBU_R128_3S', label: 'EBU R128 3s' },
+	{ id: 'LOUDNESS_SHORT_GATING_WINDOW_LEGACY_10S', label: 'Legacy 10s' },
 ]
 
 export const loudnessLoadPresetChoices = [
@@ -144,7 +144,7 @@ export const audioDownmixModeChoices = [
 ]
 
 export const audioSoloModeChoices = [
-	{ id: 'AUDIO_SOLO_MUTE_MODE_SOLO_ON', label: 'ON' },
+	{ id: 'AUDIO_SOLO_MUTE_MODE_SOLO_ON', label: 'SOLO ON' },
 	{ id: 'AUDIO_SOLO_MUTE_MODE_OFF', label: 'OFF' },
 ]
 
@@ -160,10 +160,10 @@ export const analogAudioOutputModeChoices = [
 ]
 
 export const audioAuxDisplayModeChoices = [
-	{ id: 'AUDIO_AUX_DISPLAY_MODE_NONE', label: 'No Aux Display' },
-	{ id: 'AUDIO_AUX_DISPLAY_MODE_LISSAJOUS', label: 'Phase Display' },
-	{ id: 'AUDIO_AUX_DISPLAY_MODE_SURROUND', label: 'Surround Display' },
-	{ id: 'AUDIO_AUX_DISPLAY_MODE_LOUD', label: 'Loudness Display' },
+	{ id: 'AUDIO_AUX_DISPLAY_MODE_NONE', label: 'None' },
+	{ id: 'AUDIO_AUX_DISPLAY_MODE_LISSAJOUS', label: 'Phase' },
+	{ id: 'AUDIO_AUX_DISPLAY_MODE_SURROUND', label: 'Surround' },
+	{ id: 'AUDIO_AUX_DISPLAY_MODE_LOUD', label: 'Loudness' },
 ]
 
 export const audioDisplayLoudnessMeterChoices = [
@@ -468,35 +468,35 @@ export const lightningLutChoices = [
 ]
 
 export const measureAssignChoices = [
-	{ id: 'MEASURE_ASSIGN_WAVEFORM', label: 'Waveform' },
-	{ id: 'MEASURE_ASSIGN_VECTOR', label: 'Vector' },
-	{ id: 'MEASURE_ASSIGN_LIGHTNING', label: 'Lightning' },
-	{ id: 'MEASURE_ASSIGN_PICTURE', label: 'Picture' },
-	{ id: 'MEASURE_ASSIGN_DIAMOND', label: 'Diamond' },
-	{ id: 'MEASURE_ASSIGN_AUDIO', label: 'Audio' },
-	{ id: 'MEASURE_ASSIGN_ERROR_STATUS', label: 'Error Status' },
-	{ id: 'MEASURE_ASSIGN_DATALIST', label: 'Datalist' },
-	{ id: 'MEASURE_ASSIGN_EYE', label: 'Eye' },
-	{ id: 'MEASURE_ASSIGN_JITTER', label: 'Jitter' },
-	{ id: 'MEASURE_ASSIGN_DOLBY_STATUS', label: 'Dolby Status' },
 	{ id: 'MEASURE_ASSIGN_ANC_DATA', label: 'ANC Data' },
-	{ id: 'MEASURE_ASSIGN_GEN_STATUS', label: 'Generator Status' },
-	{ id: 'MEASURE_ASSIGN_IP_STATUS', label: 'IP Status' },
-	{ id: 'MEASURE_ASSIGN_IP_SESSION', label: 'IP Session' },
-	{ id: 'MEASURE_ASSIGN_VIDEO_SESSION', label: 'Video Session' },
-	{ id: 'MEASURE_ASSIGN_IP_GRAPHS', label: 'IP Graphs' },
-	{ id: 'MEASURE_ASSIGN_IP_PIT', label: 'IP PIT' },
-	{ id: 'MEASURE_ASSIGN_TIMING_DISPLAY', label: 'Timing Display' },
-	{ id: 'MEASURE_ASSIGN_STREAM_TIMING', label: 'Stream Timing' },
-	{ id: 'MEASURE_ASSIGN_PTP_GRAPHS', label: 'PTP Graphs' },
-	{ id: 'MEASURE_ASSIGN_FSTOP', label: 'F-Stop' },
-	{ id: 'MEASURE_ASSIGN_IP_GEN_STATUS', label: 'IP Generator Status' },
-	{ id: 'MEASURE_ASSIGN_SYNC_DISPLAY', label: 'Sync Display' },
-	{ id: 'MEASURE_ASSIGN_CIE', label: 'CIE' },
-	{ id: 'MEASURE_ASSIGN_CHANNEL_STATUS', label: 'Channel Status' },
+	{ id: 'MEASURE_ASSIGN_AUDIO', label: 'Audio' },
 	{ id: 'MEASURE_ASSIGN_AV_DELAY', label: 'A/V Delay' },
 	{ id: 'MEASURE_ASSIGN_CAMAPP', label: 'Cam App' },
+	{ id: 'MEASURE_ASSIGN_CHANNEL_STATUS', label: 'Channel Status' },
+	{ id: 'MEASURE_ASSIGN_CIE', label: 'CIE' },
+	{ id: 'MEASURE_ASSIGN_DATALIST', label: 'Datalist' },
+	{ id: 'MEASURE_ASSIGN_DIAMOND', label: 'Diamond' },
+	{ id: 'MEASURE_ASSIGN_DOLBY_STATUS', label: 'Dolby Status' },
+	{ id: 'MEASURE_ASSIGN_ERROR_STATUS', label: 'Error Status' },
 	{ id: 'MEASURE_ASSIGN_EXTREF', label: 'External Reference' },
+	{ id: 'MEASURE_ASSIGN_EYE', label: 'Eye' },
+	{ id: 'MEASURE_ASSIGN_FSTOP', label: 'F-Stop' },
+	{ id: 'MEASURE_ASSIGN_GEN_STATUS', label: 'Generator Status' },
+	{ id: 'MEASURE_ASSIGN_IP_GEN_STATUS', label: 'IP Generator Status' },
+	{ id: 'MEASURE_ASSIGN_IP_GRAPHS', label: 'IP Graphs' },
+	{ id: 'MEASURE_ASSIGN_IP_PIT', label: 'IP PIT' },
+	{ id: 'MEASURE_ASSIGN_IP_SESSION', label: 'IP Session' },
+	{ id: 'MEASURE_ASSIGN_IP_STATUS', label: 'IP Status' },
+	{ id: 'MEASURE_ASSIGN_JITTER', label: 'Jitter' },
+	{ id: 'MEASURE_ASSIGN_LIGHTNING', label: 'Lightning' },
+	{ id: 'MEASURE_ASSIGN_PICTURE', label: 'Picture' },
+	{ id: 'MEASURE_ASSIGN_PTP_GRAPHS', label: 'PTP Graphs' },
+	{ id: 'MEASURE_ASSIGN_STREAM_TIMING', label: 'Stream Timing' },
+	{ id: 'MEASURE_ASSIGN_SYNC_DISPLAY', label: 'Sync Display' },
+	{ id: 'MEASURE_ASSIGN_TIMING_DISPLAY', label: 'Timing Display' },
+	{ id: 'MEASURE_ASSIGN_VECTOR', label: 'Vector' },
+	{ id: 'MEASURE_ASSIGN_VIDEO_SESSION', label: 'Video Session' },
+	{ id: 'MEASURE_ASSIGN_WAVEFORM', label: 'Waveform' },
 ]
 
 export const lineSelectEnableChoices = [
