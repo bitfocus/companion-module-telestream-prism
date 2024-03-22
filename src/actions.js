@@ -145,6 +145,7 @@ module.exports = function (self) {
 		activeInput: {
 			name: 'Active Input',
 			description: `Change the unit's active input`,
+			learnTimeout: 10000,
 			options: [
 				{
 					id: 'action',
@@ -220,6 +221,16 @@ module.exports = function (self) {
 					self.getInput()
 				} catch (error) {
 					self.logError(error)
+				}
+			},
+			learn: async (action) => {
+				const newInput = await self.getInput()
+				if (newInput === undefined) {
+					return undefined
+				}
+				return {
+					...action.options,
+					input: newInput,
 				}
 			},
 			subscribe: () => {

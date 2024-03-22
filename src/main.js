@@ -45,12 +45,19 @@ class Telestream_PRISM extends InstanceBase {
 				this.log('warn', 'activeinput response contains no data')
 				return undefined
 			}
-			this.prism.input = parseInt(response.data.input)
-			varList['activeInputNumber'] = this.prism.input
-			varList['activeInputName'] = response.data.name
-			this.setVariableValues(varList)
+			if (!isNaN(parseInt(response.data.input))) {
+				this.prism.input = parseInt(response.data.input)
+				varList['activeInputNumber'] = this.prism.input
+				varList['activeInputName'] = response.data.name
+				this.setVariableValues(varList)
+				return this.prism.input
+			} else {
+				this.log('warn', 'activeinput returned a NaN')
+				return undefined
+			}
 		} catch (error) {
 			this.logError(error)
+			return undefined
 		}
 	}
 
