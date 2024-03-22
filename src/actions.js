@@ -5867,7 +5867,7 @@ module.exports = function (self) {
 		},
 		tileAvAdvancedThreshold: {
 			name: 'AV Advanced Threshold',
-			description: `	Audio Video Advanced Threshold for AV Graph`,
+			description: `Audio Video Advanced Threshold for AV Graph`,
 			options: [
 				{
 					id: 'mode',
@@ -5924,8 +5924,8 @@ module.exports = function (self) {
 			},
 		},
 		tileAvDelayedThreshold: {
-			name: 'AV Advanced Threshold',
-			description: `	Audio Video Delayed Threshold for AV Graph`,
+			name: 'AV Delayed Threshold',
+			description: `Audio Video Delayed Threshold for AV Graph`,
 			options: [
 				{
 					id: 'mode',
@@ -6002,15 +6002,12 @@ module.exports = function (self) {
 					return undefined
 				}
 				try {
-					let preset = JSON.stringify({ string: await self.parseVariablesInString(options.mode) })
-					const response = await self.axios.post('/timecode_select', preset)
+					let msg = JSON.stringify({ string: await self.parseVariablesInString(options.mode) })
+					const response = await self.axios.post('/timecode_select', msg)
 					self.logResponse(response)
 				} catch (error) {
 					self.logError(error)
 				}
-			},
-			subscribe: () => {
-				self.getPresets()
 			},
 		},
 		timingRefSource: {
