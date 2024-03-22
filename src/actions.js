@@ -169,6 +169,7 @@ module.exports = function (self) {
 				{
 					id: 'inputVar',
 					type: 'textinput',
+					label: 'Input',
 					default: '',
 					useVariables: true,
 					regex: Regex.SOMETHING,
@@ -1772,13 +1773,34 @@ module.exports = function (self) {
 				{
 					id: 'brightness',
 					type: 'number',
-					label: 'brightness',
+					label: 'Brightness',
 					default: 0,
 					min: 0,
 					max: 31,
 					range: true,
 					step: 1,
 					tooltip: 'Range: 4-31. Default: 0',
+					isVisible: (options) => {
+						return !options.useVar
+					},
+				},
+				{
+					id: 'brightnessVar',
+					type: 'textinput',
+					label: 'Brightness',
+					default: '',
+					useVariables: true,
+					regex: Regex.SOMETHING,
+					isVisible: (options) => {
+						return options.useVar
+					},
+					tooltip: 'Varible must return an integer between 0 and 31',
+				},
+				{
+					id: 'useVar',
+					type: 'checkbox',
+					label: 'Use Variable',
+					default: false,
 				},
 			],
 			callback: async ({ options }) => {
@@ -1786,6 +1808,14 @@ module.exports = function (self) {
 					return undefined
 				}
 				let msg = JSON.stringify({ ints: [parseInt(options.brightness)] })
+				if (options.useVar) {
+					let brightness = parseInt(await self.parseVariablesInString(options.brightnessVar))
+					if (isNaN(brightness) || brightness < 0 || brightness > 31) {
+						self.log('warn', `mpi_led_brightness has been passed an out of range variable: ${brightness}`)
+						return undefined
+					}
+					msg = JSON.stringify({ ints: [brightness] })
+				}
 				try {
 					const response = await self.axios.post('/mpi_led_brightness', msg)
 					self.logResponse(response)
@@ -2204,6 +2234,27 @@ module.exports = function (self) {
 					max: 10,
 					range: true,
 					step: 1,
+					isVisible: (options) => {
+						return !options.useVar
+					},
+				},
+				{
+					id: 'gainVar',
+					type: 'textinput',
+					label: 'Gain',
+					default: '',
+					useVariables: true,
+					regex: Regex.SOMETHING,
+					isVisible: (options) => {
+						return options.useVar
+					},
+					tooltip: 'Varible must return an integer between 0 and 10',
+				},
+				{
+					id: 'useVar',
+					type: 'checkbox',
+					label: 'Use Variable',
+					default: false,
 				},
 				{
 					id: 'scope',
@@ -2221,7 +2272,14 @@ module.exports = function (self) {
 				if (self.axios === undefined) {
 					return undefined
 				}
-				let gain = parseInt(await self.parseVariablesInString(options.gain))
+				let gain = parseInt(options.gain)
+				if (options.useVar) {
+					let gain = parseInt(await self.parseVariablesInString(options.gainVar))
+					if (isNaN(gain) || gain < 0 || gain > 10) {
+						self.log('warn', `stop_display_gain has been passed an out of range variable: ${gain}`)
+						return undefined
+					}
+				}
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [gain] })
 				try {
@@ -2287,6 +2345,21 @@ module.exports = function (self) {
 					max: 25,
 					range: true,
 					step: 1,
+					isVisible: (options) => {
+						return !options.useVar
+					},
+				},
+				{
+					id: 'hmagVar',
+					type: 'textinput',
+					label: 'Hmag',
+					default: '',
+					useVariables: true,
+					regex: Regex.SOMETHING,
+					isVisible: (options) => {
+						return options.useVar
+					},
+					tooltip: 'Varible must return an integer between 1 and 25',
 				},
 				{
 					id: 'bestView',
@@ -2298,6 +2371,12 @@ module.exports = function (self) {
 					allowCustom: true,
 					regex: Regex.SOMETHING,
 					tooltip: 'Options Best View: 0 for Disable, 1 for Enable.',
+				},
+				{
+					id: 'useVar',
+					type: 'checkbox',
+					label: 'Use Variable',
+					default: false,
 				},
 				{
 					id: 'scope',
@@ -2318,6 +2397,9 @@ module.exports = function (self) {
 				let hmag = parseInt(options.hmag)
 				let bestView = parseInt(await self.parseVariablesInString(options.bestView))
 				let scope = await self.parseVariablesInString(options.scope)
+				if (options.useVar) {
+					hmag = parseInt(await self.parseVariablesInString(options.hmagVar))
+				}
 				if (isNaN(hmag) || hmag < 1 || hmag > 25) {
 					self.log('warn', `Hmag out of range: ${hmag}`)
 					return undefined
@@ -2710,6 +2792,28 @@ module.exports = function (self) {
 					step: 1,
 					range: true,
 					tooltip: 'Options (DOLBY): 1 through 8. Valid Options (DOLBY ED2): 1 through 7',
+					isVisible: (options) => {
+						return !options.useVar
+					},
+				},
+				{
+					id: 'modeVar',
+					type: 'textinput',
+					label: 'Input',
+					default: '',
+					useVariables: true,
+					regex: Regex.SOMETHING,
+					isVisible: (options) => {
+						return options.useVar
+					},
+					tooltip:
+						'Varible must return an integer. Valid Options (DOLBY): 1 through 8. Valid Options (DOLBY ED2): 1 through 7',
+				},
+				{
+					id: 'useVar',
+					type: 'checkbox',
+					label: 'Use Variable',
+					default: false,
 				},
 				{
 					id: 'scope',
@@ -2728,6 +2832,13 @@ module.exports = function (self) {
 					return undefined
 				}
 				let mode = parseInt(options.mode)
+				if (options.useVar) {
+					mode = parseInt(await self.parseVariablesInString(options.modeVar))
+					if (isNaN(mode) || mode < 1 || mode > 8) {
+						self.log('warn', `dolby_aes_pair has been passed an out of range variable: ${mode}`)
+						return undefined
+					}
+				}
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
@@ -2839,6 +2950,27 @@ module.exports = function (self) {
 					step: 1,
 					range: true,
 					tooltip: 'Microseconds',
+					isVisible: (options) => {
+						return !options.useVar
+					},
+				},
+				{
+					id: 'modeVar',
+					type: 'textinput',
+					label: 'Offset (μs)',
+					default: '',
+					useVariables: true,
+					regex: Regex.SOMETHING,
+					isVisible: (options) => {
+						return options.useVar
+					},
+					tooltip: 'Varible must return an integer between -1 and 50000',
+				},
+				{
+					id: 'useVar',
+					type: 'checkbox',
+					label: 'Use Variable',
+					default: false,
 				},
 				{
 					id: 'scope',
@@ -2857,6 +2989,13 @@ module.exports = function (self) {
 					return undefined
 				}
 				let mode = parseInt(await self.parseVariablesInString(options.mode))
+				if (options.useVar) {
+					mode = parseInt(await self.parseVariablesInString(options.modeVar))
+					if (isNaN(mode) || mode < -1 || mode > 50000) {
+						self.log('warn', `tr_offset_2110 has been passed an out of range variable: ${mode}`)
+						return undefined
+					}
+				}
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
@@ -3123,6 +3262,27 @@ module.exports = function (self) {
 					max: 10,
 					range: true,
 					step: 1,
+					isVisible: (options) => {
+						return !options.useVar
+					},
+				},
+				{
+					id: 'gainVar',
+					type: 'textinput',
+					label: 'Gain',
+					default: '',
+					useVariables: true,
+					regex: Regex.SOMETHING,
+					isVisible: (options) => {
+						return options.useVar
+					},
+					tooltip: 'Varible must return an integer between 1 and 10.',
+				},
+				{
+					id: 'useVar',
+					type: 'checkbox',
+					label: 'Use Variable',
+					default: false,
 				},
 				{
 					id: 'scope',
@@ -3141,6 +3301,13 @@ module.exports = function (self) {
 					return undefined
 				}
 				let mode = parseInt(options.gain)
+				if (options.useVar) {
+					mode = parseInt(await self.parseVariablesInString(options.gainVar))
+					if (isNaN(mode) || mode < 1 || mode > 10) {
+						self.log('warn', `lightning_vertical_gain has been passed an out of range variable: ${mode}`)
+						return undefined
+					}
+				}
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
@@ -3210,6 +3377,27 @@ module.exports = function (self) {
 					max: 10,
 					range: true,
 					step: 1,
+					isVisible: (options) => {
+						return !options.useVar
+					},
+				},
+				{
+					id: 'gainVar',
+					type: 'textinput',
+					label: 'Gain',
+					default: '',
+					useVariables: true,
+					regex: Regex.SOMETHING,
+					isVisible: (options) => {
+						return options.useVar
+					},
+					tooltip: 'Varible must return an integer between 1 and 10.',
+				},
+				{
+					id: 'useVar',
+					type: 'checkbox',
+					label: 'Use Variable',
+					default: false,
 				},
 				{
 					id: 'scope',
@@ -3228,6 +3416,13 @@ module.exports = function (self) {
 					return undefined
 				}
 				let mode = parseInt(options.gain)
+				if (options.useVar) {
+					mode = parseInt(await self.parseVariablesInString(options.gainVar))
+					if (isNaN(mode) || mode < 1 || mode > 10) {
+						self.log('warn', `lightning_horizontal_gain has been passed an out of range variable: ${mode}`)
+						return undefined
+					}
+				}
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
@@ -3629,6 +3824,27 @@ module.exports = function (self) {
 					max: 6,
 					range: true,
 					step: 1,
+					isVisible: (options) => {
+						return !options.useVar
+					},
+				},
+				{
+					id: 'modeVar',
+					type: 'textinput',
+					label: 'Input',
+					default: '',
+					useVariables: true,
+					regex: Regex.SOMETHING,
+					isVisible: (options) => {
+						return options.useVar
+					},
+					tooltip: 'Varible must return an integer between 1 and 6.',
+				},
+				{
+					id: 'useVar',
+					type: 'checkbox',
+					label: 'Use Variable',
+					default: false,
 				},
 			],
 			callback: async ({ options }) => {
@@ -3636,6 +3852,13 @@ module.exports = function (self) {
 					return undefined
 				}
 				let mode = parseInt(options.mode)
+				if (options.useVar) {
+					mode = parseInt(await self.parseVariablesInString(options.gainVar))
+					if (isNaN(mode) || mode < 1 || mode > 6) {
+						self.log('warn', `nmos_persistent_receivers has been passed an out of range variable: ${mode}`)
+						return undefined
+					}
+				}
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/nmos_persistent_receivers`, msg)
@@ -4031,6 +4254,27 @@ module.exports = function (self) {
 					max: 899,
 					range: true,
 					step: 1,
+					isVisible: (options) => {
+						return !options.useVar
+					},
+				},
+				{
+					id: 'gainVar',
+					type: 'textinput',
+					label: 'Page',
+					default: '',
+					useVariables: true,
+					regex: Regex.SOMETHING,
+					isVisible: (options) => {
+						return options.useVar
+					},
+					tooltip: 'Varible must return an integer between 100 and 899.',
+				},
+				{
+					id: 'useVar',
+					type: 'checkbox',
+					label: 'Use Variable',
+					default: false,
 				},
 				{
 					id: 'scope',
@@ -4049,6 +4293,13 @@ module.exports = function (self) {
 					return undefined
 				}
 				let mode = parseInt(options.mode)
+				if (options.useVar) {
+					mode = parseInt(await self.parseVariablesInString(options.gainVar))
+					if (isNaN(mode) || mode < 100 || mode > 899) {
+						self.log('warn', `closed_captions_wst_page has been passed an out of range variable: ${mode}`)
+						return undefined
+					}
+				}
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
@@ -4646,6 +4897,27 @@ module.exports = function (self) {
 					max: 127,
 					range: true,
 					step: 1,
+					isVisible: (options) => {
+						return !options.useVar
+					},
+				},
+				{
+					id: 'modeVar',
+					type: 'textinput',
+					label: 'Domain',
+					default: '',
+					useVariables: true,
+					regex: Regex.SOMETHING,
+					isVisible: (options) => {
+						return options.useVar
+					},
+					tooltip: 'Varible must return an integer between 0 and 127.',
+				},
+				{
+					id: 'useVar',
+					type: 'checkbox',
+					label: 'Use Variable',
+					default: false,
 				},
 			],
 			callback: async ({ options }) => {
@@ -4653,6 +4925,13 @@ module.exports = function (self) {
 					return undefined
 				}
 				let mode = parseInt(options.mode)
+				if (options.useVar) {
+					mode = parseInt(await self.parseVariablesInString(options.gainVar))
+					if (isNaN(mode) || mode < 0 || mode > 127) {
+						self.log('warn', `ptp_domain_2059_profile has been passed an out of range variable: ${mode}`)
+						return undefined
+					}
+				}
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/ptp_domain_2059_profile`, msg)
@@ -4705,6 +4984,27 @@ module.exports = function (self) {
 					max: 127,
 					range: true,
 					step: 1,
+					isVisible: (options) => {
+						return !options.useVar
+					},
+				},
+				{
+					id: 'gainVar',
+					type: 'textinput',
+					label: 'Gain',
+					default: '',
+					useVariables: true,
+					regex: Regex.SOMETHING,
+					isVisible: (options) => {
+						return options.useVar
+					},
+					tooltip: 'Varible must return an integer between 0 and 127.',
+				},
+				{
+					id: 'useVar',
+					type: 'checkbox',
+					label: 'Use Variable',
+					default: false,
 				},
 			],
 			callback: async ({ options }) => {
@@ -4712,6 +5012,13 @@ module.exports = function (self) {
 					return undefined
 				}
 				let mode = parseInt(options.mode)
+				if (options.useVar) {
+					mode = parseInt(await self.parseVariablesInString(options.gainVar))
+					if (isNaN(mode) || mode < 0 || mode > 127) {
+						self.log('warn', `ptp_domain_aes67_profile has been passed an out of range variable: ${mode}`)
+						return undefined
+					}
+				}
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/ptp_domain_aes67_profile`, msg)
@@ -4734,6 +5041,27 @@ module.exports = function (self) {
 					max: 127,
 					range: true,
 					step: 1,
+					isVisible: (options) => {
+						return !options.useVar
+					},
+				},
+				{
+					id: 'modeVar',
+					type: 'textinput',
+					label: 'Domain',
+					default: '',
+					useVariables: true,
+					regex: Regex.SOMETHING,
+					isVisible: (options) => {
+						return options.useVar
+					},
+					tooltip: 'Varible must return an integer between 0 and 127.',
+				},
+				{
+					id: 'useVar',
+					type: 'checkbox',
+					label: 'Use Variable',
+					default: false,
 				},
 			],
 			callback: async ({ options }) => {
@@ -4741,6 +5069,13 @@ module.exports = function (self) {
 					return undefined
 				}
 				let mode = parseInt(options.mode)
+				if (options.useVar) {
+					mode = parseInt(await self.parseVariablesInString(options.gainVar))
+					if (isNaN(mode) || mode < 0 || mode > 127) {
+						self.log('warn', `ptp_domain_general_profile has been passed an out of range variable: ${mode}`)
+						return undefined
+					}
+				}
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/ptp_domain_general_profile`, msg)
@@ -4835,6 +5170,27 @@ module.exports = function (self) {
 					max: 50,
 					range: true,
 					step: 1,
+					isVisible: (options) => {
+						return !options.useVar
+					},
+				},
+				{
+					id: 'modeVar',
+					type: 'textinput',
+					label: 'Intensity',
+					default: '',
+					useVariables: true,
+					regex: Regex.SOMETHING,
+					isVisible: (options) => {
+						return options.useVar
+					},
+					tooltip: 'Varible must return an integer between -50 and 50.',
+				},
+				{
+					id: 'useVar',
+					type: 'checkbox',
+					label: 'Use Variable',
+					default: false,
 				},
 			],
 			callback: async ({ options }) => {
@@ -4842,6 +5198,13 @@ module.exports = function (self) {
 					return undefined
 				}
 				let mode = parseInt(options.mode)
+				if (options.useVar) {
+					mode = parseInt(await self.parseVariablesInString(options.gainVar))
+					if (isNaN(mode) || mode < -50 || mode > 50) {
+						self.log('warn', `tile_grat_intensity has been passed an out of range variable: ${mode}`)
+						return undefined
+					}
+				}
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/tile_grat_intensity`, msg)
@@ -4864,6 +5227,27 @@ module.exports = function (self) {
 					max: 50,
 					range: true,
 					step: 1,
+					isVisible: (options) => {
+						return !options.useVar
+					},
+				},
+				{
+					id: 'modeVar',
+					type: 'textinput',
+					label: 'Intensity',
+					default: '',
+					useVariables: true,
+					regex: Regex.SOMETHING,
+					isVisible: (options) => {
+						return options.useVar
+					},
+					tooltip: 'Varible must return an integer between -50 and 50.',
+				},
+				{
+					id: 'useVar',
+					type: 'checkbox',
+					label: 'Use Variable',
+					default: false,
 				},
 			],
 			callback: async ({ options }) => {
@@ -4871,6 +5255,13 @@ module.exports = function (self) {
 					return undefined
 				}
 				let mode = parseInt(options.mode)
+				if (options.useVar) {
+					mode = parseInt(await self.parseVariablesInString(options.gainVar))
+					if (isNaN(mode) || mode < -50 || mode > 50) {
+						self.log('warn', `trace_intensity has been passed an out of range variable: ${mode}`)
+						return undefined
+					}
+				}
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/trace_intensity`, msg)
@@ -5074,6 +5465,27 @@ module.exports = function (self) {
 					max: 10000,
 					range: true,
 					step: 1,
+					isVisible: (options) => {
+						return !options.useVar
+					},
+				},
+				{
+					id: 'modeVar',
+					type: 'textinput',
+					label: 'Nits',
+					default: '',
+					useVariables: true,
+					regex: Regex.SOMETHING,
+					isVisible: (options) => {
+						return options.useVar
+					},
+					tooltip: 'Varible must return an integer between 0 and 10000.',
+				},
+				{
+					id: 'useVar',
+					type: 'checkbox',
+					label: 'Use Variable',
+					default: false,
 				},
 			],
 			callback: async ({ options }) => {
@@ -5081,6 +5493,13 @@ module.exports = function (self) {
 					return undefined
 				}
 				let mode = parseInt(options.mode)
+				if (options.useVar) {
+					mode = parseInt(await self.parseVariablesInString(options.gainVar))
+					if (isNaN(mode) || mode < 0 || mode > 10000) {
+						self.log('warn', `hdr_total_area_threshold has been passed an out of range variable: ${mode}`)
+						return undefined
+					}
+				}
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/hdr_total_area_threshold`, msg)
@@ -5103,6 +5522,27 @@ module.exports = function (self) {
 					max: 100,
 					range: true,
 					step: 1,
+					isVisible: (options) => {
+						return !options.useVar
+					},
+				},
+				{
+					id: 'modeVar',
+					type: 'textinput',
+					label: '%',
+					default: '',
+					useVariables: true,
+					regex: Regex.SOMETHING,
+					isVisible: (options) => {
+						return options.useVar
+					},
+					tooltip: 'Varible must return an integer between 0 and 100.',
+				},
+				{
+					id: 'useVar',
+					type: 'checkbox',
+					label: 'Use Variable',
+					default: false,
 				},
 			],
 			callback: async ({ options }) => {
@@ -5110,6 +5550,13 @@ module.exports = function (self) {
 					return undefined
 				}
 				let mode = parseInt(options.mode)
+				if (options.useVar) {
+					mode = parseInt(await self.parseVariablesInString(options.gainVar))
+					if (isNaN(mode) || mode < 0 || mode > 100) {
+						self.log('warn', `hdr_brightest_area_threshold has been passed an out of range variable: ${mode}`)
+						return undefined
+					}
+				}
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/hdr_brightest_area_threshold`, msg)
@@ -5132,6 +5579,27 @@ module.exports = function (self) {
 					max: 100,
 					range: true,
 					step: 1,
+					isVisible: (options) => {
+						return !options.useVar
+					},
+				},
+				{
+					id: 'modeVar',
+					type: 'textinput',
+					label: '%',
+					default: '',
+					useVariables: true,
+					regex: Regex.SOMETHING,
+					isVisible: (options) => {
+						return options.useVar
+					},
+					tooltip: 'Varible must return an integer between 0 and 100.',
+				},
+				{
+					id: 'useVar',
+					type: 'checkbox',
+					label: 'Use Variable',
+					default: false,
 				},
 			],
 			callback: async ({ options }) => {
@@ -5139,6 +5607,13 @@ module.exports = function (self) {
 					return undefined
 				}
 				let mode = parseInt(options.mode)
+				if (options.useVar) {
+					mode = parseInt(await self.parseVariablesInString(options.gainVar))
+					if (isNaN(mode) || mode < 0 || mode > 100) {
+						self.log('warn', `hdr_area_threshold has been passed an out of range variable: ${mode}`)
+						return undefined
+					}
+				}
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/hdr_area_threshold`, msg)
@@ -5161,6 +5636,27 @@ module.exports = function (self) {
 					max: 100,
 					range: true,
 					step: 1,
+					isVisible: (options) => {
+						return !options.useVar
+					},
+				},
+				{
+					id: 'modeVar',
+					type: 'textinput',
+					label: '%',
+					default: '',
+					useVariables: true,
+					regex: Regex.SOMETHING,
+					isVisible: (options) => {
+						return options.useVar
+					},
+					tooltip: 'Varible must return an integer between 0 and 100.',
+				},
+				{
+					id: 'useVar',
+					type: 'checkbox',
+					label: 'Use Variable',
+					default: false,
 				},
 			],
 			callback: async ({ options }) => {
@@ -5168,6 +5664,13 @@ module.exports = function (self) {
 					return undefined
 				}
 				let mode = parseInt(options.mode)
+				if (options.useVar) {
+					mode = parseInt(await self.parseVariablesInString(options.gainVar))
+					if (isNaN(mode) || mode < 0 || mode > 100) {
+						self.log('warn', `hdr_darkest_area_threshold has been passed an out of range variable: ${mode}`)
+						return undefined
+					}
+				}
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/hdr_darkest_area_threshold`, msg)
@@ -5375,7 +5878,28 @@ module.exports = function (self) {
 					max: 2500,
 					range: true,
 					step: 1,
-					tooltip: ' Threshold value ranges from 1 to 2500',
+					tooltip: 'Threshold value ranges from 1 to 2500',
+					isVisible: (options) => {
+						return !options.useVar
+					},
+				},
+				{
+					id: 'modeVar',
+					type: 'textinput',
+					label: 'Threshold',
+					default: '',
+					useVariables: true,
+					regex: Regex.SOMETHING,
+					isVisible: (options) => {
+						return options.useVar
+					},
+					tooltip: 'Varible must return an integer between 1 and 2500.',
+				},
+				{
+					id: 'useVar',
+					type: 'checkbox',
+					label: 'Use Variable',
+					default: false,
 				},
 			],
 			callback: async ({ options }) => {
@@ -5383,6 +5907,13 @@ module.exports = function (self) {
 					return undefined
 				}
 				let mode = parseInt(options.mode)
+				if (options.useVar) {
+					mode = parseInt(await self.parseVariablesInString(options.gainVar))
+					if (isNaN(mode) || mode < 1 || mode > 2500) {
+						self.log('warn', `tile_av_advanced_threshold has been passed an out of range variable: ${mode}`)
+						return undefined
+					}
+				}
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/tile_av_advanced_threshold`, msg)
@@ -5406,6 +5937,27 @@ module.exports = function (self) {
 					range: true,
 					step: 1,
 					tooltip: ' Threshold value ranges from 1 to 2500',
+					isVisible: (options) => {
+						return !options.useVar
+					},
+				},
+				{
+					id: 'modeVar',
+					type: 'textinput',
+					label: 'Threshold',
+					default: '',
+					useVariables: true,
+					regex: Regex.SOMETHING,
+					isVisible: (options) => {
+						return options.useVar
+					},
+					tooltip: 'Varible must return an integer between 1 and 2500.',
+				},
+				{
+					id: 'useVar',
+					type: 'checkbox',
+					label: 'Use Variable',
+					default: false,
 				},
 			],
 			callback: async ({ options }) => {
@@ -5413,6 +5965,13 @@ module.exports = function (self) {
 					return undefined
 				}
 				let mode = parseInt(options.mode)
+				if (options.useVar) {
+					mode = parseInt(await self.parseVariablesInString(options.gainVar))
+					if (isNaN(mode) || mode < 1 || mode > 2500) {
+						self.log('warn', `tile_av_delayed_threshold has been passed an out of range variable: ${mode}`)
+						return undefined
+					}
+				}
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/tile_av_delayed_threshold`, msg)
@@ -6049,6 +6608,27 @@ module.exports = function (self) {
 					max: 10,
 					range: true,
 					step: 1,
+					isVisible: (options) => {
+						return !options.useVar
+					},
+				},
+				{
+					id: 'modeVar',
+					type: 'textinput',
+					label: 'Gain',
+					default: '',
+					useVariables: true,
+					regex: Regex.SOMETHING,
+					isVisible: (options) => {
+						return options.useVar
+					},
+					tooltip: 'Varible must return an integer between 1 and 10.',
+				},
+				{
+					id: 'useVar',
+					type: 'checkbox',
+					label: 'Use Variable',
+					default: false,
 				},
 				{
 					id: 'scope',
@@ -6067,6 +6647,13 @@ module.exports = function (self) {
 					return undefined
 				}
 				let mode = parseInt(await self.parseVariablesInString(options.mode))
+				if (options.useVar) {
+					mode = parseInt(await self.parseVariablesInString(options.gainVar))
+					if (isNaN(mode) || mode < 1 || mode > 10) {
+						self.log('warn', `waveform_gain has been passed an out of range variable: ${mode}`)
+						return undefined
+					}
+				}
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
@@ -6132,6 +6719,21 @@ module.exports = function (self) {
 					max: 25,
 					range: true,
 					step: 1,
+					isVisible: (options) => {
+						return !options.useVar
+					},
+				},
+				{
+					id: 'hmagVar',
+					type: 'textinput',
+					label: 'Hmag',
+					default: '',
+					useVariables: true,
+					regex: Regex.SOMETHING,
+					isVisible: (options) => {
+						return options.useVar
+					},
+					tooltip: 'Varible must return an integer between 1 and 25.',
 				},
 				{
 					id: 'bestView',
@@ -6143,6 +6745,12 @@ module.exports = function (self) {
 					allowCustom: true,
 					regex: Regex.SOMETHING,
 					tooltip: 'Options Best View: 0 for Disable, 1 for Enable.',
+				},
+				{
+					id: 'useVar',
+					type: 'checkbox',
+					label: 'Use Variable',
+					default: false,
 				},
 				{
 					id: 'scope',
@@ -6161,6 +6769,9 @@ module.exports = function (self) {
 					return undefined
 				}
 				let hmag = parseInt(options.hmag)
+				if (options.useVar) {
+					hmag = parseInt(await self.parseVariablesInString(options.hmagVar))
+				}
 				let bestView = parseInt(await self.parseVariablesInString(options.bestView))
 				let scope = await self.parseVariablesInString(options.scope)
 				if (isNaN(hmag) || hmag < 1 || hmag > 25) {
