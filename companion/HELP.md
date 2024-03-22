@@ -2,15 +2,15 @@
 
 Control the [Telestream Prism](https://www.telestream.net/video/prism.htm) Waveform monitor. Tested against a MPX 2-25 with Firmware 4.1.
 
-Connection is made on TCP:9000.
+Connection is made via HTTP on TCP:9000.
 
 ## Actions
 
-Most actions accept variables. The tool-tip will indicate valid inputs.
+All actions accept variables. The tool-tip indicates valid inputs (numeric range or text strings).
 
-Many actions require a scope to be defined, such as the application tile to perform the command. An incorrect scope selection (such as performing a lightning application command on a tile running eye pattern) will not effect an action.
+Many actions require a scope to be defined, such as the application tile to perform the command. An incorrect scope selection (such as performing a lightning application command on a tile running eye pattern) will return an error from the unit.
 
-Some actions apply to specific hardware models, or for licesnced software modules.
+Some actions require specific hardware models, or licensed software modules.
 
 ## Variables
 
