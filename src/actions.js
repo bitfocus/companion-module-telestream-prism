@@ -1,8 +1,6 @@
 const { Regex } = require('@companion-module/base')
 const {
-	tiles,
-	ip,
-	config,
+	optionScope,
 	activeInputChoices,
 	audioSessionControlChoices,
 	loudnessSessionControlChoices,
@@ -945,17 +943,7 @@ module.exports = function (self) {
 					tooltip:
 						'Options: AUDIO_AUX_DISPLAY_MODE_NONE : No Aux Display, AUDIO_AUX_DISPLAY_MODE_LISSAJOUS : Phase Display, AUDIO_AUX_DISPLAY_MODE_SURROUND : Surround Display, AUDIO_AUX_DISPLAY_MODE_LOUD : Loudness Display',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -987,17 +975,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: AUDIO_DISPLAY_LOUDNESS_METER_OFF to Disable, AUDIO_DISPLAY_LOUDNESS_METER_ON to Enable',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -1029,17 +1007,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: AUDIO_SESSION_DISPLAY_OFF to Disable, AUDIO_SESSION_DISPLAY_ON to Enable',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -1072,17 +1040,7 @@ module.exports = function (self) {
 					tooltip:
 						'Options: AUDIO_DISPLAY_SURROUND_DOMINANCE_OFF to Disable, AUDIO_DISPLAY_SURROUND_DOMINANCE_ON to Enable.',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -1115,17 +1073,7 @@ module.exports = function (self) {
 					tooltip:
 						'Options: AUDIO_DISPLAY_SURROUND_IMMERSIVE_DOMINANCE_OFF to Disable, AUDIO_DISPLAY_SURROUND_IMMERSIVE_DOMINANCE_ON to Enable.',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -1158,17 +1106,7 @@ module.exports = function (self) {
 					tooltip:
 						'Options: AUDIO_DISPLAY_SURROUND_BED_SELECT_MAIN to display only main bed, AUDIO_DISPLAY_SURROUND_BED_SELECT_UPPER to display only upper bed, AUDIO_DISPLAY_SURROUND_BED_SELECT_BOTH to display both.',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -1201,17 +1139,7 @@ module.exports = function (self) {
 					tooltip:
 						'Options: AUDIO_DISPLAY_SURROUND_PSI_BED_SELECT_MAIN to display only main bed PSI, AUDIO_DISPLAY_SURROUND_PSI_BED_SELECT_UPPER to display only upper bed PSI.',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -1303,17 +1231,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Valid values are 10 or 25 for MPI-25 and MPX-25 systems.',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'IP1',
-					choices: ip,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires a scope of IP1 or IP2',
-				},
+				optionScope.ip,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -1348,17 +1266,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: BD_IFC_IP_VIDEO_PHY_FEC_MODE_BYPASS, BD_IFC_IP_VIDEO_PHY_FEC_MODE_ENABLE.',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'IP1',
-					choices: ip,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires a scope of IP1 or IP2',
-				},
+				optionScope.ip,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -1390,17 +1298,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: CAMAPP_DISPLAY_TYPE_WAVEFORM and CAMAPP_DISPLAY_TYPE_STOP',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -1432,17 +1330,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: CAMAPP_GAIN_X1, CAMAPP_GAIN_X2, CAMAPP_GAIN_X5 and CAMAPP_GAIN_X10.',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -1474,17 +1362,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: CAMAPP_SWEEP_1_LINE and CAMAPP_SWEEP_1_FIELD.',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -1516,17 +1394,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: CAMAPP_FILTER_FLAT and CAMAPP_FILTER_LOW_PASS.',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -1558,17 +1426,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: CAMAPP_THUMBNAIL_ON, CAMAPP_THUMBNAIL_OFF.',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -1601,17 +1459,7 @@ module.exports = function (self) {
 					tooltip:
 						'Options for Waveform display type: CAMAPP_GRAT_UNITS_PERCENT, CAMAPP_GRAT_UNITS_NITS and CAMAPP_GRAT_UNITS_STOP. Options for Stop display type: CAMAPP_GRAT_UNITS_LOG_NITS and CAMAPP_GRAT_UNITS_LOG_STOP.',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -1704,17 +1552,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: 0 for normal diamond, 1 for split diamond.',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -1750,17 +1588,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: DIAMOND_LUT_OFF, DIAMOND_LUT_ON',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -1807,12 +1635,7 @@ module.exports = function (self) {
 					},
 					tooltip: 'Varible must return an integer between 0 and 31',
 				},
-				{
-					id: 'useVar',
-					type: 'checkbox',
-					label: 'Use Variable',
-					default: false,
-				},
+				optionScope.useVar,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -1883,17 +1706,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: '0 for 1 line sweep, 1 for 2 line sweep, 2 for 1 field sweep, 3 for 2 field sweep',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -1929,17 +1742,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: 1, 2 and 5.',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -1986,17 +1789,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options Best View: 0 for Disable, 1 for Enable.',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -2037,17 +1830,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: 0 for eye display off, 1 for eye display on.',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -2083,17 +1866,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: 0 for 3 Eye, 1 for word (10 Eye/20 Eye), 2 for 1 field, 3 for 2 field',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -2159,17 +1932,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: 0 for 3 Eye, 1 for word (10 Eye/20 Eye), 2 for 1 field, 3 for 2 field',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -2205,17 +1968,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: FSTOP_COLOR_TRACE_OFF or FSTOP_COLOR_TRACE_ON',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -2261,23 +2014,8 @@ module.exports = function (self) {
 					},
 					tooltip: 'Varible must return an integer between 0 and 10',
 				},
-				{
-					id: 'useVar',
-					type: 'checkbox',
-					label: 'Use Variable',
-					default: false,
-				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.useVar,
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -2316,17 +2054,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: FSTOP_BEST_ENABLE_OFF to Disable, FSTOP_BEST_ENABLE_ON to Enable.',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -2383,23 +2111,8 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options Best View: 0 for Disable, 1 for Enable.',
 				},
-				{
-					id: 'useVar',
-					type: 'checkbox',
-					label: 'Use Variable',
-					default: false,
-				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.useVar,
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -2443,17 +2156,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: FSTOP_ACTIVE_AREA_OFF, FSTOP_ACTIVE_AREA_ON.',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -2485,17 +2188,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: 0 for scene light reference, 1 for display light reference.',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -2531,17 +2224,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: FSTOP_LPF_ENABLE_OFF to Disable, FSTOP_LPF_ENABLE_ON to Enable',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -2635,17 +2318,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: IOSLAVE_SOURCE_CONFIG_VID_LINKS_SINGLE, IOSLAVE_SOURCE_CONFIG_VID_LINKS_QUAD',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'config0',
-					choices: config,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Config/Input Scope: config0 to config5.',
-				},
+				optionScope.config,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -2677,17 +2350,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: IOSLAVE_SOURCE_CONFIG_COLORIMETRY_709, IOSLAVE_SOURCE_CONFIG_COLORIMETRY_BT2020',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'config0',
-					choices: config,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Config/Input Scope: config0 to config5.',
-				},
+				optionScope.config,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -2720,17 +2383,7 @@ module.exports = function (self) {
 					tooltip:
 						'Options: IOSLAVE_SOURCE_CONFIG_EOTF_SDR_NARROW, IOSLAVE_SOURCE_CONFIG_EOTF_SDR_FULL, IOSLAVE_SOURCE_CONFIG_EOTF_PQ_NARROW, IOSLAVE_SOURCE_CONFIG_EOTF_PQ_FULL, IOSLAVE_SOURCE_CONFIG_EOTF_HLG, IOSLAVE_SOURCE_CONFIG_EOTF_SLOG2, IOSLAVE_SOURCE_CONFIG_EOTF_SLOG3, IOSLAVE_SOURCE_CONFIG_EOTF_SLOG3_LIVE_HDR, IOSLAVE_SOURCE_CONFIG_EOTF_LOGC',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'config0',
-					choices: config,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Config/Input Scope: config0 to config5.',
-				},
+				optionScope.config,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -2762,17 +2415,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: AUDIO_INPUT_TYPE_PCM, AUDIO_INPUT_TYPE_DOLBY',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'config0',
-					choices: config,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Config/Input Scope: config0 to config5.',
-				},
+				optionScope.config,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -2820,23 +2463,8 @@ module.exports = function (self) {
 					tooltip:
 						'Varible must return an integer. Valid Options (DOLBY): 1 through 8. Valid Options (DOLBY ED2): 1 through 7',
 				},
-				{
-					id: 'useVar',
-					type: 'checkbox',
-					label: 'Use Variable',
-					default: false,
-				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'config0',
-					choices: config,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Config/Input Scope: config0 to config5.',
-				},
+				optionScope.useVar,
+				optionScope.config,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -2876,17 +2504,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: AUDIO_PCM_PROGRAM_OFF, AUDIO_PCM_PROGRAM_ON',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'config0',
-					choices: config,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Config/Input Scope: config0 to config5.',
-				},
+optionScope.config,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -2920,17 +2538,7 @@ module.exports = function (self) {
 					tooltip:
 						'Options: IOSLAVE_SOURCE_CONFIG_2110_XMIT_MODE_N, IOSLAVE_SOURCE_CONFIG_2110_XMIT_MODE_NL, IOSLAVE_SOURCE_CONFIG_2110_XMIT_MODE_W',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'config0',
-					choices: config,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Config/Input Scope: config0 to config5.',
-				},
+				optionScope.config,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -2977,23 +2585,8 @@ module.exports = function (self) {
 					},
 					tooltip: 'Varible must return an integer between -1 and 50000',
 				},
-				{
-					id: 'useVar',
-					type: 'checkbox',
-					label: 'Use Variable',
-					default: false,
-				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'config0',
-					choices: config,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Config/Input Scope: config0 to config5.',
-				},
+				optionScope.useVar,
+				optionScope.config,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -3032,17 +2625,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: IOSLAVE_SOURCE_CONFIG_REMOTE_MODE_OFF, IOSLAVE_SOURCE_CONFIG_REMOTE_MODE_NMOS',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'config0',
-					choices: config,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Config/Input Scope: config0 to config5.',
-				},
+				optionScope.config,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -3229,17 +2812,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: 0 for 1 line, 1 for 2 line, 2 for 1 field, 3 for 2 field',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Tile Scope: tile1 to tile8',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -3289,23 +2862,8 @@ module.exports = function (self) {
 					},
 					tooltip: 'Varible must return an integer between 1 and 10.',
 				},
-				{
-					id: 'useVar',
-					type: 'checkbox',
-					label: 'Use Variable',
-					default: false,
-				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Tile Scope: tile1 to tile8',
-				},
+				optionScope.useVar,
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -3344,17 +2902,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options are LIGHTNING_V_VAR_ENABLE_ON or LIGHTNING_V_VAR_ENABLE_OFF',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Tile Scope: tile1 to tile8',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -3404,23 +2952,8 @@ module.exports = function (self) {
 					},
 					tooltip: 'Varible must return an integer between 1 and 10.',
 				},
-				{
-					id: 'useVar',
-					type: 'checkbox',
-					label: 'Use Variable',
-					default: false,
-				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Tile Scope: tile1 to tile8',
-				},
+				optionScope.useVar,
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -3459,17 +2992,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options are LIGHTNING_H_VAR_ENABLE_ON or LIGHTNING_H_VAR_ENABLE_OFF',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Tile Scope: tile1 to tile8',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -3505,17 +3028,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: LIGHTNING_LUT_OFF to Disable, LIGHTNING_LUT_ON to Enable',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -3548,17 +3061,7 @@ module.exports = function (self) {
 					tooltip:
 						'Options: MEASURE_ASSIGN_WAVEFORM, MEASURE_ASSIGN_VECTOR, MEASURE_ASSIGN_LIGHTNING, MEASURE_ASSIGN_PICTURE, MEASURE_ASSIGN_DIAMOND, MEASURE_ASSIGN_AUDIO, MEASURE_ASSIGN_ERROR_STATUS, MEASURE_ASSIGN_AUDIO, MEASURE_ASSIGN_DATALIST, MEASURE_ASSIGN_EYE, MEASURE_ASSIGN_JITTER, MEASURE_ASSIGN_DOLBY_STATUS, MEASURE_ASSIGN_ANC_DATA, MEASURE_ASSIGN_GEN_STATUS, MEASURE_ASSIGN_IP_STATUS, MEASURE_ASSIGN_IP_SESSION, MEASURE_ASSIGN_VIDEO_SESSION, MEASURE_ASSIGN_IP_GRAPHS, MEASURE_ASSIGN_IP_PIT, MEASURE_ASSIGN_TIMING_DISPLAY, MEASURE_ASSIGN_STREAM_TIMING, MEASURE_ASSIGN_PTP_GRAPHS, MEASURE_ASSIGN_FSTOP, MEASURE_ASSIGN_IP_GEN_STATUS, MEASURE_ASSIGN_SYNC_DISPLAY, MEASURE_ASSIGN_CIE, MEASURE_ASSIGN_CHANNEL_STATUS, MEASURE_ASSIGN_AV_DELAY, MEASURE_ASSIGN_CAMAPP, MEASURE_ASSIGN_EXTREF',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -3590,17 +3093,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: MEASURE_LINE_SELECT_ENABLE_OFF, MEASURE_LINE_SELECT_ENABLE_ON',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -3632,17 +3125,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: MEASURE_BAR_TARGET_75, MEASURE_BAR_TARGET_100. Default: MEASURE_BAR_TARGET_100',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -3675,17 +3158,7 @@ module.exports = function (self) {
 					tooltip:
 						'Options: MEASURE_TILE_MODE_QUARTER_TILE, MEASURE_TILE_MODE_TWO_TILE_VERTICAL. Default: MEASURE_TILE_MODE_QUARTER_TILE',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -3851,12 +3324,7 @@ module.exports = function (self) {
 					},
 					tooltip: 'Varible must return an integer between 1 and 6.',
 				},
-				{
-					id: 'useVar',
-					type: 'checkbox',
-					label: 'Use Variable',
-					default: false,
-				},
+				optionScope.useVar,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -3925,17 +3393,7 @@ module.exports = function (self) {
 					tooltip:
 						'Options: PICTURE_CC_DISPLAY_OFF, PICTURE_CC_DISPLAY_CEA608, PICTURE_CC_DISPLAY_CEA708 PICTURE_CC_DISPLAY_WST, PICTURE_CC_DISPLAY_ARIB',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -3968,17 +3426,7 @@ module.exports = function (self) {
 					tooltip:
 						'Options: PICTURE_SAFE_GRAT_OFF, PICTURE_SAFE_GRAT_AUTO, PICTURE_SAFE_GRAT_4X3, PICTURE_SAFE_GRAT_14X9, PICTURE_SAFE_GRAT_16X9, PICTURE_SAFE_GRAT_CUSTOM_1, PICTURE_SAFE_GRAT_CUSTOM_2',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -4011,17 +3459,7 @@ module.exports = function (self) {
 					tooltip:
 						'Options: PICTURE_SAFE_GRAT_OFF, PICTURE_SAFE_GRAT_AUTO, PICTURE_SAFE_GRAT_4X3, PICTURE_SAFE_GRAT_14X9, PICTURE_SAFE_GRAT_16X9, PICTURE_SAFE_GRAT_CUSTOM_1, PICTURE_SAFE_GRAT_CUSTOM_2',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -4054,17 +3492,7 @@ module.exports = function (self) {
 					tooltip:
 						'Options: PICTURE_SAFE_GRAT_OFF, PICTURE_SAFE_GRAT_AUTO, PICTURE_SAFE_GRAT_4X3, PICTURE_SAFE_GRAT_14X9, PICTURE_SAFE_GRAT_16X9, PICTURE_SAFE_GRAT_CUSTOM_1, PICTURE_SAFE_GRAT_CUSTOM_2',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -4097,17 +3525,7 @@ module.exports = function (self) {
 					tooltip:
 						'Options: PICTURE_SAFE_GRAT_OFF, PICTURE_SAFE_GRAT_AUTO, PICTURE_SAFE_GRAT_4X3, PICTURE_SAFE_GRAT_14X9, PICTURE_SAFE_GRAT_16X9, PICTURE_SAFE_GRAT_CUSTOM_1, PICTURE_SAFE_GRAT_CUSTOM_2',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -4139,17 +3557,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: PICTURE_GRAT_CENTER_OFF, PICTURE_GRAT_CENTER_ON',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -4182,17 +3590,7 @@ module.exports = function (self) {
 					tooltip:
 						'Options: PICTURE_CC_SERVICE_608_CC1, PICTURE_CC_SERVICE_608_CC2, PICTURE_CC_SERVICE_608_CC3, PICTURE_CC_SERVICE_608_CC4',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -4225,17 +3623,7 @@ module.exports = function (self) {
 					tooltip:
 						'Options: PICTURE_CC_SERVICE_708_SVC1, PICTURE_CC_SERVICE_708_SVC2, PICTURE_CC_SERVICE_708_SVC3, PICTURE_CC_SERVICE_708_SVC4, PICTURE_CC_SERVICE_708_SVC5, PICTURE_CC_SERVICE_708_SVC6',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -4281,23 +3669,8 @@ module.exports = function (self) {
 					},
 					tooltip: 'Varible must return an integer between 100 and 899.',
 				},
-				{
-					id: 'useVar',
-					type: 'checkbox',
-					label: 'Use Variable',
-					default: false,
-				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.useVar,
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -4336,17 +3709,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: PICTURE_CC_ARIB_B37_TYPE_HD, PICTURE_CC_ARIB_B37_TYPE_SD, PICTURE_CC_ARIB_B37_TYPE_MOBILE',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -4378,17 +3741,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: PICTURE_AFD_GRAT_ON, PICTURE_AFD_GRAT_OFF',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -4420,17 +3773,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: PICTURE_AFD_GRAT_OVERLAY_ON, PICTURE_AFD_GRAT_OVERLAY_OFF',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -4462,17 +3805,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: PICTURE_LUT_OFF, PICTURE_LUT_ON. Default: PICTURE_LUT_OFF',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -4505,17 +3838,7 @@ module.exports = function (self) {
 					tooltip:
 						'Options: PICTURE_TIMING_INFO_SWITCH_OFF, PICTURE_TIMING_INFO_SWITCH_ON. Default: PICTURE_TIMING_INFO_SWITCH_OFF',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -4579,17 +3902,7 @@ module.exports = function (self) {
 					tooltip:
 						'Options: PICTURE_FALSE_COLOR_OFF to disable false color, PICTURE_FALSE_COLOR_ON to enable false color.',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -4622,17 +3935,7 @@ module.exports = function (self) {
 					tooltip:
 						'Options: FALSE_COLOR_MODE_LUMA for Luminance false color, FALSE_COLOR_MODE_AREA for Percent Area false color, FALSE_COLOR_MODE_GAMUT for Gamut false color.',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -4664,17 +3967,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: PICTURE_FALSE_COLOR_BAND_METER_[HIDE, SHOW]',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -4706,17 +3999,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: PICTURE_CC_INFO_SWITCH_ON, PICTURE_CC_INFO_SWITCH_OFF',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -4748,17 +4031,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: PICTURE_SOURCE_ID_INFO_ENABLE_OFF, PICTURE_SOURCE_ID_INFO_ENABLE_ON',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -4924,12 +4197,7 @@ module.exports = function (self) {
 					},
 					tooltip: 'Varible must return an integer between 0 and 127.',
 				},
-				{
-					id: 'useVar',
-					type: 'checkbox',
-					label: 'Use Variable',
-					default: false,
-				},
+				optionScope.useVar,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -5011,12 +4279,7 @@ module.exports = function (self) {
 					},
 					tooltip: 'Varible must return an integer between 0 and 127.',
 				},
-				{
-					id: 'useVar',
-					type: 'checkbox',
-					label: 'Use Variable',
-					default: false,
-				},
+				optionScope.useVar,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -5068,12 +4331,7 @@ module.exports = function (self) {
 					},
 					tooltip: 'Varible must return an integer between 0 and 127.',
 				},
-				{
-					id: 'useVar',
-					type: 'checkbox',
-					label: 'Use Variable',
-					default: false,
-				},
+				optionScope.useVar,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -5141,17 +4399,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: STATUS_TIMING_MEASURE_MODE_VIDEO_TO_REF, STATUS_TIMING_MEASURE_MODE_ANALOG_TO_PTP',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -5197,12 +4445,7 @@ module.exports = function (self) {
 					},
 					tooltip: 'Varible must return an integer between -50 and 50.',
 				},
-				{
-					id: 'useVar',
-					type: 'checkbox',
-					label: 'Use Variable',
-					default: false,
-				},
+				optionScope.useVar,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -5254,12 +4497,7 @@ module.exports = function (self) {
 					},
 					tooltip: 'Varible must return an integer between -50 and 50.',
 				},
-				{
-					id: 'useVar',
-					type: 'checkbox',
-					label: 'Use Variable',
-					default: false,
-				},
+				optionScope.useVar,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -5492,12 +4730,7 @@ module.exports = function (self) {
 					},
 					tooltip: 'Varible must return an integer between 0 and 10000.',
 				},
-				{
-					id: 'useVar',
-					type: 'checkbox',
-					label: 'Use Variable',
-					default: false,
-				},
+				optionScope.useVar,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -5549,12 +4782,7 @@ module.exports = function (self) {
 					},
 					tooltip: 'Varible must return an integer between 0 and 100.',
 				},
-				{
-					id: 'useVar',
-					type: 'checkbox',
-					label: 'Use Variable',
-					default: false,
-				},
+				optionScope.useVar,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -5606,12 +4834,7 @@ module.exports = function (self) {
 					},
 					tooltip: 'Varible must return an integer between 0 and 100.',
 				},
-				{
-					id: 'useVar',
-					type: 'checkbox',
-					label: 'Use Variable',
-					default: false,
-				},
+				optionScope.useVar,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -5663,12 +4886,7 @@ module.exports = function (self) {
 					},
 					tooltip: 'Varible must return an integer between 0 and 100.',
 				},
-				{
-					id: 'useVar',
-					type: 'checkbox',
-					label: 'Use Variable',
-					default: false,
-				},
+				optionScope.useVar,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -5906,12 +5124,7 @@ module.exports = function (self) {
 					},
 					tooltip: 'Varible must return an integer between 1 and 2500.',
 				},
-				{
-					id: 'useVar',
-					type: 'checkbox',
-					label: 'Use Variable',
-					default: false,
-				},
+				optionScope.useVar,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -5964,12 +5177,7 @@ module.exports = function (self) {
 					},
 					tooltip: 'Varible must return an integer between 1 and 2500.',
 				},
-				{
-					id: 'useVar',
-					type: 'checkbox',
-					label: 'Use Variable',
-					default: false,
-				},
+				optionScope.useVar,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -6066,17 +5274,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: VECTOR_GAIN_X1, VECTOR_GAIN_X2, VECTOR_GAIN_X5, VECTOR_GAIN_X10',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -6108,17 +5306,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options are VECTOR_VAR_ENABLE_ON or VECTOR_VAR_ENABLE_OFF',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Tile Scope: tile1 to tile8',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -6150,17 +5338,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: VECTOR_LUT_OFF, VECTOR_LUT_ON',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Tile Scope: tile1 to tile8',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -6192,17 +5370,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: 0 to Hide Axis, 1 to Show Axis',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Tile Scope: tile1 to tile8',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -6234,17 +5402,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: 0 to Hide Compass Rose, 1 to Show Compass Rose',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Tile Scope: tile1 to tile8',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -6366,17 +5524,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: WAVEFORM_MODE_YPBPR, WAVEFORM_MODE_RGB, WAVEFORM_MODE_YRGB',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Tile Scope: tile1 to tile8',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -6408,17 +5556,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options are WAVEFORM_FILTER_FLAT : Flat Filter and WAVEFORM_FILTER_LOW_PASS : Low Pass Filter',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Tile Scope: tile1 to tile8',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -6450,17 +5588,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options are WAVEFORM_FILTER_FLAT : Flat Filter and WAVEFORM_FILTER_LOW_PASS : Low Pass Filter',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Tile Scope: tile1 to tile8',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -6492,17 +5620,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options are WAVEFORM_FILTER_FLAT : Flat Filter and WAVEFORM_FILTER_LOW_PASS : Low Pass Filter',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Tile Scope: tile1 to tile8',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -6534,17 +5652,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options are WAVEFORM_FILTER_FLAT : Flat Filter and WAVEFORM_FILTER_LOW_PASS : Low Pass Filter',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Tile Scope: tile1 to tile8',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -6576,17 +5684,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options are WAVEFORM_COLOR_TRACE_OFF or WAVEFORM_COLOR_TRACE_ON',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Tile Scope: tile1 to tile8',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -6632,23 +5730,8 @@ module.exports = function (self) {
 					},
 					tooltip: 'Varible must return an integer between 1 and 10.',
 				},
-				{
-					id: 'useVar',
-					type: 'checkbox',
-					label: 'Use Variable',
-					default: false,
-				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Tile Scope: tile1 to tile8',
-				},
+				optionScope.useVar,
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -6687,17 +5770,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: WAVEFORM_VAR_ENABLE_OFF to Disable, WAVEFORM_VAR_ENABLE_ON',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Tile Scope: tile1 to tile8',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -6754,23 +5827,8 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options Best View: 0 for Disable, 1 for Enable.',
 				},
-				{
-					id: 'useVar',
-					type: 'checkbox',
-					label: 'Use Variable',
-					default: false,
-				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Requires Tile Scope of tile1 through tile8.',
-				},
+				optionScope.useVar,
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -6814,17 +5872,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Valid options are WAVEFORM_VERTICAL_CURSOR_ENABLE_ON or WAVEFORM_VERTICAL_CURSOR_ENABLE_OFF',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Tile Scope: tile1 to tile8',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -6856,17 +5904,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Valid options are WAVEFORM_HORIZONTAL_CURSOR_ENABLE_ON or WAVEFORM_HORIZONTAL_CURSOR_ENABLE_OFF',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Tile Scope: tile1 to tile8',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -6899,17 +5937,7 @@ module.exports = function (self) {
 					tooltip:
 						'Options: WAVEFORM_GRAT_SDI_UNITS_MV, WAVEFORM_GRAT_SDI_UNITS_PERCENT, WAVEFORM_GRAT_SDI_UNITS_NITS, WAVEFORM_GRAT_SDI_UNITS_REFLECTANCE, WAVEFORM_GRAT_SDI_UNITS_STOP, WAVEFORM_GRAT_SDI_UNITS_CV',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Tile Scope: tile1 to tile8',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -6941,17 +5969,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options: WAVEFORM_LUT_OFF, WAVEFORM_LUT_ON. Default: WAVEFORM_LUT_OFF',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Tile Scope: tile1 to tile8',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
@@ -6983,17 +6001,7 @@ module.exports = function (self) {
 					regex: Regex.SOMETHING,
 					tooltip: 'Options : WAVEFORM_ACTIVE_AREA_OFF, WAVEFORM_ACTIVE_AREA_ON',
 				},
-				{
-					id: 'scope',
-					type: 'dropdown',
-					label: 'Scope',
-					default: 'tile1',
-					choices: tiles,
-					useVariables: true,
-					allowCustom: true,
-					regex: Regex.SOMETHING,
-					tooltip: 'Tile Scope: tile1 to tile8',
-				},
+				optionScope.tiles,
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {

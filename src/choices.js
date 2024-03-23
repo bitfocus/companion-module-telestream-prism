@@ -1,3 +1,5 @@
+const { Regex } = require('@companion-module/base')
+
 export const tiles = [
 	{ id: 'tile1', label: 'Tile 1' },
 	{ id: 'tile2', label: 'Tile 2' },
@@ -23,6 +25,47 @@ export const config = [
 	{ id: 'config5', label: 'Config 5' },
 ]
 
+export const optionScope = {
+	tiles: {
+		id: 'scope',
+		type: 'dropdown',
+		label: 'Scope',
+		default: 'tile1',
+		choices: tiles,
+		useVariables: true,
+		allowCustom: true,
+		regex: Regex.SOMETHING,
+		tooltip: 'Requires Tile Scope of tile1 through tile8',
+	},
+	ip: {
+		id: 'scope',
+		type: 'dropdown',
+		label: 'Scope',
+		default: 'IP1',
+		choices: ip,
+		useVariables: true,
+		allowCustom: true,
+		regex: Regex.SOMETHING,
+		tooltip: 'Requires a scope of IP1 or IP2',
+	},
+	config: {
+		id: 'scope',
+		type: 'dropdown',
+		label: 'Scope',
+		default: 'config0',
+		choices: config,
+		useVariables: true,
+		allowCustom: true,
+		regex: Regex.SOMETHING,
+		tooltip: 'Config/Input Scope: config0 to config5',
+	},
+	useVar: {
+		id: 'useVar',
+		type: 'checkbox',
+		label: 'Use Variable',
+		default: false,
+	},
+}
 export const activeInputChoices = [
 	{ id: 'set', label: 'Set' },
 	{ id: 'get', label: 'Get' },
