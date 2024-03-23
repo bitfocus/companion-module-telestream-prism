@@ -178,10 +178,7 @@ module.exports = function (self) {
 					tooltip: 'Varible must return an integer between 0 and 5',
 				},
 				{
-					id: 'useVar',
-					type: 'checkbox',
-					label: 'Use Variable',
-					default: false,
+					...optionScope.useVar,
 					isVisible: (options) => {
 						return options.action == 'set'
 					},
