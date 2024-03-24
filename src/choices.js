@@ -132,10 +132,10 @@ export const audioBallisticChoices = [
 ]
 
 export const loudnessMeteringModeChoices = [
-	{ id: 'LOUDNESS_METER_MODE_1770_2_DI', label: '1770 2 DI' },
-	{ id: 'LOUDNESS_METER_MODE_1770_1_DI', label: '1770 1 DI' },
-	{ id: 'LOUDNESS_METER_MODE_1770_2', label: '1770 2' },
-	{ id: 'LOUDNESS_METER_MODE_LEQA_DI', label: 'LEQA DI' },
+	{ id: 'LOUDNESS_METER_MODE_1770_2_DI', label: 'BS.1770-1 with DI' },
+	{ id: 'LOUDNESS_METER_MODE_1770_1_DI', label: 'BS-1770-2 with DI' },
+	{ id: 'LOUDNESS_METER_MODE_1770_2', label: 'BS.1770-2' },
+	{ id: 'LOUDNESS_METER_MODE_LEQA_DI', label: 'Leq(A) with DI' },
 ]
 
 export const loudnessFullScaleUnitsChoices = [
@@ -160,13 +160,13 @@ export const loudnessBallisticChoices = [
 ]
 
 export const loudnessShortGatingWindowChoices = [
-	{ id: 'LOUDNESS_SHORT_GATING_WINDOW_EBU_R128_3S', label: 'EBU R128 3s' },
-	{ id: 'LOUDNESS_SHORT_GATING_WINDOW_LEGACY_10S', label: 'Legacy 10s' },
+	{ id: 'LOUDNESS_SHORT_GATING_WINDOW_EBU_R128_3S', label: 'EBU R128 (3s)' },
+	{ id: 'LOUDNESS_SHORT_GATING_WINDOW_LEGACY_10S', label: 'Legacy (10s)' },
 ]
 
 export const loudnessLoadPresetChoices = [
-	{ id: 'LOUDNESS_PRESET_EBU_R128_2014', label: 'EBU R128 2014' },
-	{ id: 'LOUDNESS_PRESET_ATSC_A85_2013', label: 'ATSC A85 2013' },
+	{ id: 'LOUDNESS_PRESET_EBU_R128_2014', label: 'EBU R128:2014' },
+	{ id: 'LOUDNESS_PRESET_ATSC_A85_2013', label: 'ATSC A/85:2013' },
 ]
 
 export const audioProgramSurroundOrderChoices = [
@@ -204,7 +204,7 @@ export const analogAudioOutputModeChoices = [
 
 export const audioAuxDisplayModeChoices = [
 	{ id: 'AUDIO_AUX_DISPLAY_MODE_NONE', label: 'None' },
-	{ id: 'AUDIO_AUX_DISPLAY_MODE_LISSAJOUS', label: 'Phase' },
+	{ id: 'AUDIO_AUX_DISPLAY_MODE_LISSAJOUS', label: 'Lissajous' },
 	{ id: 'AUDIO_AUX_DISPLAY_MODE_SURROUND', label: 'Surround' },
 	{ id: 'AUDIO_AUX_DISPLAY_MODE_LOUD', label: 'Loudness' },
 ]
@@ -289,9 +289,9 @@ export const camappThumbnailChoices = [
 
 export const camappGraticuleUnitsChoices = [
 	{ id: 'CAMAPP_GRAT_UNITS_PERCENT', label: 'Waveform - Percent' },
-	{ id: 'CAMAPP_GRAT_UNITS_NITS', label: 'Waveform - NITS' },
+	{ id: 'CAMAPP_GRAT_UNITS_NITS', label: 'Waveform - Nits' },
 	{ id: 'CAMAPP_GRAT_UNITS_STOP', label: 'Waveform - Stop' },
-	{ id: 'CAMAPP_GRAT_UNITS_LOG_NITS', label: 'Stop - Log NITS' },
+	{ id: 'CAMAPP_GRAT_UNITS_LOG_NITS', label: 'Stop - Log Nits' },
 	{ id: 'CAMAPP_GRAT_UNITS_LOG_STOP', label: 'Stop - Log Stop' },
 ]
 
@@ -432,13 +432,13 @@ export const sourceConfigColorimetryChoices = [
 export const sourceConfigEotfChoices = [
 	{ id: 'IOSLAVE_SOURCE_CONFIG_EOTF_SDR_NARROW', label: 'SDR Narrow' },
 	{ id: 'IOSLAVE_SOURCE_CONFIG_EOTF_SDR_FULL', label: 'SDR Full' },
-	{ id: 'IOSLAVE_SOURCE_CONFIG_EOTF_PQ_NARROW', label: 'PQ Narrow OR Red' },
+	{ id: 'IOSLAVE_SOURCE_CONFIG_EOTF_PQ_NARROW', label: 'PQ Narrow' },
 	{ id: 'IOSLAVE_SOURCE_CONFIG_EOTF_PQ_FULL', label: 'PQ Full' },
 	{ id: 'IOSLAVE_SOURCE_CONFIG_EOTF_HLG', label: 'HLG' },
 	{ id: 'IOSLAVE_SOURCE_CONFIG_EOTF_SLOG2', label: 'SLog 2' },
 	{ id: 'IOSLAVE_SOURCE_CONFIG_EOTF_SLOG3', label: 'Slog 3' },
-	{ id: 'IOSLAVE_SOURCE_CONFIG_EOTF_SLOG3_LIVE_HDR', label: 'Slog 3 Live HDR' },
-	{ id: 'IOSLAVE_SOURCE_CONFIG_EOTF_LOGC', label: 'LOGC' },
+	{ id: 'IOSLAVE_SOURCE_CONFIG_EOTF_SLOG3_LIVE_HDR', label: 'Slog 3 (Live HDR)' },
+	{ id: 'IOSLAVE_SOURCE_CONFIG_EOTF_LOGC', label: 'Log C' },
 ]
 
 export const audioInputTypeChoices = [
@@ -523,7 +523,7 @@ export const measureAssignChoices = [
 	{ id: 'MEASURE_ASSIGN_ERROR_STATUS', label: 'Error Status' },
 	{ id: 'MEASURE_ASSIGN_EXTREF', label: 'External Reference' },
 	{ id: 'MEASURE_ASSIGN_EYE', label: 'Eye' },
-	{ id: 'MEASURE_ASSIGN_FSTOP', label: 'F-Stop' },
+	{ id: 'MEASURE_ASSIGN_FSTOP', label: 'F Stop' },
 	{ id: 'MEASURE_ASSIGN_GEN_STATUS', label: 'Generator Status' },
 	{ id: 'MEASURE_ASSIGN_IP_GEN_STATUS', label: 'IP Generator Status' },
 	{ id: 'MEASURE_ASSIGN_IP_GRAPHS', label: 'IP Graphs' },

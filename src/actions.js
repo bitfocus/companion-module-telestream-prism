@@ -315,13 +315,17 @@ module.exports = function (self) {
 					label: 'Action',
 					default: 'AUDIO_SESSION_CONTROL_STOP',
 					choices: audioSessionControlChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Options: AUDIO_SESSION_CONTROL_STOP, AUDIO_SESSION_CONTROL_RUN, AUDIO_SESSION_CONTROL_RESET',
 				},
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
 					return undefined
 				}
-				let msg = JSON.stringify({ ints: [options.action] })
+				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.action)] })
 				try {
 					const response = await self.axios.post('/audio_session_control', msg)
 					self.logResponse(response)
@@ -340,13 +344,18 @@ module.exports = function (self) {
 					label: 'Action',
 					default: 'LOUDNESS_SESSION_CONTROL_STOP',
 					choices: loudnessSessionControlChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip:
+						'Options: LOUDNESS_SESSION_CONTROL_STOP, LOUDNESS_SESSION_CONTROL_RUN, LOUDNESS_SESSION_CONTROL_RESET',
 				},
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
 					return undefined
 				}
-				let msg = JSON.stringify({ ints: [options.action] })
+				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.action)] })
 				try {
 					const response = await self.axios.post('/loudness_session_control', msg)
 					self.logResponse(response)
@@ -365,13 +374,17 @@ module.exports = function (self) {
 					label: 'Action',
 					default: 'IOSLAVE_SESSION_CONTROL_STOP',
 					choices: videoSessionControlChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Options: IOSLAVE_SESSION_CONTROL_STOP, IOSLAVE_SESSION_CONTROL_RUN, IOSLAVE_SESSION_CONTROL_RESET',
 				},
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
 					return undefined
 				}
-				let msg = JSON.stringify({ ints: [options.action] })
+				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.action)] })
 				try {
 					const response = await self.axios.post('/video_session_control', msg)
 					self.logResponse(response)
@@ -390,13 +403,17 @@ module.exports = function (self) {
 					label: 'Action',
 					default: 'IOSLAVE_SESSION_CONTROL_STOP',
 					choices: ipSessionControlChoices,
+					useVariables: true,
+					allowCustom: true,
+					regex: Regex.SOMETHING,
+					tooltip: 'Options: IOSLAVE_SESSION_CONTROL_STOP, IOSLAVE_SESSION_CONTROL_RUN, IOSLAVE_SESSION_CONTROL_RESET',
 				},
 			],
 			callback: async ({ options }) => {
 				if (self.axios === undefined) {
 					return undefined
 				}
-				let msg = JSON.stringify({ ints: [options.action] })
+				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.action)] })
 				try {
 					const response = await self.axios.post('/ip_session_control', msg)
 					self.logResponse(response)

@@ -5,6 +5,11 @@ const UpdateFeedbacks = require('./feedbacks')
 const UpdateVariableDefinitions = require('./variables')
 const axios = require('axios')
 
+const port = 9000
+const apiPath = '/api'
+const timeOut = 5000
+const contentType = 'application/json'
+
 class Telestream_PRISM extends InstanceBase {
 	constructor(internal) {
 		super(internal)
@@ -104,9 +109,9 @@ class Telestream_PRISM extends InstanceBase {
 		}
 		if (this.config.host !== undefined) {
 			this.axios = axios.create({
-				baseURL: `http://${this.config.host}:9000/api`,
-				timeout: 1000,
-				headers: { 'Content-Type': 'application/json' },
+				baseURL: `http://${this.config.host}:${port}${apiPath}`,
+				timeout: timeOut,
+				headers: { 'Content-Type': contentType },
 			})
 		} else {
 			this.log('warn', `Host undefined`)
