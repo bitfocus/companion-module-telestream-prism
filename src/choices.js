@@ -25,7 +25,7 @@ export const config = [
 	{ id: 'config5', label: 'Config 5' },
 ]
 
-export const optionScope = {
+export const actionOptions = {
 	tiles: {
 		id: 'scope',
 		type: 'dropdown',
@@ -64,6 +64,36 @@ export const optionScope = {
 		type: 'checkbox',
 		label: 'Use Variable',
 		default: false,
+	},
+	modeVar: {
+		id: 'modeVar',
+		type: 'textinput',
+		default: '',
+		useVariables: true,
+		regex: Regex.SOMETHING,
+		isVisible: (options) => {
+			return options.useVar
+		},
+	},
+
+	modeDropdown: {
+		id: 'mode',
+		type: 'dropdown',
+		label: 'Mode',
+		useVariables: true,
+		allowCustom: true,
+		regex: Regex.SOMETHING,
+	},
+	intergerInput: {
+		id: 'mode',
+		type: 'number',
+		range: true,
+		min: 0,
+		step: 1,
+		default: 0,
+		isVisible: (options) => {
+			return !options.useVar
+		},
 	},
 }
 export const activeInputChoices = [
