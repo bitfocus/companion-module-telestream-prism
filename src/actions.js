@@ -1924,7 +1924,7 @@ module.exports = function (self) {
 				let mode = await self.parseVariablesInString(options.mode)
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
-					const response = await self.axios.post(`/eye_sweep`, msg)
+					const response = await self.axios.post(`/fp_test_mode`, msg)
 					self.logResponse(response)
 				} catch (error) {
 					self.logError(error)
