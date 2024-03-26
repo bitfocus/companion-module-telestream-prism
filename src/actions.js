@@ -2713,6 +2713,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'NMOS',
+					choices: nmosDiscoveryChoices,
 					default: 'NMOS_MANAGER_ENABLE_ENABLED',
 					tooltip: 'Options: NMOS_MANAGER_ENABLE_ENABLED, NMOS_MANAGER_ENABLE_DISABLED',
 				},
