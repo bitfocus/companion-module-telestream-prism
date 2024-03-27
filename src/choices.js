@@ -763,8 +763,8 @@ export const cieColorSpaceChoices = [
 ]
 
 export const cieTraceAppearanceChoices = [
-	{ id: 'TILE_CIE_COLOR_TRACE_OFF', label: 'Off' },
-	{ id: 'TILE_CIE_COLOR_TRACE_ON', label: 'On' },
+	{ id: 'TILE_CIE_COLOR_TRACE_OFF', label: 'Monochrome' },
+	{ id: 'TILE_CIE_COLOR_TRACE_ON', label: 'Color' },
 ]
 
 export const outOfGamutAlarmChoices = [
