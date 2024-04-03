@@ -2883,7 +2883,7 @@ module.exports = function (self) {
 					default: 'PICTURE_CC_DISPLAY_OFF',
 					choices: closedCaptionsDisplayChoices,
 					tooltip:
-						'Options: PICTURE_CC_DISPLAY_OFF, PICTURE_CC_DISPLAY_CEA608, PICTURE_CC_DISPLAY_CEA708 PICTURE_CC_DISPLAY_WST, PICTURE_CC_DISPLAY_ARIB',
+						'Options: PICTURE_CC_DISPLAY_OFF, PICTURE_CC_DISPLAY_AUTO, PICTURE_CC_DISPLAY_CEA608, PICTURE_CC_DISPLAY_CEA708 PICTURE_CC_DISPLAY_WST, PICTURE_CC_DISPLAY_ARIB',
 				},
 				actionOptions.tiles,
 			],
@@ -4936,7 +4936,7 @@ module.exports = function (self) {
 				let scope = await self.parseVariablesInString(options.scope)
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
-					const response = await self.axios.post(`/waveform_horizontal_cursor_enable/${scope}`, msg)
+					const response = await self.axios.post(`/waveform_grat_sdi_units/${scope}`, msg)
 					self.logResponse(response)
 				} catch (error) {
 					self.logError(error)

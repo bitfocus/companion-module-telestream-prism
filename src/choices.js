@@ -620,6 +620,7 @@ export const jitterHpfChoices = [
 
 export const closedCaptionsDisplayChoices = [
 	{ id: 'PICTURE_CC_DISPLAY_OFF', label: 'Off' },
+	{ id: 'PICTURE_CC_DISPLAY_AUTO', label: 'Auto' },
 	{ id: 'PICTURE_CC_DISPLAY_CEA608', label: 'CEA608' },
 	{ id: 'PICTURE_CC_DISPLAY_CEA708', label: 'CEA708' },
 	{ id: 'PICTURE_CC_DISPLAY_WST', label: 'WST' },
@@ -910,7 +911,7 @@ export const waveformGratSdiUnits = [
 	{ id: 'WAVEFORM_GRAT_SDI_UNITS_NITS', label: 'Nits' },
 	{ id: 'WAVEFORM_GRAT_SDI_UNITS_REFLECTANCE', label: 'Reflectance' },
 	{ id: 'WAVEFORM_GRAT_SDI_UNITS_STOP', label: 'Stop' },
-	{ id: 'WAVEFORM_GRAT_SDI_UNITS_CV', label: 'CV' },
+	{ id: 'WAVEFORM_GRAT_SDI_UNITS_CV', label: 'Code Value' },
 ]
 
 export const waveformLutChoices = [
