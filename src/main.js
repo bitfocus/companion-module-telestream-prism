@@ -10,10 +10,63 @@ const apiPath = '/api'
 const timeOut = 5000
 const contentType = 'application/json'
 
+// const pollInterval_fast = 200
+const pollInterval_reg = 2000
+// const pollInterval_slow = 20000
+
 class Telestream_PRISM extends InstanceBase {
 	constructor(internal) {
 		super(internal)
+		this.pollTimer_fast = {}
+		this.pollTimer_reg = {}
+		this.pollTimer_slow = {}
 	}
+
+	killTimers() {
+		if (this.pollTimer_fast) {
+			clearTimeout(this.pollTimer_fast)
+			delete this.pollTimer_fast
+		}
+		if (this.pollTimer_reg) {
+			clearTimeout(this.pollTimer_reg)
+			delete this.pollTimer_reg
+		}
+		if (this.pollTimer_slow) {
+			clearTimeout(this.pollTimer_slow)
+			delete this.pollTimer_slow
+		}
+	}
+
+	startTimers() {
+/* 		this.pollTimer_fast = setTimeout(() => {
+			this.pollStatus()
+		}, pollInterval_fast) */
+		this.pollTimer_reg = setTimeout(() => {
+			this.pollStatus_reg()
+		}, pollInterval_reg)
+/* 		this.pollTimer_slow = setTimeout(() => {
+			this.pollStatus_slow()
+		}, pollInterval_slow) */
+	}
+
+/* 	pollStatus_fast() {
+		this.pollTimer_fast = setTimeout(() => {
+			this.pollStatus()
+		}, pollInterval_fast)
+	} */
+
+	pollStatus_reg() {
+		this.getInput()
+		this.pollTimer_reg = setTimeout(() => {
+			this.pollStatus_reg()
+		}, pollInterval_reg)
+	}
+
+/* 	pollStatus_slow() {
+		this.pollTimer_slow = setTimeout(() => {
+			this.pollStatus_slow()
+		}, pollInterval_slow)
+	} */
 
 	logResponse(response) {
 		if (this.config.verbose) {
@@ -21,7 +74,7 @@ class Telestream_PRISM extends InstanceBase {
 		}
 		if (response.data !== undefined) {
 			this.updateStatus(InstanceStatus.Ok)
-			this.log('info', `Data Recieved: ${JSON.stringify(response.data)}`)
+			this.log('debug', `Data Recieved: ${JSON.stringify(response.data)}`)
 		} else {
 			this.updateStatus(InstanceStatus.UnknownWarning, 'No Data')
 			this.log('warn', `Response contains no data`)
@@ -113,6 +166,7 @@ class Telestream_PRISM extends InstanceBase {
 				timeout: timeOut,
 				headers: { 'Content-Type': contentType },
 			})
+			this.startTimers()
 		} else {
 			this.log('warn', `Host undefined`)
 			this.updateStatus(InstanceStatus.BadConfig)
@@ -132,6 +186,7 @@ class Telestream_PRISM extends InstanceBase {
 	// When module gets deleted
 	async destroy() {
 		this.log('debug', 'destroy')
+		this.killTimers()
 		if (this.axios) {
 			delete this.axios
 		}
@@ -142,6 +197,7 @@ class Telestream_PRISM extends InstanceBase {
 
 	async configUpdated(config) {
 		this.updateStatus(InstanceStatus.Connecting)
+		this.killTimers()
 		this.config = config
 		this.setupAxios()
 		this.initPrism()
