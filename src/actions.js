@@ -153,7 +153,7 @@ module.exports = function (self) {
 					choices: activeInputChoices,
 				},
 				{
-					...actionOptions.intergerInput,
+					...actionOptions.integerInput,
 					id: 'input',
 					label: 'Input',
 					max: 5,
@@ -1415,7 +1415,7 @@ module.exports = function (self) {
 			description: `Access LED brightness value`,
 			options: [
 				{
-					...actionOptions.intergerInput,
+					...actionOptions.integerInput,
 					id: 'brightness',
 					label: 'Brightness',
 					max: 31,
@@ -1736,7 +1736,7 @@ module.exports = function (self) {
 			description: `Set the stop display fixed gain`,
 			options: [
 				{
-					...actionOptions.intergerInput,
+					...actionOptions.integerInput,
 					id: 'gain',
 					label: 'Gain',
 
@@ -1804,7 +1804,7 @@ module.exports = function (self) {
 			description: `Stop Display Hmag & Best View`,
 			options: [
 				{
-					...actionOptions.intergerInput,
+					...actionOptions.integerInput,
 					id: 'hmag',
 					label: 'Hmag',
 
@@ -2100,7 +2100,7 @@ module.exports = function (self) {
 			description: `Select the AES channel pair for Dolby/Dolby-ED2 input`,
 			options: [
 				{
-					...actionOptions.intergerInput,
+					...actionOptions.integerInput,
 					label: 'Input',
 
 					default: 1,
@@ -2199,7 +2199,7 @@ module.exports = function (self) {
 			description: `Set S2110.21 expected TR offset, in microseconds`,
 			options: [
 				{
-					...actionOptions.intergerInput,
+					...actionOptions.integerInput,
 					label: 'Offset (μs)',
 
 					default: -1,
@@ -2426,7 +2426,7 @@ module.exports = function (self) {
 			description: `Lightning vertical fixed gain`,
 			options: [
 				{
-					...actionOptions.intergerInput,
+					...actionOptions.integerInput,
 					id: 'gain',
 					label: 'Gain',
 
@@ -2502,7 +2502,7 @@ module.exports = function (self) {
 			description: `Lightning horizontal fixed gain`,
 			options: [
 				{
-					...actionOptions.intergerInput,
+					...actionOptions.integerInput,
 					id: 'gain',
 					label: 'Gain',
 
@@ -2810,7 +2810,7 @@ module.exports = function (self) {
 			description: `Sets the target input for NMOS activations in persistent NMOS receiver mode (see nmos_persistent_receivers). In this mode, any NMOS receiver activations will configure the specified input. This will also convert the target input to an NMOS-enabled 2110 input. A receiver activation WILL NOT set the target input to be the active input`,
 			options: [
 				{
-					...actionOptions.intergerInput,
+					...actionOptions.integerInput,
 					label: 'Input',
 
 					default: 1,
@@ -3101,7 +3101,7 @@ module.exports = function (self) {
 			description: `The requested Teletext page to decode Subtitles on`,
 			options: [
 				{
-					...actionOptions.intergerInput,
+					...actionOptions.integerInput,
 					label: 'Page',
 
 					default: 100,
@@ -3529,7 +3529,7 @@ module.exports = function (self) {
 			description: `Set or get the PTP domain (0-127) for the ST2059 profile`,
 			options: [
 				{
-					...actionOptions.intergerInput,
+					...actionOptions.integerInput,
 					label: 'Domain',
 
 					max: 127,
@@ -3591,7 +3591,7 @@ module.exports = function (self) {
 			description: `Set or get the PTP domain (0-127) for the AES 67 profile`,
 			options: [
 				{
-					...actionOptions.intergerInput,
+					...actionOptions.integerInput,
 					label: 'Domain',
 
 					max: 127,
@@ -3630,7 +3630,7 @@ module.exports = function (self) {
 			description: `Set or get the PTP domain (0-127) for the generic profile`,
 			options: [
 				{
-					...actionOptions.intergerInput,
+					...actionOptions.integerInput,
 					label: 'Domain',
 
 					max: 127,
@@ -3718,7 +3718,7 @@ module.exports = function (self) {
 			description: `Set Graticule Brightness Level`,
 			options: [
 				{
-					...actionOptions.intergerInput,
+					...actionOptions.integerInput,
 					label: 'Intensity',
 
 					min: -50,
@@ -3757,7 +3757,7 @@ module.exports = function (self) {
 			description: `Set Trace Brightness Level`,
 			options: [
 				{
-					...actionOptions.intergerInput,
+					...actionOptions.integerInput,
 					label: 'Intensity',
 
 					min: -50,
@@ -3941,7 +3941,7 @@ module.exports = function (self) {
 			description: `HDR total area measurement cut off in Nits`,
 			options: [
 				{
-					...actionOptions.intergerInput,
+					...actionOptions.integerInput,
 					label: 'Nits',
 
 					default: 5000,
@@ -3980,7 +3980,7 @@ module.exports = function (self) {
 			description: `HDR brightest area measurement cut off in %. The measurement will use the brightest X% of the picture. Percentage range is 0 - 100. The set threshold is relative to the max Nits value of the frame`,
 			options: [
 				{
-					...actionOptions.intergerInput,
+					...actionOptions.integerInput,
 					label: '%',
 
 					default: 50,
@@ -4019,7 +4019,7 @@ module.exports = function (self) {
 			description: `HDR area measurement cut off in %. The measurement will use the brightest X% of the picture. Percentage range is 0 - 100. The set threshold is relative to the max Nits value of the frame`,
 			options: [
 				{
-					...actionOptions.intergerInput,
+					...actionOptions.integerInput,
 					label: '%',
 
 					default: 50,
@@ -4058,7 +4058,7 @@ module.exports = function (self) {
 			description: `HDR darkest area measurement cut off in %. The measurement will use the darkest X% of the picture. Percentage range is 0 - 100. The set threshold is relative to the max Nits value of the frame`,
 			options: [
 				{
-					...actionOptions.intergerInput,
+					...actionOptions.integerInput,
 					label: '%',
 
 					default: 50,
@@ -4250,7 +4250,7 @@ module.exports = function (self) {
 			description: `Audio Video Advanced Threshold for AV Graph`,
 			options: [
 				{
-					...actionOptions.intergerInput,
+					...actionOptions.integerInput,
 					label: 'Threshold',
 
 					default: 1,
@@ -4290,7 +4290,7 @@ module.exports = function (self) {
 			description: `Audio Video Delayed Threshold for AV Graph`,
 			options: [
 				{
-					...actionOptions.intergerInput,
+					...actionOptions.integerInput,
 					label: 'Threshold',
 
 					default: 1,
@@ -4742,7 +4742,7 @@ module.exports = function (self) {
 			description: `Set/Read Waveform Fixed Gain`,
 			options: [
 				{
-					...actionOptions.intergerInput,
+					...actionOptions.integerInput,
 					label: 'Gain',
 
 					default: 1,
@@ -4811,7 +4811,7 @@ module.exports = function (self) {
 			description: `Waveform Hmag & Best View`,
 			options: [
 				{
-					...actionOptions.intergerInput,
+					...actionOptions.integerInput,
 					id: 'hmag',
 					label: 'Hmag',
 					default: 1,

@@ -3,6 +3,7 @@ const UpgradeScripts = require('./upgrades')
 const UpdateActions = require('./actions')
 const UpdateFeedbacks = require('./feedbacks')
 const UpdateVariableDefinitions = require('./variables')
+const UpdatePresetsDefinitions = require('./presets')
 const axios = require('axios')
 
 const port = 9000
@@ -108,6 +109,7 @@ class Telestream_PRISM extends InstanceBase {
 				varList['activeInputNumber'] = this.prism.input
 				varList['activeInputName'] = response.data.name
 				this.setVariableValues(varList)
+				this.checkFeedbacks('activeInput')
 				return this.prism.input
 			} else {
 				this.log('warn', 'activeinput returned a NaN')
@@ -182,6 +184,7 @@ class Telestream_PRISM extends InstanceBase {
 		this.updateFeedbacks() // export feedbacks
 		this.updateVariableDefinitions() // export variable definitions
 		this.queryPrism()
+		this.updatePresetsDefinitions()
 	}
 	// When module gets deleted
 	async destroy() {
@@ -205,6 +208,7 @@ class Telestream_PRISM extends InstanceBase {
 		this.updateFeedbacks() // export feedbacks
 		this.updateVariableDefinitions() // export variable definitions
 		this.queryPrism()
+		this.updatePresetsDefinitions()
 	}
 
 	// Return config fields for web config
@@ -238,6 +242,10 @@ class Telestream_PRISM extends InstanceBase {
 
 	updateVariableDefinitions() {
 		UpdateVariableDefinitions(this)
+	}
+
+	updatePresetsDefinitions() {
+		UpdatePresetsDefinitions(this)
 	}
 }
 
