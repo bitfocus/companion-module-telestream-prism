@@ -23,7 +23,7 @@ module.exports = async function (self) {
 				return feedback.options.input == self.prism.input
 			},
 		},
-		tileInFoccus: {
+		tileInFocus: {
 			name: 'Tile In Focus',
 			type: 'boolean',
 			defaultStyle: {

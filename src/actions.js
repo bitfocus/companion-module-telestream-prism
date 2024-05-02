@@ -492,6 +492,21 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post('/tile_in_focus', JSON.stringify({ ints: [tile] }))
 					self.logResponse(response)
+					if (response.data === undefined || response.data.ints === undefined || !Array.isArray(response.data.ints)) {
+						self.log('warn', 'tile_in_focus response contains no data')
+						return undefined
+					}
+					if (response.data.ints.length == 1 && !isNaN(parseInt(response.data.ints[0]))) {
+						let varList = []
+						self.prism.tileInFocus = parseInt(response.data.ints[0])
+						varList['tileInFocus'] = self.prism.tileInFocus
+						self.setVariableValues(varList)
+						self.checkFeedbacks('tileInFocus')
+						return self.prism.input
+					} else {
+						self.log('warn', 'tile_in_focus returned a NaN or unexpected  length')
+						return undefined
+					}
 				} catch (error) {
 					self.logError(error)
 				}
@@ -933,7 +948,7 @@ module.exports = function (self) {
 			},
 		},
 		surroundDominanceIndicator: {
-			name: 'Surrond Dominance Indicator',
+			name: 'Surround Dominance Indicator',
 			description: `Enable/disable audio surround dominance indicator`,
 			options: [
 				{
@@ -961,7 +976,7 @@ module.exports = function (self) {
 			},
 		},
 		surroundImmersiveDominanceIndicator: {
-			name: 'Surrond Immersive Dominance Indicator',
+			name: 'Surround Immersive Dominance Indicator',
 			description: `Enable/disable audio surround immersive dominance indicator`,
 			options: [
 				{
@@ -989,7 +1004,7 @@ module.exports = function (self) {
 			},
 		},
 		surroundBedSelect: {
-			name: 'Surrond Bed Select',
+			name: 'Surround Bed Select',
 			description: `Select required surround sound bed`,
 			options: [
 				{
@@ -1017,7 +1032,7 @@ module.exports = function (self) {
 			},
 		},
 		surroundImmersivePsiBedSelect: {
-			name: 'Surrond Immersive PSU Bed Select',
+			name: 'Surround Immersive PSI Bed Select',
 			description: `Select required PSI Bed`,
 			options: [
 				{
@@ -1045,8 +1060,8 @@ module.exports = function (self) {
 			},
 		},
 		avdelayUserOffsetMode: {
-			name: 'A/V Delay User Offset Mode',
-			description: `Apply User Offset to Audio Video Measure`,
+			name: 'AV Delay User Offset Mode',
+			description: `Apply User Offset to Audio Video Measurement`,
 			options: [
 				{
 					...actionOptions.modeDropdown,
@@ -1232,7 +1247,7 @@ module.exports = function (self) {
 			},
 		},
 		camappFilter: {
-			name: 'Cam App Filer',
+			name: 'Cam App Filter',
 			description: `Select the filter to be applied to the video - Flat or Low Pass`,
 			options: [
 				{
@@ -1399,7 +1414,7 @@ module.exports = function (self) {
 			},
 		},
 		diamondLut: {
-			name: 'Diamond Lut',
+			name: 'Diamond LUT',
 			description: `Diamond 3D Lut On or Off`,
 			options: [
 				{
@@ -1727,7 +1742,7 @@ module.exports = function (self) {
 			},
 		},
 		stopColorTrace: {
-			name: 'Stop Colour Trace',
+			name: 'Stop Color Trace',
 			description: `Set the appearance of Stop trace color`,
 			options: [
 				{
@@ -2607,7 +2622,7 @@ module.exports = function (self) {
 			},
 		},
 		lightningLut: {
-			name: 'Lightning Lut',
+			name: 'Lightning LUT',
 			description: `Lightning - Conversion to Rec.709(LUT)`,
 			options: [
 				{
@@ -2883,7 +2898,7 @@ module.exports = function (self) {
 				}
 			},
 		},
-/* 		jitterHpf: {
+		/* 		jitterHpf: {
 			name: 'Jitter HPF',
 			description: `High-pass filter selection for jitter measurements`,
 			options: [
@@ -3143,7 +3158,7 @@ module.exports = function (self) {
 			},
 		},
 		closedCaptionsWstPage: {
-			name: 'Closed Captions WST PAge',
+			name: 'Closed Captions WST Page',
 			description: `The requested Teletext page to decode Subtitles on`,
 			options: [
 				{

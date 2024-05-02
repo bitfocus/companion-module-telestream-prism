@@ -123,7 +123,7 @@ class Telestream_PRISM extends InstanceBase {
 			const response = await this.axios.get('/tile_in_focus')
 			this.logResponse(response)
 			if (response.data === undefined || response.data.ints === undefined || !Array.isArray(response.data.ints)) {
-				this.log('warn', 'activeinput response contains no data')
+				this.log('warn', 'tile_in_focus response contains no data')
 				return undefined
 			}
 			if (response.data.ints.length == 1 && !isNaN(parseInt(response.data.ints[0]))) {

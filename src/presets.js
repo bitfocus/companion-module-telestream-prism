@@ -819,6 +819,28 @@ module.exports = async function (self) {
 				},
 			],
 		}
+		presets[`get_presets`] = {
+			type: 'button',
+			category: 'Preset',
+			name: `Get Presets`,
+			style: {
+				...button_defaults,
+				text: `Get Presets\\n`,
+				png64: icons.preset,
+			},
+			steps: [
+				{
+					down: [
+						{
+							actionId: 'getPresets',
+							options: {},
+						},
+					],
+					up: [],
+				},
+			],
+			feedbacks: [],
+		}
 		self.prism.presets.forEach((preset) => {
 			presets[`recall_preset_${preset.label}`] = {
 				type: 'button',
@@ -846,5 +868,42 @@ module.exports = async function (self) {
 			}
 		})
 	}
-	self.setPresetDefinitions(presets)
+	for (let i = 1; i <= 8; i++) {
+		presets[`tile_in_focus_${i}`] = {
+			type: 'button',
+			category: 'Tile In Focus',
+			name: `Tile ${i + 1}`,
+			style: {
+				...button_defaults,
+				text: `Tile ${i}\\n`,
+				png64: undefined,
+			},
+			steps: [
+				{
+					down: [
+						{
+							actionId: 'tileInFocus',
+							options: {
+								tile: i,
+							},
+						},
+					],
+					up: [],
+				},
+			],
+			feedbacks: [
+				{
+					feedbackId: 'tileInFocus',
+					options: {
+						tile: i,
+					},
+					style: {
+						color: colors.text_black,
+						bgcolor: colors.bg_green,
+					},
+				},
+			],
+		}
+		self.setPresetDefinitions(presets)
+	}
 }
