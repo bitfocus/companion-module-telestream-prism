@@ -55,11 +55,26 @@ const icons = {
 		'iVBORw0KGgoAAAANSUhEUgAAAIsAAAB/CAMAAADoxMHCAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAtUExURXVifW5gdLt618l+6K11xcJ84J9ws5FsoYNnj3xlhoppmKZzvLR3zphuqgAAALZjiHAAAAAPdFJOU///////////////////ANTcmKEAAAAJcEhZcwAACxEAAAsRAX9kX5EAAAJNSURBVHhe7drrcoIwEIZh5CC2td7/5TYJC0L9KNkTY2f2/VGdaOPjoOHQNo/3KSy4sODCggsLLiy4sOD+taVp3PjMiS9tl+p9OMxZh0zx0vDmvBIl5aDhzVi20NyVBs3iWUgxZ6xRWYw1Sks3jPSQQVqLpUZvSZobPazMwtJ1rYnGxpI0H/QURVYWi8XPzqLXWFq0y43O0o/PphGNRmdZLy00tBnjZW+RL35qy63PXTaPDZ/0fF5qy/Q5SdOU2znR4udkES1+bhbBcuNoSZr0MWLkamEuN2rLEg39jqFxtzCWG39LvUZnKaVJ6N5udcvNOZa65eYsS9d90Rz7nWfpeppkN4GleVbOryfLnYZy9zz82tFmEljofq4sdJNl/a77PPza0ddJZinvPt/mA7p0m36uvylnWqbPx8vUyzC2DPS03U60HK4xOst0UFf6PrBU7LN1lmknXUqf3T8sVUdWp1gqjzhFlvy9Gcf0q1vLpWys9LpbS/WOWmaZ21qW1hbGGYq3hXNgJ7CUDTS1etGWhnLL5U7eGa3AUh33RMDPcmdK/CySE0cfi+xqoodFeqHBwSKUOFgUF6aMLesVj52pRXkh09DS6iSGFoPL8EYW4RW6bSYW6YLyKwOLkcTAYibRW9Lhv1k6i2KRBWksthKuZX1QbS3hWm7kUO54duJZ5n9o0P89D8WdtLmmU2fe5ezqXN6gsLDgwoILCy4suLDgwoILCy4suLDgwoILCy4suLDgwoILCy4suLDgwoILCy4suLDgwoILC+59LI/HDwYsa2YMQw4iAAAAAElFTkSuQmCC',
 	sdi_generator:
 		'iVBORw0KGgoAAAANSUhEUgAAAIsAAAB/CAMAAADoxMHCAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAqUExURZhuqq11xZ9ws4Nnj8J84Ml+6Lt613xlhnVifZFsobR3zqZzvIppmAAAAIYjjvYAAAAOdFJOU/////////////////8ARcDcyAAAAAlwSFlzAAALEQAACxEBf2RfkQAAAuFJREFUeF7tmdu2qjAMRQVBgb35/989bZoi4NLdXBjjPGQ+9aJ22qah1tv6/xAumHDBhAsmXDASl1vX9XcuX4HAZRgzj+ts2l2KSuIym2aXJ5tkHhM3+tLsMrNHobvCRulyiY3aZRx77nHD4OJuY3JxtjG6jMPM/Q5YXTxt7C7Jxin5ebh4pWIfF59U7OXikfz8XJINv1SLp4s13fi62GwMLsv8nKbn3HGVMaQbrct+yHk7ZhFqG6XLKUx/uJlRJj+dy9s3v3NHRZX8VC6/3LZOU00qZ5lxkacbjQvvlZ7CZODajbr2iJOfwmWg+v0VsGU9Hlzb8UMdzShcaOjDmlDLxJUDonQjdynTwhWGVgNMTEKwweUu9A5OcF3HPyZz2y8V32hPN3KXZ65Racmlnoq5dJqrF63pRuay8CamaKHJWNcll+m7p85i9kZb2MhcarqlShq/T4OQV90x2+ydaFonm0uOWto/hw4Az+F3DC55TlIkUJKri/DJpQTUH8hcHvNMs10uHai93IXQUyF1ng4QG6dnKUbmkqFNUdJ/KnL6zW37W5EzTY8DuQuF6WktaIk+7KHEQHngT+QuZWloJ1dKKn49oE607WiVS/no3chF5TRVG60mKheO2S1MOS7xtEgODhoXyv0pzfZpoZaeBzssWkV2hNG4VJk9KHClB02Vy7sMyCvyA7jOZRy2I29md8araH6YKF3SAmw2d3CIUpgYXBKP7jZ3KGbbt/EBi8sHhCfuF+4uhmsYZxfT9ZSri/HaztHluM8VuLkY7l0qXi7Nn/MFHxdlQjnh4dJ0mG3A7mK/161YXfxMrC6Ky6cvWFy8/xzWu3ib6F38TbQuXv9eHWl22d30OKR7SLtLvdu+ykTiUmSuMxG57K+5L0HkcjHhggkXTLhgwgUTLphwwYQLJlww4YIJF0y4YMIFEy6YcMGECyZcMOGCCRdMuGDCBRMumHDBhAsmXDDhggkXxLr+A7LvQFK13ZEJAAAAAElFTkSuQmCC',
+	input:
+		'iVBORw0KGgoAAAANSUhEUgAAAJAAAACQCAMAAADQmBKKAAAAIGNIUk0AAIcQAACMEgAA/U0AAIE+AABZ6wABEg8AADzmAAAZzrrJIjIAAAEjaUNDUElDQyBQcm9maWxlAAAoz2NgYDJwdHFyZRJgYMjNKykKcndSiIiMUmA/z8DGwMwABonJxQWOAQE+IHZefl4qAypgZGD4dg1EMjBc1gWZxUAa4EouKCoB0n+A2CgltTgZaKQBkJ1dXlIAFGecA2SLJGWD2RtA7KKQIGcg+wiQzZcOYV8BsZMg7CcgdhHQE0D2F5D6dDCbiQNsDoQtA2KXpFaA7GVwzi+oLMpMzyhRMLS0tFRwTMlPSlUIriwuSc0tVvDMS84vKsgvSixJTQGqhbgPDAQhCkEhpgHUaKHJQGUAigcI63MgOHwZxc4gxBAgubSoDBYXTMaE+Qgz5kgwMPgvZWBg+YMQM+llYFigw8DAPxUhpmbIwCCgz8Cwbw4AwrNP/qv+zn8AAAAkUExURWFhYVhYWHV1dYODg4SEhIGBgWlpaX5+fnp6enBwcE9PTwAAAPwArU8AAAAMdFJOU///////////////ABLfzs4AAAOnSURBVHhe7ZrtlqIwEERRVkV9//ddDIWTDglVHZydOXv6/tHpQHKHdD4Ah+cvI4QYIcQIIUYIMUKIEUKMEGKEECOEGCHECCFGCDH+U6EhgT+OcbSW03n8k3E5n1DQyyGh6wUehtshpwNCEwQq3HFIB91CN7TdYMJhbjqFzmh3hysOddIl9DCJ3OKCo330CN3RIqWn8o5zSPbkdCS3X0jqrpUbTtJxC7l8Ooy8Qk4fv5FTqJE/04tG2RmniviEatPP+YHCmVNNyteE6+gTmvjiktksDNtORYmGSwgNvBmry+iA0jeuGdIjVK6mzewoO86zijiEHqh+ZWeXUc7lCCs4hIrNzyZ7copuc6z9ulBxgXZ9NvmPqIAuZC8Q8Sl7TZ+MdCFUvSCsmjazEeTIQmZOlAYyjl2Q99myECpeQGwfk9jyXKQKmZTeDJrHcL5vazJzNmIUVcjkKGIra9lYVGYukdpnqlA+xorLn12IogTRhDrOVCFUmzArgZ2eRkQX8oGgJlGPEEILxeJu2jWzI2IMUahZ9eb21VSIWAIhhiiU56cZY4h9YToNsQRCDFEoz4Z8lr4uodfGaHVGSSKfrdV/HZ+EvGfyUxBP32FUKU78SyFkcvpuxvdPCeFWJ303KfZTQkuXYUaqFCe+TyifF7FqpEuEGSnfKX2fEB32t/fagoIEQgm6pVvoEDIzzeYpo9m6IZZAiCEKtatGbMXYmnUOMUaPkNlJYGpcMR2T71nssttGFcrXUPtAwxjZRMlPUu+EVCGzpUZs5Z1HRaOmx9SG1OPMcr+557hP42Xa3DCbhEeMogrZ5EVsH3OB1BTShcxtlpQQZusmP2+QhexWVdiy24dbCHJkoWKvimAb+w+oY8wjlE/WQk7gOCCuGzO6UHGJiJE92Gz993EI2Uu0a2T7y5FBLqHNQtrM7GI5cWSQT6hcSFsNleLyHPTCJWQfQr2oPCfKN2UL6m19wiVUe5Bv37DW3sL6HuX7hIrBA8bp+npLfp2qpc6XHU6hTRpRXAk04xUqBzTD6+MWchq5ffxCjTyq431ZNtMhVBtrdTwT4kqPUGU+qtJVd9dJlduxLR3d9aJTqPaezjDqGw5Lr9C+0uVAtfjs4dHI7vwtrJsjQjPF75nmrjpkM3NQKDEM6TX59JEffX2ijo8SQowQYoQQI4QYIcQIIUYIMUKIEUKMEGKEECOEGCHECCFGCDFCiBFCjBBihBAjhBghxAghRggxQojxy4Sez7+yajjInuK3OwAAAABJRU5ErkJggg==',
+	preset:
+		'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',
 }
 
 const colors = {
 	text: combineRgb(218, 218, 218),
+	text_black: combineRgb(0, 0, 0),
 	bg: combineRgb(72, 72, 72),
+	bg_green: combineRgb(0, 204, 0),
+}
+
+const button_defaults = {
+	size: '10',
+	alignment: 'center:bottom',
+	pngalignment: 'center:center',
+	color: colors.text,
+	bgcolor: colors.bg,
+	show_topbar: false,
 }
 
 module.exports = async function (self) {
@@ -69,14 +84,9 @@ module.exports = async function (self) {
 		category: 'Measurement Application',
 		name: `Waveform`,
 		style: {
+			...button_defaults,
 			text: `Waveform\\n`,
-			size: '10',
-			alignment: 'center:bottom',
 			png64: icons.waveform,
-			pngalignment: 'center:center',
-			color: colors.text,
-			bgcolor: colors.bg,
-			show_topbar: false,
 		},
 		steps: [
 			{
@@ -85,7 +95,7 @@ module.exports = async function (self) {
 						actionId: 'measureAssign',
 						options: {
 							mode: measureAssignChoices[27].id,
-							scope: tiles[0].id,
+							scope: tiles[8].id,
 						},
 					},
 				],
@@ -99,14 +109,10 @@ module.exports = async function (self) {
 		category: 'Measurement Application',
 		name: `Vector`,
 		style: {
+			...button_defaults,
 			text: `Vector\\n`,
-			size: '10',
-			alignment: 'center:bottom',
 			png64: icons.vector,
 			pngalignment: 'center:center',
-			color: colors.text,
-			bgcolor: colors.bg,
-			show_topbar: false,
 		},
 		steps: [
 			{
@@ -115,7 +121,7 @@ module.exports = async function (self) {
 						actionId: 'measureAssign',
 						options: {
 							mode: measureAssignChoices[25].id,
-							scope: tiles[0].id,
+							scope: tiles[8].id,
 						},
 					},
 				],
@@ -129,14 +135,9 @@ module.exports = async function (self) {
 		category: 'Measurement Application',
 		name: `Lightning`,
 		style: {
+			...button_defaults,
 			text: `Lightning\\n`,
-			size: '10',
-			alignment: 'center:bottom',
 			png64: icons.lightning,
-			pngalignment: 'center:center',
-			color: colors.text,
-			bgcolor: colors.bg,
-			show_topbar: false,
 		},
 		steps: [
 			{
@@ -145,7 +146,7 @@ module.exports = async function (self) {
 						actionId: 'measureAssign',
 						options: {
 							mode: measureAssignChoices[17].id,
-							scope: tiles[0].id,
+							scope: tiles[8].id,
 						},
 					},
 				],
@@ -159,14 +160,9 @@ module.exports = async function (self) {
 		category: 'Measurement Application',
 		name: `Diamond`,
 		style: {
+			...button_defaults,
 			text: `Diamond\\n`,
-			size: '10',
-			alignment: 'center:bottom',
 			png64: icons.diamond,
-			pngalignment: 'center:center',
-			color: colors.text,
-			bgcolor: colors.bg,
-			show_topbar: false,
 		},
 		steps: [
 			{
@@ -175,7 +171,7 @@ module.exports = async function (self) {
 						actionId: 'measureAssign',
 						options: {
 							mode: measureAssignChoices[7].id,
-							scope: tiles[0].id,
+							scope: tiles[8].id,
 						},
 					},
 				],
@@ -189,14 +185,9 @@ module.exports = async function (self) {
 		category: 'Measurement Application',
 		name: `CIE`,
 		style: {
+			...button_defaults,
 			text: `CIE\\n`,
-			size: '10',
-			alignment: 'center:bottom',
 			png64: icons.cie,
-			pngalignment: 'center:center',
-			color: colors.text,
-			bgcolor: colors.bg,
-			show_topbar: false,
 		},
 		steps: [
 			{
@@ -205,7 +196,7 @@ module.exports = async function (self) {
 						actionId: 'measureAssign',
 						options: {
 							mode: measureAssignChoices[5].id,
-							scope: tiles[0].id,
+							scope: tiles[8].id,
 						},
 					},
 				],
@@ -219,14 +210,9 @@ module.exports = async function (self) {
 		category: 'Measurement Application',
 		name: `Stop Display`,
 		style: {
+			...button_defaults,
 			text: `Stop\\nDisplay`,
-			size: '10',
-			alignment: 'center:bottom',
 			png64: icons.stop_display,
-			pngalignment: 'center:center',
-			color: colors.text,
-			bgcolor: colors.bg,
-			show_topbar: false,
 		},
 		steps: [
 			{
@@ -235,7 +221,7 @@ module.exports = async function (self) {
 						actionId: 'measureAssign',
 						options: {
 							mode: measureAssignChoices[22].id,
-							scope: tiles[0].id,
+							scope: tiles[8].id,
 						},
 					},
 				],
@@ -249,14 +235,9 @@ module.exports = async function (self) {
 		category: 'Measurement Application',
 		name: `Cam App`,
 		style: {
+			...button_defaults,
 			text: `Cam\\n`,
-			size: '10',
-			alignment: 'center:bottom',
 			png64: icons.cam,
-			pngalignment: 'center:center',
-			color: colors.text,
-			bgcolor: colors.bg,
-			show_topbar: false,
 		},
 		steps: [
 			{
@@ -265,7 +246,7 @@ module.exports = async function (self) {
 						actionId: 'measureAssign',
 						options: {
 							mode: measureAssignChoices[4].id,
-							scope: tiles[0].id,
+							scope: tiles[8].id,
 						},
 					},
 				],
@@ -279,14 +260,9 @@ module.exports = async function (self) {
 		category: 'Measurement Application',
 		name: `Picture`,
 		style: {
+			...button_defaults,
 			text: `Picture\\n`,
-			size: '10',
-			alignment: 'center:bottom',
 			png64: icons.picture,
-			pngalignment: 'center:center',
-			color: colors.text,
-			bgcolor: colors.bg,
-			show_topbar: false,
 		},
 		steps: [
 			{
@@ -295,7 +271,7 @@ module.exports = async function (self) {
 						actionId: 'measureAssign',
 						options: {
 							mode: measureAssignChoices[18].id,
-							scope: tiles[0].id,
+							scope: tiles[8].id,
 						},
 					},
 				],
@@ -309,14 +285,9 @@ module.exports = async function (self) {
 		category: 'Measurement Application',
 		name: `Video Session`,
 		style: {
+			...button_defaults,
 			text: `Video\\nSession`,
-			size: '10',
-			alignment: 'center:bottom',
 			png64: icons.video_session,
-			pngalignment: 'center:center',
-			color: colors.text,
-			bgcolor: colors.bg,
-			show_topbar: false,
 		},
 		steps: [
 			{
@@ -325,7 +296,7 @@ module.exports = async function (self) {
 						actionId: 'measureAssign',
 						options: {
 							mode: measureAssignChoices[26].id,
-							scope: tiles[0].id,
+							scope: tiles[8].id,
 						},
 					},
 				],
@@ -339,14 +310,9 @@ module.exports = async function (self) {
 		category: 'Measurement Application',
 		name: `Video Session`,
 		style: {
+			...button_defaults,
 			text: `Audio\\n`,
-			size: '10',
-			alignment: 'center:bottom',
 			png64: icons.audio,
-			pngalignment: 'center:center',
-			color: colors.text,
-			bgcolor: colors.bg,
-			show_topbar: false,
 		},
 		steps: [
 			{
@@ -355,7 +321,7 @@ module.exports = async function (self) {
 						actionId: 'measureAssign',
 						options: {
 							mode: measureAssignChoices[2].id,
-							scope: tiles[0].id,
+							scope: tiles[8].id,
 						},
 					},
 				],
@@ -369,14 +335,9 @@ module.exports = async function (self) {
 		category: 'Measurement Application',
 		name: `Dolby Status`,
 		style: {
+			...button_defaults,
 			text: `Dolby Status\\n`,
-			size: '10',
-			alignment: 'center:bottom',
 			png64: icons.dolby_status,
-			pngalignment: 'center:center',
-			color: colors.text,
-			bgcolor: colors.bg,
-			show_topbar: false,
 		},
 		steps: [
 			{
@@ -385,7 +346,7 @@ module.exports = async function (self) {
 						actionId: 'measureAssign',
 						options: {
 							mode: measureAssignChoices[8].id,
-							scope: tiles[0].id,
+							scope: tiles[8].id,
 						},
 					},
 				],
@@ -399,14 +360,9 @@ module.exports = async function (self) {
 		category: 'Measurement Application',
 		name: `AES Channel Status`,
 		style: {
+			...button_defaults,
 			text: `AES Channel\\nStatus`,
-			size: '10',
-			alignment: 'center:bottom',
 			png64: icons.aes_channel_status,
-			pngalignment: 'center:center',
-			color: colors.text,
-			bgcolor: colors.bg,
-			show_topbar: false,
 		},
 		steps: [
 			{
@@ -415,7 +371,7 @@ module.exports = async function (self) {
 						actionId: 'measureAssign',
 						options: {
 							mode: measureAssignChoices[0].id,
-							scope: tiles[0].id,
+							scope: tiles[8].id,
 						},
 					},
 				],
@@ -429,14 +385,9 @@ module.exports = async function (self) {
 		category: 'Measurement Application',
 		name: `Event Log`,
 		style: {
+			...button_defaults,
 			text: `Event Log\\n`,
-			size: '10',
-			alignment: 'center:bottom',
 			png64: icons.event_log,
-			pngalignment: 'center:center',
-			color: colors.text,
-			bgcolor: colors.bg,
-			show_topbar: false,
 		},
 		steps: [
 			{
@@ -445,7 +396,7 @@ module.exports = async function (self) {
 						actionId: 'measureAssign',
 						options: {
 							mode: measureAssignChoices[9].id,
-							scope: tiles[0].id,
+							scope: tiles[8].id,
 						},
 					},
 				],
@@ -459,14 +410,9 @@ module.exports = async function (self) {
 		category: 'Measurement Application',
 		name: `IP Status`,
 		style: {
+			...button_defaults,
 			text: `IP Status\\n`,
-			size: '10',
-			alignment: 'center:bottom',
 			png64: icons.ip_status,
-			pngalignment: 'center:center',
-			color: colors.text,
-			bgcolor: colors.bg,
-			show_topbar: false,
 		},
 		steps: [
 			{
@@ -475,7 +421,7 @@ module.exports = async function (self) {
 						actionId: 'measureAssign',
 						options: {
 							mode: measureAssignChoices[15].id,
-							scope: tiles[0].id,
+							scope: tiles[8].id,
 						},
 					},
 				],
@@ -489,14 +435,9 @@ module.exports = async function (self) {
 		category: 'Measurement Application',
 		name: `IP Session`,
 		style: {
+			...button_defaults,
 			text: `IP Session\\n`,
-			size: '10',
-			alignment: 'center:bottom',
 			png64: icons.ip_session,
-			pngalignment: 'center:center',
-			color: colors.text,
-			bgcolor: colors.bg,
-			show_topbar: false,
 		},
 		steps: [
 			{
@@ -505,7 +446,7 @@ module.exports = async function (self) {
 						actionId: 'measureAssign',
 						options: {
 							mode: measureAssignChoices[14].id,
-							scope: tiles[0].id,
+							scope: tiles[8].id,
 						},
 					},
 				],
@@ -519,14 +460,9 @@ module.exports = async function (self) {
 		category: 'Measurement Application',
 		name: `IP Graphs`,
 		style: {
+			...button_defaults,
 			text: `IP Graphs\\n`,
-			size: '10',
-			alignment: 'center:bottom',
 			png64: icons.ip_graphs,
-			pngalignment: 'center:center',
-			color: colors.text,
-			bgcolor: colors.bg,
-			show_topbar: false,
 		},
 		steps: [
 			{
@@ -535,7 +471,7 @@ module.exports = async function (self) {
 						actionId: 'measureAssign',
 						options: {
 							mode: measureAssignChoices[13].id,
-							scope: tiles[0].id,
+							scope: tiles[8].id,
 						},
 					},
 				],
@@ -549,14 +485,9 @@ module.exports = async function (self) {
 		category: 'Measurement Application',
 		name: `PIT Histogram`,
 		style: {
+			...button_defaults,
 			text: `PIT Histogram\\n`,
-			size: '10',
-			alignment: 'center:bottom',
 			png64: icons.pit_histogram,
-			pngalignment: 'center:center',
-			color: colors.text,
-			bgcolor: colors.bg,
-			show_topbar: false,
 		},
 		steps: [
 			{
@@ -565,7 +496,7 @@ module.exports = async function (self) {
 						actionId: 'measureAssign',
 						options: {
 							mode: measureAssignChoices[19].id,
-							scope: tiles[0].id,
+							scope: tiles[8].id,
 						},
 					},
 				],
@@ -579,14 +510,9 @@ module.exports = async function (self) {
 		category: 'Measurement Application',
 		name: `PTP Graphs`,
 		style: {
+			...button_defaults,
 			text: `PTP Graphs\\n`,
-			size: '10',
-			alignment: 'center:bottom',
 			png64: icons.ptp_graphs,
-			pngalignment: 'center:center',
-			color: colors.text,
-			bgcolor: colors.bg,
-			show_topbar: false,
 		},
 		steps: [
 			{
@@ -595,7 +521,7 @@ module.exports = async function (self) {
 						actionId: 'measureAssign',
 						options: {
 							mode: measureAssignChoices[20].id,
-							scope: tiles[0].id,
+							scope: tiles[8].id,
 						},
 					},
 				],
@@ -609,14 +535,9 @@ module.exports = async function (self) {
 		category: 'Measurement Application',
 		name: `Stream Timing`,
 		style: {
+			...button_defaults,
 			text: `Stream\\nTiming`,
-			size: '10',
-			alignment: 'center:bottom',
 			png64: icons.stream_timing,
-			pngalignment: 'center:center',
-			color: colors.text,
-			bgcolor: colors.bg,
-			show_topbar: false,
 		},
 		steps: [
 			{
@@ -625,7 +546,7 @@ module.exports = async function (self) {
 						actionId: 'measureAssign',
 						options: {
 							mode: measureAssignChoices[23].id,
-							scope: tiles[0].id,
+							scope: tiles[8].id,
 						},
 					},
 				],
@@ -639,14 +560,9 @@ module.exports = async function (self) {
 		category: 'Measurement Application',
 		name: `ANC Session`,
 		style: {
+			...button_defaults,
 			text: `ANC Session\\n`,
-			size: '10',
-			alignment: 'center:bottom',
 			png64: icons.anc_session,
-			pngalignment: 'center:center',
-			color: colors.text,
-			bgcolor: colors.bg,
-			show_topbar: false,
 		},
 		steps: [
 			{
@@ -655,7 +571,7 @@ module.exports = async function (self) {
 						actionId: 'measureAssign',
 						options: {
 							mode: measureAssignChoices[1].id,
-							scope: tiles[0].id,
+							scope: tiles[8].id,
 						},
 					},
 				],
@@ -669,14 +585,9 @@ module.exports = async function (self) {
 		category: 'Measurement Application',
 		name: `Datalist`,
 		style: {
+			...button_defaults,
 			text: `Datalist\\n`,
-			size: '10',
-			alignment: 'center:bottom',
 			png64: icons.datalist,
-			pngalignment: 'center:center',
-			color: colors.text,
-			bgcolor: colors.bg,
-			show_topbar: false,
 		},
 		steps: [
 			{
@@ -685,7 +596,7 @@ module.exports = async function (self) {
 						actionId: 'measureAssign',
 						options: {
 							mode: measureAssignChoices[6].id,
-							scope: tiles[0].id,
+							scope: tiles[8].id,
 						},
 					},
 				],
@@ -699,14 +610,9 @@ module.exports = async function (self) {
 		category: 'Measurement Application',
 		name: `Timing`,
 		style: {
+			...button_defaults,
 			text: `Timing\\n`,
-			size: '10',
-			alignment: 'center:bottom',
 			png64: icons.timing,
-			pngalignment: 'center:center',
-			color: colors.text,
-			bgcolor: colors.bg,
-			show_topbar: false,
 		},
 		steps: [
 			{
@@ -715,7 +621,7 @@ module.exports = async function (self) {
 						actionId: 'measureAssign',
 						options: {
 							mode: measureAssignChoices[24].id,
-							scope: tiles[0].id,
+							scope: tiles[8].id,
 						},
 					},
 				],
@@ -729,14 +635,9 @@ module.exports = async function (self) {
 		category: 'Measurement Application',
 		name: `Eye`,
 		style: {
+			...button_defaults,
 			text: `Eye\\n`,
-			size: '10',
-			alignment: 'center:bottom',
 			png64: icons.eye,
-			pngalignment: 'center:center',
-			color: colors.text,
-			bgcolor: colors.bg,
-			show_topbar: false,
 		},
 		steps: [
 			{
@@ -745,7 +646,7 @@ module.exports = async function (self) {
 						actionId: 'measureAssign',
 						options: {
 							mode: measureAssignChoices[11].id,
-							scope: tiles[0].id,
+							scope: tiles[8].id,
 						},
 					},
 				],
@@ -759,14 +660,9 @@ module.exports = async function (self) {
 		category: 'Measurement Application',
 		name: `Jitter`,
 		style: {
+			...button_defaults,
 			text: `Jitter\\n`,
-			size: '10',
-			alignment: 'center:bottom',
 			png64: icons.jitter,
-			pngalignment: 'center:center',
-			color: colors.text,
-			bgcolor: colors.bg,
-			show_topbar: false,
 		},
 		steps: [
 			{
@@ -775,7 +671,7 @@ module.exports = async function (self) {
 						actionId: 'measureAssign',
 						options: {
 							mode: measureAssignChoices[16].id,
-							scope: tiles[0].id,
+							scope: tiles[8].id,
 						},
 					},
 				],
@@ -789,14 +685,9 @@ module.exports = async function (self) {
 		category: 'Measurement Application',
 		name: `External Reference`,
 		style: {
+			...button_defaults,
 			text: `External\\nReference`,
-			size: '10',
-			alignment: 'center:bottom',
 			png64: icons.ext_ref,
-			pngalignment: 'center:center',
-			color: colors.text,
-			bgcolor: colors.bg,
-			show_topbar: false,
 		},
 		steps: [
 			{
@@ -805,7 +696,7 @@ module.exports = async function (self) {
 						actionId: 'measureAssign',
 						options: {
 							mode: measureAssignChoices[10].id,
-							scope: tiles[0].id,
+							scope: tiles[8].id,
 						},
 					},
 				],
@@ -819,14 +710,9 @@ module.exports = async function (self) {
 		category: 'Measurement Application',
 		name: `AV Delay`,
 		style: {
+			...button_defaults,
 			text: `AV Delay\\n`,
-			size: '10',
-			alignment: 'center:bottom',
 			png64: icons.av_delay,
-			pngalignment: 'center:center',
-			color: colors.text,
-			bgcolor: colors.bg,
-			show_topbar: false,
 		},
 		steps: [
 			{
@@ -835,7 +721,7 @@ module.exports = async function (self) {
 						actionId: 'measureAssign',
 						options: {
 							mode: measureAssignChoices[3].id,
-							scope: tiles[0].id,
+							scope: tiles[8].id,
 						},
 					},
 				],
@@ -849,14 +735,9 @@ module.exports = async function (self) {
 		category: 'Measurement Application',
 		name: `IP Generator`,
 		style: {
+			...button_defaults,
 			text: `IP\\nGenerator`,
-			size: '10',
-			alignment: 'center:bottom',
 			png64: icons.ip_generator,
-			pngalignment: 'center:center',
-			color: colors.text,
-			bgcolor: colors.bg,
-			show_topbar: false,
 		},
 		steps: [
 			{
@@ -865,7 +746,7 @@ module.exports = async function (self) {
 						actionId: 'measureAssign',
 						options: {
 							mode: measureAssignChoices[12].id,
-							scope: tiles[0].id,
+							scope: tiles[8].id,
 						},
 					},
 				],
@@ -879,14 +760,9 @@ module.exports = async function (self) {
 		category: 'Measurement Application',
 		name: `SDI Generator`,
 		style: {
+			...button_defaults,
 			text: `SDI\\nGenerator`,
-			size: '10',
-			alignment: 'center:bottom',
 			png64: icons.sdi_generator,
-			pngalignment: 'center:center',
-			color: colors.text,
-			bgcolor: colors.bg,
-			show_topbar: false,
 		},
 		steps: [
 			{
@@ -895,7 +771,7 @@ module.exports = async function (self) {
 						actionId: 'measureAssign',
 						options: {
 							mode: measureAssignChoices[21].id,
-							scope: tiles[0].id,
+							scope: tiles[8].id,
 						},
 					},
 				],
@@ -910,14 +786,9 @@ module.exports = async function (self) {
 			category: 'Input',
 			name: `Input ${i + 1}`,
 			style: {
-				text: `Input ${i + 1}\\n`,
-				size: '10',
-				alignment: 'center:bottom',
-				png64: undefined,
-				pngalignment: 'center:center',
-				color: colors.text,
-				bgcolor: colors.bg,
-				show_topbar: false,
+				...button_defaults,
+				text: `$(generic-module:input${i + 1}Name)\\n`,
+				png64: icons.input,
 			},
 			steps: [
 				{
@@ -942,12 +813,38 @@ module.exports = async function (self) {
 						input: i,
 					},
 					style: {
-						color: colors.text,
-						bgcolor: combineRgb(0, 204, 0),
+						color: colors.text_black,
+						bgcolor: colors.bg_green,
 					},
 				},
 			],
 		}
+		self.prism.presets.forEach((preset) => {
+			presets[`recall_preset_${preset.label}`] = {
+				type: 'button',
+				category: 'Preset',
+				name: `${preset.label}`,
+				style: {
+					...button_defaults,
+					text: `${preset.label}`,
+					png64: icons.preset,
+				},
+				steps: [
+					{
+						down: [
+							{
+								actionId: 'loadPreset',
+								options: {
+									preset: preset.id,
+								},
+							},
+						],
+						up: [],
+					},
+				],
+				feedbacks: [],
+			}
+		})
 	}
 	self.setPresetDefinitions(presets)
 }

@@ -13,7 +13,7 @@ const contentType = 'application/json'
 
 // const pollInterval_fast = 200
 const pollInterval_reg = 2000
-// const pollInterval_slow = 20000
+const pollInterval_slow = 20000
 
 class Telestream_PRISM extends InstanceBase {
 	constructor(internal) {
@@ -39,18 +39,18 @@ class Telestream_PRISM extends InstanceBase {
 	}
 
 	startTimers() {
-/* 		this.pollTimer_fast = setTimeout(() => {
+		/* 		this.pollTimer_fast = setTimeout(() => {
 			this.pollStatus()
 		}, pollInterval_fast) */
 		this.pollTimer_reg = setTimeout(() => {
 			this.pollStatus_reg()
 		}, pollInterval_reg)
-/* 		this.pollTimer_slow = setTimeout(() => {
+		this.pollTimer_slow = setTimeout(() => {
 			this.pollStatus_slow()
-		}, pollInterval_slow) */
+		}, pollInterval_slow)
 	}
 
-/* 	pollStatus_fast() {
+	/* 	pollStatus_fast() {
 		this.pollTimer_fast = setTimeout(() => {
 			this.pollStatus()
 		}, pollInterval_fast)
@@ -58,16 +58,18 @@ class Telestream_PRISM extends InstanceBase {
 
 	pollStatus_reg() {
 		this.getInput()
+		this.getTileInFocus()
 		this.pollTimer_reg = setTimeout(() => {
 			this.pollStatus_reg()
 		}, pollInterval_reg)
 	}
 
-/* 	pollStatus_slow() {
+	pollStatus_slow() {
+		this.getInputConfig()
 		this.pollTimer_slow = setTimeout(() => {
 			this.pollStatus_slow()
 		}, pollInterval_slow)
-	} */
+	}
 
 	logResponse(response) {
 		if (this.config.verbose) {
@@ -92,6 +94,51 @@ class Telestream_PRISM extends InstanceBase {
 		} else {
 			this.log('error', `No error code`)
 			this.updateStatus(InstanceStatus.UnknownError)
+		}
+	}
+
+	async getInputConfig() {
+		let varList = []
+		for (let i = 0; i <= 5; i++) {
+			try {
+				const response = await this.axios.get(`/inputConfigure?input=${i}`)
+				this.logResponse(response)
+				if (response.data === undefined || response.data.name === undefined || response.data.inputType === undefined) {
+					this.log('warn', `/inputConfigure?input=${i} response contains no data`)
+					break
+				}
+				varList[`input${i + 1}Name`] = response.data.name
+				varList[`input${i + 1}Type`] = response.data.inputType
+			} catch (error) {
+				this.logError(error)
+				return undefined
+			}
+		}
+		this.setVariableValues(varList)
+	}
+
+	async getTileInFocus() {
+		let varList = []
+		try {
+			const response = await this.axios.get('/tile_in_focus')
+			this.logResponse(response)
+			if (response.data === undefined || response.data.ints === undefined || !Array.isArray(response.data.ints)) {
+				this.log('warn', 'activeinput response contains no data')
+				return undefined
+			}
+			if (response.data.ints.length == 1 && !isNaN(parseInt(response.data.ints[0]))) {
+				this.prism.tileInFocus = parseInt(response.data.ints[0])
+				varList['tileInFocus'] = this.prism.tileInFocus
+				this.setVariableValues(varList)
+				this.checkFeedbacks('tileInFocus')
+				return this.prism.input
+			} else {
+				this.log('warn', 'tile_in_focus returned a NaN or unexpected  length')
+				return undefined
+			}
+		} catch (error) {
+			this.logError(error)
+			return undefined
 		}
 	}
 
@@ -136,8 +183,10 @@ class Telestream_PRISM extends InstanceBase {
 				this.prism.presets.push({ id: preset, label: preset })
 			})
 			this.updateActions()
+			this.updatePresetsDefinitions()
 		} catch (error) {
 			this.logError(error)
+			return undefined
 		}
 	}
 
@@ -145,6 +194,8 @@ class Telestream_PRISM extends InstanceBase {
 		if (this.axios) {
 			this.getInput()
 			this.getPresets()
+			this.getTileInFocus()
+			this.getInputConfig()
 		}
 	}
 
@@ -155,6 +206,7 @@ class Telestream_PRISM extends InstanceBase {
 		this.prism = {
 			presets: [{ id: 'factory', label: 'Factory Preset' }],
 			input: 'unknown',
+			tileInFocus: 1,
 		}
 	}
 

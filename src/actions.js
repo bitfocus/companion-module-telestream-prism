@@ -868,6 +868,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/audio_aux_display_mode/${scope}`, msg)
@@ -894,6 +895,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/audio_display_loudness_meter/${scope}`, msg)
@@ -920,6 +922,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/audio_session_display/${scope}`, msg)
@@ -947,6 +950,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/surround_dominance_indicator/${scope}`, msg)
@@ -974,6 +978,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/surround_immersive_dominance_indicator/${scope}`, msg)
@@ -1001,6 +1006,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/surround_bed_select/${scope}`, msg)
@@ -1028,6 +1034,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/surround_immersive_psi_bed_select/${scope}`, msg)
@@ -1158,6 +1165,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/camapp_display_type/${scope}`, msg)
@@ -1185,6 +1193,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/camapp_gain/${scope}`, msg)
@@ -1212,6 +1221,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/camapp_sweep/${scope}`, msg)
@@ -1239,6 +1249,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/camapp_filter/${scope}`, msg)
@@ -1266,6 +1277,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/camapp_thumbnail/${scope}`, msg)
@@ -1294,6 +1306,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/camapp_graticule_units/${scope}`, msg)
@@ -1371,6 +1384,7 @@ module.exports = function (self) {
 				}
 				let mode = parseInt(await self.parseVariablesInString(options.mode))
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				if (isNaN(mode || mode < 0 || mode > 1)) {
 					self.log('warn', `Mode out of range: ${mode}`)
 					return undefined
@@ -1401,6 +1415,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/diamond_lut/${scope}`, msg)
@@ -1496,6 +1511,7 @@ module.exports = function (self) {
 				}
 				let mode = parseInt(await self.parseVariablesInString(options.mode))
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				if (isNaN(mode) || mode < 0 || mode > 3) {
 					self.log('warn', `Sweep Mode out of range: ${mode}`)
 					return undefined
@@ -1528,6 +1544,7 @@ module.exports = function (self) {
 				}
 				let mode = parseInt(await self.parseVariablesInString(options.mode))
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				if (isNaN(mode) || (mode !== 1 && mode !== 2 && mode !== 5)) {
 					self.log('warn', `Gain out of range: ${mode}`)
 					return undefined
@@ -1570,6 +1587,7 @@ module.exports = function (self) {
 				let hmag = parseInt(await self.parseVariablesInString(options.hmag))
 				let bestView = parseInt(await self.parseVariablesInString(options.bestView))
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				if (isNaN(hmag) || hmag < 0 || hmag > 1) {
 					self.log('warn', `Hmag out of range: ${hmag}`)
 					return undefined
@@ -1605,6 +1623,7 @@ module.exports = function (self) {
 				}
 				let mode = parseInt(await self.parseVariablesInString(options.mode))
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				if (isNaN(mode) || mode < 0 || mode > 1) {
 					self.log('warn', `Mode out of range: ${mode}`)
 					return undefined
@@ -1637,6 +1656,7 @@ module.exports = function (self) {
 				}
 				let mode = parseInt(await self.parseVariablesInString(options.mode))
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				if (isNaN(mode) || mode < 0 || mode > 3) {
 					self.log('warn', `Rate out of range: ${mode}`)
 					return undefined
@@ -1692,6 +1712,7 @@ module.exports = function (self) {
 				}
 				let mode = parseInt(await self.parseVariablesInString(options.mode))
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				if (isNaN(mode) || mode < 0 || mode > 18) {
 					self.log('warn', `Rate out of range: ${mode}`)
 					return undefined
@@ -1722,6 +1743,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/stop_color_trace/${scope}`, msg)
@@ -1764,6 +1786,7 @@ module.exports = function (self) {
 					}
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [gain] })
 				try {
 					const response = await self.axios.post(`/stop_display_gain/${scope}`, msg)
@@ -1790,6 +1813,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/stop_enable_best_gain/${scope}`, msg)
@@ -1836,6 +1860,7 @@ module.exports = function (self) {
 				let hmag = parseInt(options.hmag)
 				let bestView = parseInt(await self.parseVariablesInString(options.bestView))
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				if (options.useVar) {
 					hmag = parseInt(await self.parseVariablesInString(options.hmagVar))
 				}
@@ -1873,6 +1898,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/stop_active_area/${scope}`, msg)
@@ -1901,6 +1927,7 @@ module.exports = function (self) {
 				}
 				let mode = parseInt(await self.parseVariablesInString(options.mode))
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				if (isNaN(mode) || mode < 0 || mode > 1) {
 					self.log('warn', `Reference out of range: ${mode}`)
 					return undefined
@@ -1931,6 +1958,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/stop_enable_low_pass_filter/${scope}`, msg)
@@ -2408,6 +2436,7 @@ module.exports = function (self) {
 				}
 				let mode = parseInt(await self.parseVariablesInString(options.mode))
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				if (isNaN(mode) || mode < 0 || mode > 3) {
 					self.log('warn', `Jitter Sweep Rate passed out of range value: ${mode}`)
 					return undefined
@@ -2456,6 +2485,7 @@ module.exports = function (self) {
 					}
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/lightning_vertical_gain/${scope}`, msg)
@@ -2484,6 +2514,7 @@ module.exports = function (self) {
 				}
 				let mode = parseInt(await self.parseVariablesInString(options.mode))
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				if (isNaN(mode) || mode < 0 || mode > 3) {
 					self.log('warn', `Jitter Sweep Rate passed out of range value: ${mode}`)
 					return undefined
@@ -2532,6 +2563,7 @@ module.exports = function (self) {
 					}
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/lightning_horizontal_gain/${scope}`, msg)
@@ -2560,6 +2592,7 @@ module.exports = function (self) {
 				}
 				let mode = parseInt(await self.parseVariablesInString(options.mode))
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				if (isNaN(mode) || mode < 0 || mode > 3) {
 					self.log('warn', `Jitter Sweep Rate passed out of range value: ${mode}`)
 					return undefined
@@ -2590,6 +2623,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/lightning_lut/${scope}`, msg)
@@ -2618,6 +2652,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/measure_assign/${scope}`, msg)
@@ -2644,6 +2679,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/line_select_enable/${scope}`, msg)
@@ -2670,6 +2706,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/measure_bar_target/${scope}`, msg)
@@ -2697,6 +2734,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/measure_tile_mode/${scope}`, msg)
@@ -2892,6 +2930,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/closed_captions_display/${scope}`, msg)
@@ -2920,6 +2959,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/picture_safe_action_1/${scope}`, msg)
@@ -2948,6 +2988,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/picture_safe_action_2/${scope}`, msg)
@@ -2976,6 +3017,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/picture_safe_title_1/${scope}`, msg)
@@ -3004,6 +3046,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/picture_safe_title_2/${scope}`, msg)
@@ -3031,6 +3074,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/picture_center_grat/${scope}`, msg)
@@ -3059,6 +3103,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/closed_captions_608_channel/${scope}`, msg)
@@ -3087,6 +3132,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/closed_captions_708_service/${scope}`, msg)
@@ -3129,6 +3175,7 @@ module.exports = function (self) {
 					}
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/closed_captions_wst_page/${scope}`, msg)
@@ -3156,6 +3203,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/closed_captions_arib_type/${scope}`, msg)
@@ -3182,6 +3230,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/picture_afd_grat/${scope}`, msg)
@@ -3208,6 +3257,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/picture_afd_grat_overlay/${scope}`, msg)
@@ -3234,6 +3284,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/picture_lut/${scope}`, msg)
@@ -3261,6 +3312,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/picture_format_overlay/${scope}`, msg)
@@ -3313,6 +3365,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/picture_false_color/${scope}`, msg)
@@ -3340,6 +3393,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/picture_false_color_mode/${scope}`, msg)
@@ -3366,6 +3420,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/picture_false_color_band_meter/${scope}`, msg)
@@ -3392,6 +3447,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/closed_captions_info_enable/${scope}`, msg)
@@ -3418,6 +3474,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/source_id_display/${scope}`, msg)
@@ -3704,6 +3761,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/timing_measure_mode/${scope}`, msg)
@@ -4392,6 +4450,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/vector_gain/${scope}`, msg)
@@ -4419,6 +4478,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/vector_var_enable/${scope}`, msg)
@@ -4446,6 +4506,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/vector_lut/${scope}`, msg)
@@ -4473,6 +4534,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [parseInt(await self.parseVariablesInString(options.mode))] })
 				try {
 					const response = await self.axios.post(`/vector_iq_axis/${scope}`, msg)
@@ -4500,6 +4562,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [parseInt(await self.parseVariablesInString(options.mode))] })
 				try {
 					const response = await self.axios.post(`/vector_sdi_compass_rose/${scope}`, msg)
@@ -4598,6 +4661,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/waveform_mode/${scope}`, msg)
@@ -4624,6 +4688,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/waveform_filter_ypbpr/${scope}`, msg)
@@ -4650,6 +4715,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/waveform_filter_rgb/${scope}`, msg)
@@ -4676,6 +4742,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/waveform_filter_yrgb/${scope}`, msg)
@@ -4702,6 +4769,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [parseInt(await self.parseVariablesInString(options.mode))] })
 				try {
 					const response = await self.axios.post(`/waveform_sweep/${scope}`, msg)
@@ -4728,6 +4796,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/waveform_color_trace/${scope}`, msg)
@@ -4770,6 +4839,7 @@ module.exports = function (self) {
 					}
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
 					const response = await self.axios.post(`/waveform_gain/${scope}`, msg)
@@ -4797,6 +4867,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/waveform_var_enable/${scope}`, msg)
@@ -4845,6 +4916,7 @@ module.exports = function (self) {
 				}
 				let bestView = parseInt(await self.parseVariablesInString(options.bestView))
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				if (isNaN(hmag) || hmag < 1 || hmag > 25) {
 					self.log('warn', `Hmag out of range: ${hmag}`)
 					return undefined
@@ -4880,6 +4952,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/waveform_vertical_cursor_enable/${scope}`, msg)
@@ -4907,6 +4980,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/waveform_horizontal_cursor_enable/${scope}`, msg)
@@ -4934,6 +5008,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/waveform_grat_sdi_units/${scope}`, msg)
@@ -4960,6 +5035,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/waveform_lut/${scope}`, msg)
@@ -4986,6 +5062,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
+				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/waveform_active_area/${scope}`, msg)

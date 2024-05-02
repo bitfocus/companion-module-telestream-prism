@@ -9,6 +9,7 @@ export const tiles = [
 	{ id: 'tile6', label: 'Tile 6' },
 	{ id: 'tile7', label: 'Tile 7' },
 	{ id: 'tile8', label: 'Tile 8' },
+	{ id: 'focus', label: 'Tile In Focus' },
 ]
 
 export const ip = [
