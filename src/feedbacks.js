@@ -1,33 +1,48 @@
-//const { combineRgb } = require('@companion-module/base')
+const { combineRgb } = require('@companion-module/base')
+const { actionOptions } = require('./choices.js')
 
 module.exports = async function (self) {
 	self.setFeedbackDefinitions({
-		/* ChannelState: {
-			name: 'Example Feedback',
+		activeInput: {
+			name: 'Active Input',
 			type: 'boolean',
-			label: 'Channel State',
 			defaultStyle: {
-				bgcolor: combineRgb(255, 0, 0),
+				bgcolor: combineRgb(0, 204, 0),
 				color: combineRgb(0, 0, 0),
 			},
 			options: [
 				{
-					id: 'num',
-					type: 'number',
-					label: 'Test',
-					default: 5,
-					min: 0,
-					max: 10,
+					...actionOptions.integerInput,
+					id: 'input',
+					label: 'Input',
+					max: 5,
+					isVisible: true,
 				},
 			],
 			callback: (feedback) => {
-				console.log('Hello world!', feedback.options.num)
-				if (feedback.options.num > 5) {
-					return true
-				} else {
-					return false
-				}
+				return feedback.options.input == self.prism.input
 			},
-		}, */
+		},
+		tileInFocus: {
+			name: 'Tile In Focus',
+			type: 'boolean',
+			defaultStyle: {
+				bgcolor: combineRgb(0, 204, 0),
+				color: combineRgb(0, 0, 0),
+			},
+			options: [
+				{
+					...actionOptions.integerInput,
+					id: 'tile',
+					label: 'Tile',
+					min: 1,
+					max: 8,
+					isVisible: true,
+				},
+			],
+			callback: (feedback) => {
+				return feedback.options.tile == self.prism.tileInFocus
+			},
+		},
 	})
 }

@@ -9,6 +9,7 @@ export const tiles = [
 	{ id: 'tile6', label: 'Tile 6' },
 	{ id: 'tile7', label: 'Tile 7' },
 	{ id: 'tile8', label: 'Tile 8' },
+	{ id: 'focus', label: 'Tile In Focus' },
 ]
 
 export const ip = [
@@ -30,7 +31,7 @@ export const actionOptions = {
 		id: 'scope',
 		type: 'dropdown',
 		label: 'Scope',
-		default: 'tile1',
+		default: tiles[0].id,
 		choices: tiles,
 		useVariables: true,
 		allowCustom: true,
@@ -41,7 +42,7 @@ export const actionOptions = {
 		id: 'scope',
 		type: 'dropdown',
 		label: 'Scope',
-		default: 'IP1',
+		default: ip[0].id,
 		choices: ip,
 		useVariables: true,
 		allowCustom: true,
@@ -52,7 +53,7 @@ export const actionOptions = {
 		id: 'scope',
 		type: 'dropdown',
 		label: 'Scope',
-		default: 'config0',
+		default: config[0].id,
 		choices: config,
 		useVariables: true,
 		allowCustom: true,
@@ -84,7 +85,7 @@ export const actionOptions = {
 		allowCustom: true,
 		regex: Regex.SOMETHING,
 	},
-	intergerInput: {
+	integerInput: {
 		id: 'mode',
 		type: 'number',
 		range: true,
@@ -541,35 +542,34 @@ export const lightningLutChoices = [
 ]
 
 export const measureAssignChoices = [
-	{ id: 'MEASURE_ASSIGN_ANC_DATA', label: 'ANC Data' },
-	{ id: 'MEASURE_ASSIGN_AUDIO', label: 'Audio' },
-	{ id: 'MEASURE_ASSIGN_AV_DELAY', label: 'A/V Delay' },
-	{ id: 'MEASURE_ASSIGN_CAMAPP', label: 'Cam App' },
-	{ id: 'MEASURE_ASSIGN_CHANNEL_STATUS', label: 'Channel Status' },
-	{ id: 'MEASURE_ASSIGN_CIE', label: 'CIE' },
-	{ id: 'MEASURE_ASSIGN_DATALIST', label: 'Datalist' },
-	{ id: 'MEASURE_ASSIGN_DIAMOND', label: 'Diamond' },
-	{ id: 'MEASURE_ASSIGN_DOLBY_STATUS', label: 'Dolby Status' },
-	{ id: 'MEASURE_ASSIGN_ERROR_STATUS', label: 'Error Status' },
-	{ id: 'MEASURE_ASSIGN_EXTREF', label: 'External Reference' },
-	{ id: 'MEASURE_ASSIGN_EYE', label: 'Eye' },
-	{ id: 'MEASURE_ASSIGN_FSTOP', label: 'F Stop' },
-	{ id: 'MEASURE_ASSIGN_GEN_STATUS', label: 'Generator Status' },
-	{ id: 'MEASURE_ASSIGN_IP_GEN_STATUS', label: 'IP Generator Status' },
-	{ id: 'MEASURE_ASSIGN_IP_GRAPHS', label: 'IP Graphs' },
-	{ id: 'MEASURE_ASSIGN_IP_PIT', label: 'IP PIT' },
-	{ id: 'MEASURE_ASSIGN_IP_SESSION', label: 'IP Session' },
-	{ id: 'MEASURE_ASSIGN_IP_STATUS', label: 'IP Status' },
-	{ id: 'MEASURE_ASSIGN_JITTER', label: 'Jitter' },
-	{ id: 'MEASURE_ASSIGN_LIGHTNING', label: 'Lightning' },
-	{ id: 'MEASURE_ASSIGN_PICTURE', label: 'Picture' },
-	{ id: 'MEASURE_ASSIGN_PTP_GRAPHS', label: 'PTP Graphs' },
-	{ id: 'MEASURE_ASSIGN_STREAM_TIMING', label: 'Stream Timing' },
-	{ id: 'MEASURE_ASSIGN_SYNC_DISPLAY', label: 'Sync Display' },
-	{ id: 'MEASURE_ASSIGN_TIMING_DISPLAY', label: 'Timing Display' },
-	{ id: 'MEASURE_ASSIGN_VECTOR', label: 'Vector' },
-	{ id: 'MEASURE_ASSIGN_VIDEO_SESSION', label: 'Video Session' },
-	{ id: 'MEASURE_ASSIGN_WAVEFORM', label: 'Waveform' },
+	{ id: 'MEASURE_ASSIGN_CHANNEL_STATUS', label: 'AES Channel Status' }, //0
+	{ id: 'MEASURE_ASSIGN_ANC_DATA', label: 'ANC Session' }, //1
+	{ id: 'MEASURE_ASSIGN_AUDIO', label: 'Audio' }, //2
+	{ id: 'MEASURE_ASSIGN_AV_DELAY', label: 'A/V Delay' }, //3
+	{ id: 'MEASURE_ASSIGN_CAMAPP', label: 'Cam App' }, //4
+	{ id: 'MEASURE_ASSIGN_CIE', label: 'CIE' }, //5
+	{ id: 'MEASURE_ASSIGN_DATALIST', label: 'Datalist' }, //6
+	{ id: 'MEASURE_ASSIGN_DIAMOND', label: 'Diamond' }, //7
+	{ id: 'MEASURE_ASSIGN_DOLBY_STATUS', label: 'Dolby Status' }, //8
+	{ id: 'MEASURE_ASSIGN_ERROR_STATUS', label: 'Event Log' }, //9
+	{ id: 'MEASURE_ASSIGN_EXTREF', label: 'External Reference' }, //10
+	{ id: 'MEASURE_ASSIGN_EYE', label: 'Eye' }, //11
+	{ id: 'MEASURE_ASSIGN_IP_GEN_STATUS', label: 'IP Generator' }, //12
+	{ id: 'MEASURE_ASSIGN_IP_GRAPHS', label: 'IP Graphs' }, //13
+	{ id: 'MEASURE_ASSIGN_IP_SESSION', label: 'IP Session' }, //14
+	{ id: 'MEASURE_ASSIGN_IP_STATUS', label: 'IP Status' }, //15
+	{ id: 'MEASURE_ASSIGN_JITTER', label: 'Jitter' }, //16
+	{ id: 'MEASURE_ASSIGN_LIGHTNING', label: 'Lightning' }, //17
+	{ id: 'MEASURE_ASSIGN_PICTURE', label: 'Picture' }, //18
+	{ id: 'MEASURE_ASSIGN_IP_PIT', label: 'PIT Histogram' }, //19
+	{ id: 'MEASURE_ASSIGN_PTP_GRAPHS', label: 'PTP Graphs' }, //20
+	{ id: 'MEASURE_ASSIGN_GEN_STATUS', label: 'SDI Generator' }, //21
+	{ id: 'MEASURE_ASSIGN_FSTOP', label: 'Stop Display' }, //22
+	{ id: 'MEASURE_ASSIGN_SYNC_DISPLAY', label: 'Stream Timing' }, //23
+	{ id: 'MEASURE_ASSIGN_TIMING_DISPLAY', label: 'Timing' }, //24
+	{ id: 'MEASURE_ASSIGN_VECTOR', label: 'Vector' }, //25
+	{ id: 'MEASURE_ASSIGN_VIDEO_SESSION', label: 'Video Session' }, //26
+	{ id: 'MEASURE_ASSIGN_WAVEFORM', label: 'Waveform' }, //27
 ]
 
 export const lineSelectEnableChoices = [

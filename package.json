@@ -1,6 +1,6 @@
 {
 	"name": "telestream-prism",
-	"version": "1.0.4",
+	"version": "1.1.0",
 	"main": "src/main.js",
 	"scripts": {
 		"format": "prettier -w .",
@@ -12,7 +12,7 @@
 		"url": "git+https://github.com/bitfocus/companion-module-telestream-prism.git"
 	},
 	"dependencies": {
-		"@companion-module/base": "~1.7.0",
+		"@companion-module/base": "~1.8.0",
 		"axios": "^1.6.8"
 	},
 	"devDependencies": {
