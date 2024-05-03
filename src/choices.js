@@ -164,7 +164,7 @@ export const audioBallisticChoices = [
 
 export const loudnessMeteringModeChoices = [
 	{ id: 'LOUDNESS_METER_MODE_1770_2_DI', label: 'BS.1770-1 with DI' },
-	{ id: 'LOUDNESS_METER_MODE_1770_1_DI', label: 'BS-1770-2 with DI' },
+	{ id: 'LOUDNESS_METER_MODE_1770_1_DI', label: 'BS.1770-2 with DI' },
 	{ id: 'LOUDNESS_METER_MODE_1770_2', label: 'BS.1770-2' },
 	{ id: 'LOUDNESS_METER_MODE_LEQA_DI', label: 'Leq(A) with DI' },
 ]
@@ -484,7 +484,7 @@ export const audioPcmProgramChoices = [
 
 export const xmitMode2110Choices = [
 	{ id: 'IOSLAVE_SOURCE_CONFIG_2110_XMIT_MODE_N', label: 'Gapped' },
-	{ id: 'IOSLAVE_SOURCE_CONFIG_2110_XMIT_MODE_NL', label: 'Narrow linear' },
+	{ id: 'IOSLAVE_SOURCE_CONFIG_2110_XMIT_MODE_NL', label: 'Narrow Linear' },
 	{ id: 'IOSLAVE_SOURCE_CONFIG_2110_XMIT_MODE_W', label: 'Wide Linear' },
 ]
 
@@ -621,8 +621,8 @@ export const jitterHpfChoices = [
 export const closedCaptionsDisplayChoices = [
 	{ id: 'PICTURE_CC_DISPLAY_OFF', label: 'Off' },
 	{ id: 'PICTURE_CC_DISPLAY_AUTO', label: 'Auto' },
-	{ id: 'PICTURE_CC_DISPLAY_CEA608', label: 'CEA608' },
-	{ id: 'PICTURE_CC_DISPLAY_CEA708', label: 'CEA708' },
+	{ id: 'PICTURE_CC_DISPLAY_CEA608', label: 'CEA 608' },
+	{ id: 'PICTURE_CC_DISPLAY_CEA708', label: 'CEA 708' },
 	{ id: 'PICTURE_CC_DISPLAY_WST', label: 'WST' },
 	{ id: 'PICTURE_CC_DISPLAY_ARIB', label: 'ARIB' },
 ]
@@ -686,7 +686,7 @@ export const pictureFormatOverlayChoices = [
 
 export const pictureFalseColorGamutModeChoices = [
 	{ id: 'PICTURE_OUTSIDE_709_MODE_709_P3', label: '709 - P3' },
-	{ id: 'PICTURE_OUTSIDE_709_MODE_P3_2020', label: 'P3-2020' },
+	{ id: 'PICTURE_OUTSIDE_709_MODE_P3_2020', label: 'P3 - 2020' },
 	{ id: 'PICTURE_OUTSIDE_709_MODE_709_P3_2020', label: 'Both' },
 ]
 
