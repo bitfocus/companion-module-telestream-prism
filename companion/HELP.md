@@ -192,5 +192,5 @@ Some actions require specific hardware models, or licensed software modules.
 ## Presets
 - **Input Select**
 - **Measurement Application**
-- **Preset Recall**
-- **Tile In Focus**
+- **Preset**
+- **Tile**

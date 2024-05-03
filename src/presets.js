@@ -1,5 +1,5 @@
 const { combineRgb } = require('@companion-module/base')
-const { measureAssignChoices, tiles } = require('./choices.js')
+const { measureAssignChoices, tiles, tileSelectChoices, measureTileModeChoices } = require('./choices.js')
 
 const icons = {
 	waveform:
@@ -57,15 +57,33 @@ const icons = {
 		'iVBORw0KGgoAAAANSUhEUgAAAIsAAAB/CAMAAADoxMHCAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAqUExURZhuqq11xZ9ws4Nnj8J84Ml+6Lt613xlhnVifZFsobR3zqZzvIppmAAAAIYjjvYAAAAOdFJOU/////////////////8ARcDcyAAAAAlwSFlzAAALEQAACxEBf2RfkQAAAuFJREFUeF7tmdu2qjAMRQVBgb35/989bZoi4NLdXBjjPGQ+9aJ22qah1tv6/xAumHDBhAsmXDASl1vX9XcuX4HAZRgzj+ts2l2KSuIym2aXJ5tkHhM3+tLsMrNHobvCRulyiY3aZRx77nHD4OJuY3JxtjG6jMPM/Q5YXTxt7C7Jxin5ebh4pWIfF59U7OXikfz8XJINv1SLp4s13fi62GwMLsv8nKbn3HGVMaQbrct+yHk7ZhFqG6XLKUx/uJlRJj+dy9s3v3NHRZX8VC6/3LZOU00qZ5lxkacbjQvvlZ7CZODajbr2iJOfwmWg+v0VsGU9Hlzb8UMdzShcaOjDmlDLxJUDonQjdynTwhWGVgNMTEKwweUu9A5OcF3HPyZz2y8V32hPN3KXZ65Racmlnoq5dJqrF63pRuay8CamaKHJWNcll+m7p85i9kZb2MhcarqlShq/T4OQV90x2+ydaFonm0uOWto/hw4Az+F3DC55TlIkUJKri/DJpQTUH8hcHvNMs10uHai93IXQUyF1ng4QG6dnKUbmkqFNUdJ/KnL6zW37W5EzTY8DuQuF6WktaIk+7KHEQHngT+QuZWloJ1dKKn49oE607WiVS/no3chF5TRVG60mKheO2S1MOS7xtEgODhoXyv0pzfZpoZaeBzssWkV2hNG4VJk9KHClB02Vy7sMyCvyA7jOZRy2I29md8araH6YKF3SAmw2d3CIUpgYXBKP7jZ3KGbbt/EBi8sHhCfuF+4uhmsYZxfT9ZSri/HaztHluM8VuLkY7l0qXi7Nn/MFHxdlQjnh4dJ0mG3A7mK/161YXfxMrC6Ky6cvWFy8/xzWu3ib6F38TbQuXv9eHWl22d30OKR7SLtLvdu+ykTiUmSuMxG57K+5L0HkcjHhggkXTLhgwgUTLphwwYQLJlww4YIJF0y4YMIFEy6YcMGECyZcMOGCCRdMuGDCBRMumHDBhAsmXDDhggkXxLr+A7LvQFK13ZEJAAAAAElFTkSuQmCC',
 	input:
 		'iVBORw0KGgoAAAANSUhEUgAAAJAAAACQCAMAAADQmBKKAAAAIGNIUk0AAIcQAACMEgAA/U0AAIE+AABZ6wABEg8AADzmAAAZzrrJIjIAAAEjaUNDUElDQyBQcm9maWxlAAAoz2NgYDJwdHFyZRJgYMjNKykKcndSiIiMUmA/z8DGwMwABonJxQWOAQE+IHZefl4qAypgZGD4dg1EMjBc1gWZxUAa4EouKCoB0n+A2CgltTgZaKQBkJ1dXlIAFGecA2SLJGWD2RtA7KKQIGcg+wiQzZcOYV8BsZMg7CcgdhHQE0D2F5D6dDCbiQNsDoQtA2KXpFaA7GVwzi+oLMpMzyhRMLS0tFRwTMlPSlUIriwuSc0tVvDMS84vKsgvSixJTQGqhbgPDAQhCkEhpgHUaKHJQGUAigcI63MgOHwZxc4gxBAgubSoDBYXTMaE+Qgz5kgwMPgvZWBg+YMQM+llYFigw8DAPxUhpmbIwCCgz8Cwbw4AwrNP/qv+zn8AAAAkUExURWFhYVhYWHV1dYODg4SEhIGBgWlpaX5+fnp6enBwcE9PTwAAAPwArU8AAAAMdFJOU///////////////ABLfzs4AAAOnSURBVHhe7ZrtlqIwEERRVkV9//ddDIWTDglVHZydOXv6/tHpQHKHdD4Ah+cvI4QYIcQIIUYIMUKIEUKMEGKEECOEGCHECCFGCDH+U6EhgT+OcbSW03n8k3E5n1DQyyGh6wUehtshpwNCEwQq3HFIB91CN7TdYMJhbjqFzmh3hysOddIl9DCJ3OKCo330CN3RIqWn8o5zSPbkdCS3X0jqrpUbTtJxC7l8Ooy8Qk4fv5FTqJE/04tG2RmniviEatPP+YHCmVNNyteE6+gTmvjiktksDNtORYmGSwgNvBmry+iA0jeuGdIjVK6mzewoO86zijiEHqh+ZWeXUc7lCCs4hIrNzyZ7copuc6z9ulBxgXZ9NvmPqIAuZC8Q8Sl7TZ+MdCFUvSCsmjazEeTIQmZOlAYyjl2Q99myECpeQGwfk9jyXKQKmZTeDJrHcL5vazJzNmIUVcjkKGIra9lYVGYukdpnqlA+xorLn12IogTRhDrOVCFUmzArgZ2eRkQX8oGgJlGPEEILxeJu2jWzI2IMUahZ9eb21VSIWAIhhiiU56cZY4h9YToNsQRCDFEoz4Z8lr4uodfGaHVGSSKfrdV/HZ+EvGfyUxBP32FUKU78SyFkcvpuxvdPCeFWJ303KfZTQkuXYUaqFCe+TyifF7FqpEuEGSnfKX2fEB32t/fagoIEQgm6pVvoEDIzzeYpo9m6IZZAiCEKtatGbMXYmnUOMUaPkNlJYGpcMR2T71nssttGFcrXUPtAwxjZRMlPUu+EVCGzpUZs5Z1HRaOmx9SG1OPMcr+557hP42Xa3DCbhEeMogrZ5EVsH3OB1BTShcxtlpQQZusmP2+QhexWVdiy24dbCHJkoWKvimAb+w+oY8wjlE/WQk7gOCCuGzO6UHGJiJE92Gz993EI2Uu0a2T7y5FBLqHNQtrM7GI5cWSQT6hcSFsNleLyHPTCJWQfQr2oPCfKN2UL6m19wiVUe5Bv37DW3sL6HuX7hIrBA8bp+npLfp2qpc6XHU6hTRpRXAk04xUqBzTD6+MWchq5ffxCjTyq431ZNtMhVBtrdTwT4kqPUGU+qtJVd9dJlduxLR3d9aJTqPaezjDqGw5Lr9C+0uVAtfjs4dHI7vwtrJsjQjPF75nmrjpkM3NQKDEM6TX59JEffX2ijo8SQowQYoQQI4QYIcQIIUYIMUKIEUKMEGKEECOEGCHECCFGCDFCiBFCjBBihBAjhBghxAghRggxQojxy4Sez7+yajjInuK3OwAAAABJRU5ErkJggg==',
+	input_active: undefined,
 	preset:
 		'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',
+	tile: undefined,
+	fullscreen: undefined,
+	two_tile_vertical: undefined,
+	settings: undefined,
+	capture: undefined,
+	volume_mute: undefined,
+	volume_1_bar: undefined,
+	volume_2_bar: undefined,
+	volume_3_bar: undefined,
+	home: undefined,
+	session_start: undefined,
+	session_stop: undefined,
+	session_reset: undefined,
+	bell_grey: undefined,
+	bell_green: undefined,
+	bell_yellow: undefined,
+	bell_red: undefined,
 }
 
 const colors = {
 	text: combineRgb(218, 218, 218),
 	text_black: combineRgb(0, 0, 0),
 	bg: combineRgb(72, 72, 72),
-	bg_green: combineRgb(0, 204, 0),
+	bg_green: combineRgb(0, 130, 0),
 }
 
 const button_defaults = {
@@ -79,6 +97,97 @@ const button_defaults = {
 
 module.exports = async function (self) {
 	let presets = {}
+	presets['Header-Input-Active'] = {
+		category: 'Input',
+		type: 'text',
+		name: 'Active Input',
+		text: 'Display active input, press to cycle through inputs',
+	}
+	presets[`get_active_input`] = {
+		type: 'button',
+		category: 'Input',
+		name: `Active Input`,
+		style: {
+			...button_defaults,
+			text: `$(generic-module:activeInputName)\\n`,
+			png64: icons.input,
+		},
+		steps: [
+			{
+				down: [
+					{
+						actionId: 'activeInput',
+						options: {
+							action: 'inc',
+							input: 0,
+							inputVar: '',
+							useVar: false,
+						},
+					},
+				],
+				up: [],
+			},
+		],
+		feedbacks: [{}],
+	}
+	presets['Header-Input-Select'] = {
+		category: 'Input',
+		type: 'text',
+		name: 'Select Input',
+		text: '',
+	}
+	for (let i = 0; i <= 5; i++) {
+		presets[`set_active_input_${i}`] = {
+			type: 'button',
+			category: 'Input',
+			name: `Input ${i + 1}`,
+			style: {
+				...button_defaults,
+				text: `$(generic-module:input${i + 1}Name)\\n`,
+				png64: icons.input,
+			},
+			steps: [
+				{
+					down: [
+						{
+							actionId: 'activeInput',
+							options: {
+								action: 'set',
+								input: i,
+								inputVar: '',
+								useVar: false,
+							},
+						},
+					],
+					up: [],
+				},
+			],
+			feedbacks: [
+				{
+					feedbackId: 'activeInput',
+					options: {
+						input: i,
+					},
+					style: {
+						color: colors.text,
+						bgcolor: colors.bg_green,
+					},
+				},
+			],
+		}
+	}
+	presets['Header-MeasurementApps'] = {
+		category: 'Measurement Application',
+		type: 'text',
+		name: 'Measurement Application',
+		text: 'Load the selected application on the specified tile',
+	}
+	presets['Header-MeasurementAppsGreen'] = {
+		category: 'Measurement Application',
+		type: 'text',
+		name: 'Shading',
+		text: '',
+	}
 	presets[`application_waveform`] = {
 		type: 'button',
 		category: 'Measurement Application',
@@ -255,6 +364,12 @@ module.exports = async function (self) {
 		],
 		feedbacks: [],
 	}
+	presets['Header-MeasurementAppsBlue'] = {
+		category: 'Measurement Application',
+		type: 'text',
+		name: 'Core',
+		text: '',
+	}
 	presets[`application_picture`] = {
 		type: 'button',
 		category: 'Measurement Application',
@@ -405,6 +520,12 @@ module.exports = async function (self) {
 		],
 		feedbacks: [],
 	}
+	presets['Header-MeasurementAppsYellow'] = {
+		category: 'Measurement Application',
+		type: 'text',
+		name: 'IP / PTP',
+		text: '',
+	}
 	presets[`application_ip_status`] = {
 		type: 'button',
 		category: 'Measurement Application',
@@ -554,6 +675,12 @@ module.exports = async function (self) {
 			},
 		],
 		feedbacks: [],
+	}
+	presets['Header-MeasurementOrange'] = {
+		category: 'Measurement Application',
+		type: 'text',
+		name: 'Engineering',
+		text: '',
 	}
 	presets[`application_anc_session`] = {
 		type: 'button',
@@ -730,6 +857,12 @@ module.exports = async function (self) {
 		],
 		feedbacks: [],
 	}
+	presets['Header-MeasurementPurple'] = {
+		category: 'Measurement Application',
+		type: 'text',
+		name: 'Generator',
+		text: '',
+	}
 	presets[`application_ip_generator`] = {
 		type: 'button',
 		category: 'Measurement Application',
@@ -780,60 +913,58 @@ module.exports = async function (self) {
 		],
 		feedbacks: [],
 	}
-	for (let i = 0; i <= 5; i++) {
-		presets[`set_active_input_${i}`] = {
-			type: 'button',
-			category: 'Input',
-			name: `Input ${i + 1}`,
-			style: {
-				...button_defaults,
-				text: `$(generic-module:input${i + 1}Name)\\n`,
-				png64: icons.input,
+	presets['Header-get_presets'] = {
+		category: 'Preset',
+		type: 'text',
+		name: 'Get Presets',
+		text: 'Get a list of saved presets and update the load preset action and preset list',
+	}
+	presets[`get_presets`] = {
+		type: 'button',
+		category: 'Preset',
+		name: `Get Presets`,
+		style: {
+			...button_defaults,
+			text: `Get Presets\\n`,
+			png64: icons.preset,
+		},
+		steps: [
+			{
+				down: [
+					{
+						actionId: 'getPresets',
+						options: {},
+					},
+				],
+				up: [],
 			},
-			steps: [
-				{
-					down: [
-						{
-							actionId: 'activeInput',
-							options: {
-								action: 'set',
-								input: i,
-								inputVar: '',
-								useVar: false,
-							},
-						},
-					],
-					up: [],
-				},
-			],
-			feedbacks: [
-				{
-					feedbackId: 'activeInput',
-					options: {
-						input: i,
-					},
-					style: {
-						color: colors.text_black,
-						bgcolor: colors.bg_green,
-					},
-				},
-			],
-		}
-		presets[`get_presets`] = {
+		],
+		feedbacks: [],
+	}
+	presets['Header-recall_presets'] = {
+		category: 'Preset',
+		type: 'text',
+		name: 'Load Preset',
+		text: 'Recall the selected preset',
+	}
+	self.prism.presets.forEach((preset) => {
+		presets[`recall_preset_${preset.label}`] = {
 			type: 'button',
 			category: 'Preset',
-			name: `Get Presets`,
+			name: `${preset.label}`,
 			style: {
 				...button_defaults,
-				text: `Get Presets\\n`,
+				text: `${preset.presetlabel}`,
 				png64: icons.preset,
 			},
 			steps: [
 				{
 					down: [
 						{
-							actionId: 'getPresets',
-							options: {},
+							actionId: 'loadPreset',
+							options: {
+								preset: preset.id,
+							},
 						},
 					],
 					up: [],
@@ -841,42 +972,22 @@ module.exports = async function (self) {
 			],
 			feedbacks: [],
 		}
-		self.prism.presets.forEach((preset) => {
-			presets[`recall_preset_${preset.label}`] = {
-				type: 'button',
-				category: 'Preset',
-				name: `${preset.label}`,
-				style: {
-					...button_defaults,
-					text: `${preset.label}`,
-					png64: icons.preset,
-				},
-				steps: [
-					{
-						down: [
-							{
-								actionId: 'loadPreset',
-								options: {
-									preset: preset.id,
-								},
-							},
-						],
-						up: [],
-					},
-				],
-				feedbacks: [],
-			}
-		})
+	})
+	presets['Header-Tile_in_Focus'] = {
+		category: 'Tile',
+		type: 'text',
+		name: 'Tile In Focus',
+		text: '',
 	}
 	for (let i = 1; i <= 8; i++) {
 		presets[`tile_in_focus_${i}`] = {
 			type: 'button',
-			category: 'Tile In Focus',
+			category: 'Tile',
 			name: `Tile ${i + 1}`,
 			style: {
 				...button_defaults,
 				text: `Tile ${i}\\n`,
-				png64: undefined,
+				png64: icons.tile,
 			},
 			steps: [
 				{
@@ -898,12 +1009,87 @@ module.exports = async function (self) {
 						tile: i,
 					},
 					style: {
-						color: colors.text_black,
+						color: colors.text,
 						bgcolor: colors.bg_green,
 					},
 				},
 			],
 		}
-		self.setPresetDefinitions(presets)
 	}
+	presets['Header-Tile_fullscreen'] = {
+		category: 'Tile',
+		type: 'text',
+		name: 'Full Screen',
+		text: '',
+	}
+	for (let i = 0; i <= 8; i++) {
+		presets[`tile_fullscreen_${i}`] = {
+			type: 'button',
+			category: 'Tile',
+			name: tileSelectChoices[i].label,
+			style: {
+				...button_defaults,
+				text: `${tileSelectChoices[i].label}\\n`,
+				png64: icons.fullscreen,
+			},
+			steps: [
+				{
+					down: [
+						{
+							actionId: 'tileSelect',
+							options: {
+								tile: i,
+							},
+						},
+					],
+					up: [],
+				},
+			],
+			feedbacks: [],
+		}
+	}
+	presets['Header-Tile_two_tile_vertical'] = {
+		category: 'Tile',
+		type: 'text',
+		name: 'Two Tile Vertical',
+		text: '',
+	}
+	presets[`tile_two_tile_vertical`] = {
+		type: 'button',
+		category: 'Tile',
+		name: 'Two Tile Verticcal',
+		style: {
+			...button_defaults,
+			text: `Tile $(generic-module:tileInFocus)\\n`,
+			png64: icons.two_tile_vertical,
+		},
+		steps: [
+			{
+				down: [
+					{
+						actionId: 'measureTileMode',
+						options: {
+							mode: measureTileModeChoices[1].id,
+							scope: tiles[8].id,
+						},
+					},
+				],
+				up: [],
+			},
+			{
+				down: [
+					{
+						actionId: 'measureTileMode',
+						options: {
+							mode: measureTileModeChoices[0].id,
+							scope: tiles[8].id,
+						},
+					},
+				],
+				up: [],
+			},
+		],
+		feedbacks: [],
+	}
+	self.setPresetDefinitions(presets)
 }
