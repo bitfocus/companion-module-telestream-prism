@@ -466,9 +466,9 @@ export const sourceConfigEotfChoices = [
 	{ id: 'IOSLAVE_SOURCE_CONFIG_EOTF_PQ_NARROW', label: 'PQ Narrow' },
 	{ id: 'IOSLAVE_SOURCE_CONFIG_EOTF_PQ_FULL', label: 'PQ Full' },
 	{ id: 'IOSLAVE_SOURCE_CONFIG_EOTF_HLG', label: 'HLG' },
-	{ id: 'IOSLAVE_SOURCE_CONFIG_EOTF_SLOG2', label: 'SLog 2' },
-	{ id: 'IOSLAVE_SOURCE_CONFIG_EOTF_SLOG3', label: 'Slog 3' },
-	{ id: 'IOSLAVE_SOURCE_CONFIG_EOTF_SLOG3_LIVE_HDR', label: 'Slog 3 (Live HDR)' },
+	{ id: 'IOSLAVE_SOURCE_CONFIG_EOTF_SLOG2', label: 'S-Log 2' },
+	{ id: 'IOSLAVE_SOURCE_CONFIG_EOTF_SLOG3', label: 'S-Log 3' },
+	{ id: 'IOSLAVE_SOURCE_CONFIG_EOTF_SLOG3_LIVE_HDR', label: 'S-Log 3 (Live HDR)' },
 	{ id: 'IOSLAVE_SOURCE_CONFIG_EOTF_LOGC', label: 'Log C' },
 ]
 
