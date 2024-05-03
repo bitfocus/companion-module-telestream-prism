@@ -19,7 +19,6 @@ Some actions require specific hardware models, or licensed software modules.
 - **Analog Aux Display Mode** 
 - **ANC Session Control** 
 - **Audio Ballistic**
-- **A/V Delay User Offset Mode**
 - **Audio Display Loudness Meter** 
 - **Audio Downmix Mode** 
 - **Audio Input Type**
@@ -193,5 +192,5 @@ Some actions require specific hardware models, or licensed software modules.
 ## Presets
 - **Input Select**
 - **Measurement Application**
-- **Preset Recall**
-- **Tile In Focus**
+- **Preset**
+- **Tile**

@@ -178,9 +178,13 @@ class Telestream_PRISM extends InstanceBase {
 			}
 			let presets = response.data.string
 			presets = presets.split(', ')
-			this.prism.presets = [{ id: 'factory', label: 'Factory Preset' }]
+			this.prism.presets = [{ id: 'factory', label: 'Factory Preset', presetlabel: 'Factory\\nPreset' }]
 			presets.forEach((preset) => {
-				this.prism.presets.push({ id: preset, label: preset })
+				this.prism.presets.push({
+					id: preset,
+					label: preset,
+					presetlabel: `${preset.replace('/local/', '').replace('_/', '').replace(':', ': ')}\\n`,
+				})
 			})
 			this.updateActions()
 			this.updatePresetsDefinitions()
