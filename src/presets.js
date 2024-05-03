@@ -134,7 +134,7 @@ module.exports = async function (self) {
 		category: 'Input',
 		type: 'text',
 		name: 'Select Input',
-		text: '',
+		text: 'Select and tally the active input',
 	}
 	for (let i = 0; i <= 5; i++) {
 		presets[`set_active_input_${i}`] = {
@@ -175,12 +175,6 @@ module.exports = async function (self) {
 				},
 			],
 		}
-	}
-	presets['Header-MeasurementApps'] = {
-		category: 'Measurement Application',
-		type: 'text',
-		name: 'Measurement Application',
-		text: 'Load the selected application on the specified tile',
 	}
 	presets['Header-MeasurementAppsGreen'] = {
 		category: 'Measurement Application',
