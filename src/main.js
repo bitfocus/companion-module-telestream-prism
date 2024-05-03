@@ -183,7 +183,13 @@ class Telestream_PRISM extends InstanceBase {
 				this.prism.presets.push({
 					id: preset,
 					label: preset,
-					presetlabel: `${preset.replace('/local/', '').replace('_/', '').replace(':', ': ')}\\n`,
+					presetlabel: `${preset
+						.replace('/local/', '')
+						.replace('_/', '')
+						.replace('_', ' ')
+						.replace('/', ' ')
+						.replace('Unnamed ', '')
+						.replace(':', ':\\n')}`,
 				})
 			})
 			this.updateActions()
