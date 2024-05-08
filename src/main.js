@@ -99,6 +99,8 @@ class Telestream_PRISM extends InstanceBase {
 
 	async getInputConfig() {
 		let varList = []
+		let input_list_changed = false
+		let input_entry = {}
 		for (let i = 0; i <= 5; i++) {
 			try {
 				const response = await this.axios.get(`/inputConfigure?input=${i}`)
@@ -109,12 +111,21 @@ class Telestream_PRISM extends InstanceBase {
 				}
 				varList[`input${i + 1}Name`] = response.data.name
 				varList[`input${i + 1}Type`] = response.data.inputType
+				input_entry = { id: i, label: `${i + 1} ${response.data.name} (${response.data.inputType})` }
+				if (this.prism.input_list[i] != input_entry) {
+					this.prism.input_list[i] = input_entry
+					input_list_changed = true
+				}
 			} catch (error) {
 				this.logError(error)
 				return undefined
 			}
 		}
 		this.setVariableValues(varList)
+		if (input_list_changed) {
+			this.updateActions() // export actions
+			this.updateFeedbacks() // export feedbacks
+		}
 	}
 
 	async getTileInFocus() {
@@ -131,7 +142,7 @@ class Telestream_PRISM extends InstanceBase {
 				varList['tileInFocus'] = this.prism.tileInFocus
 				this.setVariableValues(varList)
 				this.checkFeedbacks('tileInFocus')
-				return this.prism.input
+				return this.prism.tileInFocus
 			} else {
 				this.log('warn', 'tile_in_focus returned a NaN or unexpected  length')
 				return undefined
@@ -216,6 +227,14 @@ class Telestream_PRISM extends InstanceBase {
 		this.prism = {
 			presets: [{ id: 'factory', label: 'Factory Preset' }],
 			input: 'unknown',
+			input_list: [
+				{ id: 0, label: `1: Input 1` },
+				{ id: 1, label: `2: Input 2` },
+				{ id: 2, label: `3: Input 3` },
+				{ id: 3, label: `4: Input 4` },
+				{ id: 4, label: `5: Input 5` },
+				{ id: 5, label: `6: Input 6` },
+			],
 			tileInFocus: 1,
 		}
 	}

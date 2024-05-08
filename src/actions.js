@@ -153,11 +153,12 @@ module.exports = function (self) {
 					choices: activeInputChoices,
 				},
 				{
-					...actionOptions.integerInput,
+					...actionOptions.modeDropdown,
 					id: 'input',
 					label: 'Input',
-					min: 1,
-					max: 6,
+					choices: self.prism.input_list,
+					default: self.prism.input_list[0],
+					allowCustom: false,
 					isVisible: (options) => {
 						return options.useVar === false && options.action == 'set'
 					},
@@ -169,7 +170,7 @@ module.exports = function (self) {
 					isVisible: (options) => {
 						return options.useVar === true && options.action == 'set'
 					},
-					tooltip: 'Varible must return an integer between 1 and 6',
+					tooltip: 'Varible must return an integer between 0 and 5',
 				},
 				{
 					...actionOptions.useVar,
@@ -186,8 +187,8 @@ module.exports = function (self) {
 				switch (options.action) {
 					case 'set':
 						prismInput = options.useVar
-							? parseInt(await self.parseVariablesInString(options.inputVar)) - 1
-							: parseInt(options.input) - 1
+							? parseInt(await self.parseVariablesInString(options.inputVar))
+							: parseInt(options.input)
 						break
 					case 'inc':
 						prismInput = self.prism.input >= 5 ? 0 : self.prism.input + 1
@@ -510,6 +511,16 @@ module.exports = function (self) {
 					}
 				} catch (error) {
 					self.logError(error)
+				}
+			},
+			learn: async (action) => {
+				const newTile = await self.getTileInFocus()
+				if (newTile === undefined) {
+					return undefined
+				}
+				return {
+					...action.options,
+					tile: newTile,
 				}
 			},
 		},
