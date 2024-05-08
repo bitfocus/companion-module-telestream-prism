@@ -156,7 +156,8 @@ module.exports = function (self) {
 					...actionOptions.integerInput,
 					id: 'input',
 					label: 'Input',
-					max: 5,
+					min: 1,
+					max: 6,
 					isVisible: (options) => {
 						return options.useVar === false && options.action == 'set'
 					},
@@ -168,7 +169,7 @@ module.exports = function (self) {
 					isVisible: (options) => {
 						return options.useVar === true && options.action == 'set'
 					},
-					tooltip: 'Varible must return an integer between 0 and 5',
+					tooltip: 'Varible must return an integer between 1 and 6',
 				},
 				{
 					...actionOptions.useVar,
@@ -185,8 +186,8 @@ module.exports = function (self) {
 				switch (options.action) {
 					case 'set':
 						prismInput = options.useVar
-							? parseInt(await self.parseVariablesInString(options.inputVar))
-							: parseInt(options.input)
+							? parseInt(await self.parseVariablesInString(options.inputVar)) - 1
+							: parseInt(options.input) - 1
 						break
 					case 'inc':
 						prismInput = self.prism.input >= 5 ? 0 : self.prism.input + 1
