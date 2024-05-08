@@ -15,12 +15,13 @@ module.exports = async function (self) {
 					...actionOptions.integerInput,
 					id: 'input',
 					label: 'Input',
-					max: 5,
+					min: 1,
+					max: 6,
 					isVisible: true,
 				},
 			],
 			callback: (feedback) => {
-				return feedback.options.input == self.prism.input
+				return feedback.options.input - 1 == self.prism.input
 			},
 		},
 		tileInFocus: {

@@ -43,34 +43,7 @@ module.exports = async function (self) {
 		],
 		feedbacks: [{}],
 	}
-	presets[`get_active_inc`] = {
-		type: 'button',
-		category: 'Input',
-		name: `Input Increment`,
-		style: {
-			...button_defaults,
-			text: '',
-			png64: icons.increment,
-		},
-		steps: [
-			{
-				down: [
-					{
-						actionId: 'activeInput',
-						options: {
-							action: 'inc',
-							input: 0,
-							inputVar: '',
-							useVar: false,
-						},
-					},
-				],
-				up: [],
-			},
-		],
-		feedbacks: [{}],
-	}
-	presets[`get_active_dec`] = {
+	presets[`set_active_dec`] = {
 		type: 'button',
 		category: 'Input',
 		name: `Input Increment`,
@@ -97,20 +70,47 @@ module.exports = async function (self) {
 		],
 		feedbacks: [{}],
 	}
+	presets[`set_active_inc`] = {
+		type: 'button',
+		category: 'Input',
+		name: `Input Increment`,
+		style: {
+			...button_defaults,
+			text: '',
+			png64: icons.increment,
+		},
+		steps: [
+			{
+				down: [
+					{
+						actionId: 'activeInput',
+						options: {
+							action: 'inc',
+							input: 0,
+							inputVar: '',
+							useVar: false,
+						},
+					},
+				],
+				up: [],
+			},
+		],
+		feedbacks: [{}],
+	}
 	presets['Header-Input-Select'] = {
 		category: 'Input',
 		type: 'text',
 		name: 'Select Input',
 		text: 'Select and tally the active input',
 	}
-	for (let i = 0; i <= 5; i++) {
+	for (let i = 1; i <= 6; i++) {
 		presets[`set_active_input_${i}`] = {
 			type: 'button',
 			category: 'Input',
-			name: `Input ${i + 1}`,
+			name: `Input ${i}`,
 			style: {
 				...button_defaults,
-				text: `$(generic-module:input${i + 1}Name)\\n`,
+				text: `$(generic-module:input${i}Name)\\n`,
 				png64: icons.input,
 			},
 			steps: [

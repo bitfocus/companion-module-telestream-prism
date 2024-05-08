@@ -153,7 +153,7 @@ class Telestream_PRISM extends InstanceBase {
 			}
 			if (!isNaN(parseInt(response.data.input))) {
 				this.prism.input = parseInt(response.data.input)
-				varList['activeInputNumber'] = this.prism.input
+				varList['activeInputNumber'] = this.prism.input + 1
 				varList['activeInputName'] = response.data.name
 				this.setVariableValues(varList)
 				this.checkFeedbacks('activeInput')
