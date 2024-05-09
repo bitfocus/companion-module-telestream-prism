@@ -120,7 +120,7 @@ module.exports = async function (self) {
 							actionId: 'activeInput',
 							options: {
 								action: 'set',
-								input: i,
+								input: i - 1,
 								inputVar: '',
 								useVar: false,
 							},
@@ -133,7 +133,7 @@ module.exports = async function (self) {
 				{
 					feedbackId: 'activeInput',
 					options: {
-						input: i,
+						input: i - 1,
 					},
 					style: {
 						color: colors.text,
