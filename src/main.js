@@ -111,7 +111,7 @@ class Telestream_PRISM extends InstanceBase {
 				}
 				varList[`input${i + 1}Name`] = response.data.name
 				varList[`input${i + 1}Type`] = response.data.inputType
-				input_entry = { id: i, label: `${i + 1} ${response.data.name} (${response.data.inputType})` }
+				input_entry = { id: i, label: `${i + 1}: ${response.data.name} (${response.data.inputType})` }
 				if (this.prism.input_list[i] != input_entry) {
 					this.prism.input_list[i] = input_entry
 					input_list_changed = true

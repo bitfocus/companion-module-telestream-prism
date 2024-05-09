@@ -157,7 +157,7 @@ module.exports = function (self) {
 					id: 'input',
 					label: 'Input',
 					choices: self.prism.input_list,
-					default: self.prism.input_list[0],
+					default: self.prism.input_list[0].id,
 					allowCustom: false,
 					isVisible: (options) => {
 						return options.useVar === false && options.action == 'set'
@@ -254,7 +254,7 @@ module.exports = function (self) {
 					id: 'preset',
 					type: 'dropdown',
 					label: 'Preset',
-					default: 'factory',
+					default: self.prism.presets[0].id,
 					choices: self.prism.presets,
 					useVariables: true,
 					allowCustom: true,
@@ -307,7 +307,7 @@ module.exports = function (self) {
 					id: 'action',
 					type: 'dropdown',
 					label: 'Action',
-					default: 'AUDIO_SESSION_CONTROL_STOP',
+					default: audioSessionControlChoices[0].id,
 					choices: audioSessionControlChoices,
 					useVariables: true,
 					allowCustom: true,
@@ -336,7 +336,7 @@ module.exports = function (self) {
 					id: 'action',
 					type: 'dropdown',
 					label: 'Action',
-					default: 'LOUDNESS_SESSION_CONTROL_STOP',
+					default: loudnessSessionControlChoices[0].id,
 					choices: loudnessSessionControlChoices,
 					useVariables: true,
 					allowCustom: true,
@@ -366,7 +366,7 @@ module.exports = function (self) {
 					id: 'action',
 					type: 'dropdown',
 					label: 'Action',
-					default: 'IOSLAVE_SESSION_CONTROL_STOP',
+					default: videoSessionControlChoices[0].id,
 					choices: videoSessionControlChoices,
 					useVariables: true,
 					allowCustom: true,
@@ -395,7 +395,7 @@ module.exports = function (self) {
 					id: 'action',
 					type: 'dropdown',
 					label: 'Action',
-					default: 'IOSLAVE_SESSION_CONTROL_STOP',
+					default: ipSessionControlChoices[0].id,
 					choices: ipSessionControlChoices,
 					useVariables: true,
 					allowCustom: true,
@@ -424,7 +424,7 @@ module.exports = function (self) {
 					...actionOptions.modeDropdown,
 					id: 'tile',
 					label: 'Tile',
-					default: 0,
+					default: tileSelectChoices[0].id,
 					choices: tileSelectChoices,
 					tooltip: 'Variable must return an integer between 0 and 8.',
 				},
@@ -452,7 +452,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'TILE_FULLSCREEN_MODE_NORMAL',
+					default: tileFullscreenModeChoices[0].id,
 					choices: tileFullscreenModeChoices,
 					tooltip: 'Options: TILE_FULLSCREEN_MODE_NORMAL, TILE_FULLSCREEN_MODE_EXTENDED',
 				},
@@ -477,7 +477,7 @@ module.exports = function (self) {
 					...actionOptions.modeDropdown,
 					id: 'tile',
 					label: 'Tile',
-					default: 1,
+					default: tileInFocusChoices[0].id,
 					choices: tileInFocusChoices,
 					tooltip: 'Variable must return an integer between 1 and 8.',
 				},
@@ -531,7 +531,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'Ballistic Mode',
-					default: 'AUDIO_BALLISTIC_PPM_1',
+					default: audioBallisticChoices[0].id,
 					choices: audioBallisticChoices,
 					tooltip: 'Available Options: AUDIO_BALLISTIC_PPM_1, AUDIO_BALLISTIC_PPM_2, AUDIO_BALLISTIC_TRUE_PEAK.',
 				},
@@ -556,7 +556,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'Loudness Metering Mode',
-					default: 'LOUDNESS_METER_MODE_1770_2_DI',
+					default: loudnessMeteringModeChoices[0].id,
 					choices: loudnessMeteringModeChoices,
 					tooltip:
 						'Available options are: LOUDNESS_METER_MODE_1770_2_DI, LOUDNESS_METER_MODE_1770_1_DI, LOUDNESS_METER_MODE_1770_2, LOUDNESS_METER_MODE_LEQA_DI',
@@ -582,7 +582,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'Full Scale Units',
-					default: 'LOUDNESS_FULL_SCALE_UNITS_LUFS',
+					default: loudnessFullScaleUnitsChoices[0].id,
 					choices: loudnessFullScaleUnitsChoices,
 					tooltip: 'Available options are: LOUDNESS_FULL_SCALE_UNITS_LUFS, LOUDNESS_FULL_SCALE_UNITS_LKFS',
 				},
@@ -607,7 +607,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'DC Blocking Mode',
-					default: 'TRUE_PEAK_DC_BLOCK_OFF',
+					default: loudnessTruePeakDcBlockChoices[0].id,
 					choices: loudnessTruePeakDcBlockChoices,
 					tooltip: 'Available options are: TRUE_PEAK_DC_BLOCK_OFF, TRUE_PEAK_DC_BLOCK_ON',
 				},
@@ -632,7 +632,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'Emphasis',
-					default: 'TRUE_PEAK_EMPHASIS_OFF',
+					default: loudnessTruePeakEmphasisChoices[0].id,
 					choices: loudnessTruePeakEmphasisChoices,
 					tooltip: 'Available options are: TRUE_PEAK_EMPHASIS_OFF, TRUE_PEAK_EMPHASIS_ON',
 				},
@@ -657,7 +657,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'Emphasis',
-					default: 'LOUDNESS_BALLISTIC_SHORT_AVERAGE',
+					default: loudnessBallisticChoices[0].id,
 					choices: loudnessBallisticChoices,
 					tooltip:
 						'Available options are: LOUDNESS_BALLISTIC_SHORT_AVERAGE, LOUDNESS_BALLISTIC_LONG_AVERAGE, LOUDNESS_BALLISTIC_EBU_R128_M',
@@ -683,7 +683,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'Gating Window',
-					default: 'LOUDNESS_SHORT_GATING_WINDOW_EBU_R128_3S',
+					default: loudnessShortGatingWindowChoices[0].id,
 					choices: loudnessShortGatingWindowChoices,
 					tooltip:
 						'Available options are: LOUDNESS_SHORT_GATING_WINDOW_EBU_R128_3S, LOUDNESS_SHORT_GATING_WINDOW_LEGACY_10S',
@@ -709,7 +709,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'Preset',
-					default: 'LOUDNESS_PRESET_EBU_R128_2014',
+					default: loudnessLoadPresetChoices[0].id,
 					choices: loudnessLoadPresetChoices,
 					tooltip: 'Available Option: LOUDNESS_PRESET_EBU_R128_2014, LOUDNESS_PRESET_ATSC_A85_2013',
 				},
@@ -734,7 +734,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'Gating Window',
-					default: 'AUDIO_PROGRAM_SURROUND_ORDER_LRC',
+					default: audioProgramSurroundOrderChoices[0].id,
 					choices: audioProgramSurroundOrderChoices,
 					tooltip: 'Available Options: AUDIO_PROGRAM_SURROUND_ORDER_LRC, AUDIO_PROGRAM_SURROUND_ORDER_LCR',
 				},
@@ -759,7 +759,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'Metadata Source',
-					default: 'DOLBY_METADATA_SOURCE_AUTO',
+					default: dolbyMetadataSourceChoices[0].id,
 					choices: dolbyMetadataSourceChoices,
 					tooltip:
 						'Available options are DOLBY_METADATA_SOURCE_AUTO, DOLBY_METADATA_SOURCE_AES and DOLBY_METADATA_SOURCE_VANC',
@@ -785,7 +785,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'Downmix Mode',
-					default: 'AUDIO_DOWNMIX_MODE_LO_RO',
+					default: audioDownmixModeChoices[0].id,
 					choices: audioDownmixModeChoices,
 					tooltip:
 						'Available options are AUDIO_DOWNMIX_MODE_LO_RO, AUDIO_DOWNMIX_MODE_LT_RT and AUDIO_DOWNMIX_MODE_MONO',
@@ -810,7 +810,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'AUDIO_SOLO_MUTE_MODE_SOLO_ON',
+					default: audioSoloModeChoices[0].id,
 					choices: audioSoloModeChoices,
 					tooltip:
 						'Options: AUDIO_SOLO_MUTE_MODE_SOLO_ON : Enables solo display, AUDIO_SOLO_MUTE_MODE_OFF : Disables solo display',
@@ -835,7 +835,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'AUDIO_DOLBY_DRC_MODE_OFF',
+					default: dolbyDrcModeChoices[0].id,
 					choices: dolbyDrcModeChoices,
 					tooltip: 'Available options: AUDIO_DOLBY_DRC_MODE_OFF, AUDIO_DOLBY_DRC_MODE_LINE and AUDIO_DOLBY_DRC_MODE_RF',
 				},
@@ -859,7 +859,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'ANALOG_AUDIO_OUT_DISCRETE_CHANNELS',
+					default: analogAudioOutputModeChoices[0].id,
 					choices: analogAudioOutputModeChoices,
 					tooltip: 'Options are ANALOG_AUDIO_OUT_DISCRETE_CHANNELS and ANALOG_AUDIO_OUT_DOWNMIX',
 				},
@@ -883,7 +883,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'AUDIO_AUX_DISPLAY_MODE_NONE',
+					default: audioAuxDisplayModeChoices[0].id,
 					choices: audioAuxDisplayModeChoices,
 					tooltip:
 						'Options: AUDIO_AUX_DISPLAY_MODE_NONE : No Aux Display, AUDIO_AUX_DISPLAY_MODE_LISSAJOUS : Phase Display, AUDIO_AUX_DISPLAY_MODE_SURROUND : Surround Display, AUDIO_AUX_DISPLAY_MODE_LOUD : Loudness Display',
@@ -911,7 +911,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'AUDIO_DISPLAY_LOUDNESS_METER_OFF',
+					default: audioDisplayLoudnessMeterChoices[0].id,
 					choices: audioDisplayLoudnessMeterChoices,
 					tooltip: 'Options: AUDIO_DISPLAY_LOUDNESS_METER_OFF to Disable, AUDIO_DISPLAY_LOUDNESS_METER_ON to Enable',
 				},
@@ -938,7 +938,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'AUDIO_SESSION_DISPLAY_OFF',
+					default: audioSessionDisplayChoices[0].id,
 					choices: audioSessionDisplayChoices,
 					tooltip: 'Options: AUDIO_SESSION_DISPLAY_OFF to Disable, AUDIO_SESSION_DISPLAY_ON to Enable',
 				},
@@ -965,7 +965,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'AUDIO_DISPLAY_SURROUND_DOMINANCE_OFF',
+					default: surroundDominanceIndicatorChoices[0].id,
 					choices: surroundDominanceIndicatorChoices,
 					tooltip:
 						'Options: AUDIO_DISPLAY_SURROUND_DOMINANCE_OFF to Disable, AUDIO_DISPLAY_SURROUND_DOMINANCE_ON to Enable.',
@@ -993,7 +993,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'AUDIO_DISPLAY_SURROUND_IMMERSIVE_DOMINANCE_OFF',
+					default: surroundImmersiveDominanceIndicatorChoices[0].id,
 					choices: surroundImmersiveDominanceIndicatorChoices,
 					tooltip:
 						'Options: AUDIO_DISPLAY_SURROUND_IMMERSIVE_DOMINANCE_OFF to Disable, AUDIO_DISPLAY_SURROUND_IMMERSIVE_DOMINANCE_ON to Enable.',
@@ -1021,7 +1021,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'AUDIO_DISPLAY_SURROUND_BED_SELECT_MAIN',
+					default: surroundBedSelectChoices[0].id,
 					choices: surroundBedSelectChoices,
 					tooltip:
 						'Options: AUDIO_DISPLAY_SURROUND_BED_SELECT_MAIN to display only main bed, AUDIO_DISPLAY_SURROUND_BED_SELECT_UPPER to display only upper bed, AUDIO_DISPLAY_SURROUND_BED_SELECT_BOTH to display both.',
@@ -1049,7 +1049,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'AUDIO_DISPLAY_SURROUND_PSI_BED_SELECT_MAIN',
+					default: surroundImmersivePsiBedSelectChoices[0].id,
 					choices: surroundImmersivePsiBedSelectChoices,
 					tooltip:
 						'Options: AUDIO_DISPLAY_SURROUND_PSI_BED_SELECT_MAIN to display only main bed PSI, AUDIO_DISPLAY_SURROUND_PSI_BED_SELECT_UPPER to display only upper bed PSI.',
@@ -1077,7 +1077,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'AVDELAY_USER_OFFSET_MODE_OFF',
+					default: avdelayUserOffsetModeChoices[0].id,
 					choices: avdelayUserOffsetModeChoices,
 					tooltip: 'Options: AVDELAY_USER_OFFSET_MODE_OFF, AVDELAY_USER_OFFSET_MODE_ON',
 				},
@@ -1101,7 +1101,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'MEDIA_MODE_IP_2_IN',
+					default: sdiLoopThroughChoices[0].id,
 					choices: sdiLoopThroughChoices,
 					tooltip: `Available options: MEDIA_MODE_IP_2_IN for turning loop through 'On' and MEDIA_MODE_IP_4_IN for turning loop through 'Off'`,
 				},
@@ -1125,7 +1125,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 25,
+					default: ipVideoPhyBitRateChoices[0].id,
 					choices: ipVideoPhyBitRateChoices,
 					tooltip: 'Valid values are 10 or 25 for MPI-25 and MPX-25 systems.',
 				},
@@ -1155,7 +1155,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'BD_IFC_IP_VIDEO_PHY_FEC_MODE_BYPASS',
+					default: ipVideoPhyFecModeChoices[0].id,
 					choices: ipVideoPhyFecModeChoices,
 					tooltip: 'Options: BD_IFC_IP_VIDEO_PHY_FEC_MODE_BYPASS, BD_IFC_IP_VIDEO_PHY_FEC_MODE_ENABLE.',
 				},
@@ -1181,7 +1181,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'CAMAPP_DISPLAY_TYPE_WAVEFORM',
+					default: camappDisplayTypeChoices[0].id,
 					choices: camappDisplayTypeChoices,
 					tooltip: 'Options: CAMAPP_DISPLAY_TYPE_WAVEFORM and CAMAPP_DISPLAY_TYPE_STOP',
 				},
@@ -1209,7 +1209,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'Gain',
-					default: 'CAMAPP_GAIN_X1',
+					default: camappGainChoices[0].id,
 					choices: camappGainChoices,
 					tooltip: 'Options: CAMAPP_GAIN_X1, CAMAPP_GAIN_X2, CAMAPP_GAIN_X5 and CAMAPP_GAIN_X10.',
 				},
@@ -1237,7 +1237,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'Sweep',
-					default: 'CAMAPP_SWEEP_1_LINE',
+					default: camappSweepChoices[0].id,
 					choices: camappSweepChoices,
 					tooltip: 'Options: CAMAPP_SWEEP_1_LINE and CAMAPP_SWEEP_1_FIELD.',
 				},
@@ -1265,7 +1265,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'Filter',
-					default: 'CAMAPP_FILTER_FLAT',
+					default: camappFilterChoices[0].id,
 					choices: camappFilterChoices,
 					tooltip: 'Options: CAMAPP_FILTER_FLAT and CAMAPP_FILTER_LOW_PASS.',
 				},
@@ -1293,7 +1293,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'Thumbnail',
-					default: 'CAMAPP_THUMBNAIL_ON',
+					default: camappThumbnailChoices[0].id,
 					choices: camappThumbnailChoices,
 					tooltip: 'Options: CAMAPP_THUMBNAIL_ON, CAMAPP_THUMBNAIL_OFF.',
 				},
@@ -1321,7 +1321,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'Units',
-					default: 'CAMAPP_GRAT_UNITS_PERCENT',
+					default: camappGraticuleUnitsChoices[0].id,
 					choices: camappGraticuleUnitsChoices,
 					tooltip:
 						'Options for Waveform display type: CAMAPP_GRAT_UNITS_PERCENT, CAMAPP_GRAT_UNITS_NITS and CAMAPP_GRAT_UNITS_STOP. Options for Stop display type: CAMAPP_GRAT_UNITS_LOG_NITS and CAMAPP_GRAT_UNITS_LOG_STOP.',
@@ -1350,7 +1350,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'URL',
-					default: 'COMPOSITOR_URL_HOME',
+					default: diagnosticUrlPresetChoices[0].id,
 					choices: diagnosticUrlPresetChoices,
 					tooltip:
 						'Options: COMPOSITOR_URL_HOME, COMPOSITOR_URL_TOUCH_TEST, COMPOSITOR_URL_RED, COMPOSITOR_URL_GREEN, COMPOSITOR_URL_BLUE, COMPOSITOR_URL_GRAY20, COMPOSITOR_URL_GRAY45, COMPOSITOR_URL_BLACK, COMPOSITOR_URL_WHITE',
@@ -1375,7 +1375,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'COMPOSITOR_DISPLAY_MODE_SINGLE',
+					default: extendedDisplayModeChoices[0].id,
 					choices: extendedDisplayModeChoices,
 					tooltip: 'Options: COMPOSITOR_DISPLAY_MODE_SINGLE, COMPOSITOR_DISPLAY_MODE_DOUBLE',
 				},
@@ -1399,7 +1399,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 0,
+					default: diamondModeChoices[0].id,
 					choices: diamondModeChoices,
 					tooltip: 'Options: 0 for normal diamond, 1 for split diamond.',
 				},
@@ -1431,7 +1431,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'DIAMOND_LUT_OFF',
+					default: diamondLutChoices[0].id,
 					choices: diamondLutChoices,
 					tooltip: 'Options: DIAMOND_LUT_OFF, DIAMOND_LUT_ON',
 				},
@@ -1501,7 +1501,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'Color',
-					default: 'LED_COLOR_OFF',
+					default: mpiLedColorChoices[1].id,
 					choices: mpiLedColorChoices,
 					tooltip:
 						'Options: LED_COLOR_OFF, LED_COLOR_GREEN, LED_COLOR_RED, LED_COLOR_YELLOW, LED_COLOR_BLUE, LED_COLOR_CYAN, LED_COLOR_MAGENTA, LED_COLOR_WHITE. Default: LED_COLOR_OFF. Note: LED_COLOR_BLUE, LED_COLOR_CYAN AND LED_COLOR_MAGENTA options are supported on only MPS and MPD devices',
@@ -1526,7 +1526,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 0,
+					default: extrefSweepChoices[0].id,
 					choices: extrefSweepChoices,
 					tooltip: '0 for 1 line sweep, 1 for 2 line sweep, 2 for 1 field sweep, 3 for 2 field sweep',
 				},
@@ -1559,7 +1559,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'Gain',
-					default: 0,
+					default: extrefGainChoices[0].id,
 					choices: extrefGainChoices,
 					tooltip: 'Options: 1, 2 and 5.',
 				},
@@ -1593,7 +1593,7 @@ module.exports = function (self) {
 					...actionOptions.modeDropdown,
 					id: 'hmag',
 					label: 'Hmag',
-					default: 0,
+					default: extrefHmagChoices[0].id,
 					choices: extrefHmagChoices,
 					tooltip: 'Options for Hmag: 0 for Disable, 1 for Enable.',
 				},
@@ -1601,7 +1601,7 @@ module.exports = function (self) {
 					...actionOptions.modeDropdown,
 					id: 'bestView',
 					label: 'Best view',
-					default: 0,
+					default: extrefHmagChoices[0].id,
 					choices: extrefHmagChoices,
 					tooltip: 'Options for Best View: 0 for Disable, 1 for Enable.',
 				},
@@ -1638,7 +1638,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 0,
+					default: eyeMeterEnableChoices[0].id,
 					choices: eyeMeterEnableChoices,
 					tooltip: 'Options: 0 for eye display off, 1 for eye display on.',
 				},
@@ -1671,7 +1671,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'Rate',
-					default: 0,
+					default: eyeSweepChoices[0].id,
 					choices: eyeSweepChoices,
 					tooltip: 'Options: 0 for 3 Eye, 1 for word (10 Eye/20 Eye), 2 for 1 field, 3 for 2 field',
 				},
@@ -1703,7 +1703,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'FP_TEST_MODE_NONE',
+					default: fpTestModeChoices[0].id,
 					choices: fpTestModeChoices,
 					tooltip: 'Options are: FP_TEST_MODE_NONE, FP_TEST_MODE_BUTTON, FP_TEST_MODE_LED',
 				},
@@ -1727,9 +1727,10 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 16,
+					default: stopSweepChoices[0].id,
 					choices: stopSweepChoices,
-					tooltip: 'Options: 0 for 3 Eye, 1 for word (10 Eye/20 Eye), 2 for 1 field, 3 for 2 field',
+					tooltip:
+						'Options: 16 for Parade style 1 line sweep, 18 for Parade style 1 field sweep, 0 for Overlay style 1 line sweep, 1 for Overlay style 2 line sweep, 2 for Overlay style 1 field sweep, 3 for Overlay style 2 field sweep',
 				},
 				actionOptions.tiles,
 			],
@@ -1759,7 +1760,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'FSTOP_COLOR_TRACE_OFF',
+					default: stopColorTraceChoices[0].id,
 					choices: stopColorTraceChoices,
 					tooltip: 'Options: FSTOP_COLOR_TRACE_OFF or FSTOP_COLOR_TRACE_ON',
 				},
@@ -1829,7 +1830,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'FSTOP_BEST_ENABLE_OFF',
+					default: stopEnableBestGainChoices[0].id,
 					choices: stopEnableBestGainChoices,
 					tooltip: 'Options: FSTOP_BEST_ENABLE_OFF to Disable, FSTOP_BEST_ENABLE_ON to Enable.',
 				},
@@ -1914,7 +1915,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'FSTOP_ACTIVE_AREA_OFF',
+					default: stopActiveAreaChoices[0].id,
 					choices: stopActiveAreaChoices,
 					tooltip: 'Options: FSTOP_ACTIVE_AREA_OFF, FSTOP_ACTIVE_AREA_ON.',
 				},
@@ -1942,7 +1943,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'Reference',
-					default: 0,
+					default: stopGammaReferenceChoices[0].id,
 					choices: stopGammaReferenceChoices,
 					tooltip: 'Options: 0 for scene light reference, 1 for display light reference.',
 				},
@@ -1974,7 +1975,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'FSTOP_LPF_ENABLE_OFF',
+					default: stopEnableLowPassFilterChoices[0].id,
 					choices: stopEnableLowPassFilterChoices,
 					tooltip: 'Options: FSTOP_LPF_ENABLE_OFF to Disable, FSTOP_LPF_ENABLE_ON to Enable',
 				},
@@ -2001,7 +2002,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'GPIO_PRESET_RECALL_ENABLE_OFF',
+					default: gpioPresetRecallEnableChoices[0].id,
 					choices: gpioPresetRecallEnableChoices,
 					tooltip: 'Options: GPIO_PRESET_RECALL_ENABLE_ON, GPIO_PRESET_RECALL_ENABLE_OFF.',
 				},
@@ -2026,7 +2027,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'AUX_OUT_MODE_FIXED_CHANNELS',
+					default: audioPairAuxOutModeChoices[0].id,
 					choices: audioPairAuxOutModeChoices,
 					tooltip: 'Options are : AUX_OUT_MODE_FIXED_CHANNELS, AUX_OUT_MODE_PAIR_ON_CH1_CH2',
 				},
@@ -2051,7 +2052,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'IOSLAVE_SOURCE_CONFIG_VID_LINKS_SINGLE',
+					default: sourceConfigVidLinksChoices[0].id,
 					choices: sourceConfigVidLinksChoices,
 					tooltip: 'Options: IOSLAVE_SOURCE_CONFIG_VID_LINKS_SINGLE, IOSLAVE_SOURCE_CONFIG_VID_LINKS_QUAD',
 				},
@@ -2077,7 +2078,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'IOSLAVE_SOURCE_CONFIG_COLORIMETRY_709',
+					default: sourceConfigColorimetryChoices[0].id,
 					choices: sourceConfigColorimetryChoices,
 					tooltip: 'Options: IOSLAVE_SOURCE_CONFIG_COLORIMETRY_709, IOSLAVE_SOURCE_CONFIG_COLORIMETRY_BT2020',
 				},
@@ -2103,7 +2104,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'IOSLAVE_SOURCE_CONFIG_EOTF_SDR_NARROW',
+					default: sourceConfigEotfChoices[0].id,
 					choices: sourceConfigEotfChoices,
 					tooltip:
 						'Options: IOSLAVE_SOURCE_CONFIG_EOTF_SDR_NARROW, IOSLAVE_SOURCE_CONFIG_EOTF_SDR_FULL, IOSLAVE_SOURCE_CONFIG_EOTF_PQ_NARROW, IOSLAVE_SOURCE_CONFIG_EOTF_PQ_FULL, IOSLAVE_SOURCE_CONFIG_EOTF_HLG, IOSLAVE_SOURCE_CONFIG_EOTF_SLOG2, IOSLAVE_SOURCE_CONFIG_EOTF_SLOG3, IOSLAVE_SOURCE_CONFIG_EOTF_SLOG3_LIVE_HDR, IOSLAVE_SOURCE_CONFIG_EOTF_LOGC',
@@ -2130,7 +2131,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'AUDIO_INPUT_TYPE_PCM',
+					default: audioInputTypeChoices[0].id,
 					choices: audioInputTypeChoices,
 					tooltip: 'Options: AUDIO_INPUT_TYPE_PCM, AUDIO_INPUT_TYPE_DOLBY',
 				},
@@ -2201,7 +2202,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'AUDIO_PCM_PROGRAM_OFF',
+					default: audioPcmProgramChoices[0].id,
 					choices: audioPcmProgramChoices,
 					tooltip: 'Options: AUDIO_PCM_PROGRAM_OFF, AUDIO_PCM_PROGRAM_ON',
 				},
@@ -2228,7 +2229,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'IOSLAVE_SOURCE_CONFIG_2110_XMIT_MODE_N',
+					default: xmitMode2110Choices[0].id,
 					choices: xmitMode2110Choices,
 					tooltip:
 						'Options: IOSLAVE_SOURCE_CONFIG_2110_XMIT_MODE_N, IOSLAVE_SOURCE_CONFIG_2110_XMIT_MODE_NL, IOSLAVE_SOURCE_CONFIG_2110_XMIT_MODE_W',
@@ -2298,7 +2299,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'IOSLAVE_SOURCE_CONFIG_REMOTE_MODE_OFF',
+					default: remoteConfigModeChoices[0].id,
 					choices: remoteConfigModeChoices,
 					tooltip: 'Options: IOSLAVE_SOURCE_CONFIG_REMOTE_MODE_OFF, IOSLAVE_SOURCE_CONFIG_REMOTE_MODE_NMOS',
 				},
@@ -2324,7 +2325,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'IOSLAVE_UI_EDIT_MODE_ON',
+					default: inputEditModeChoices[0].id,
 					choices: inputEditModeChoices,
 					tooltip: 'Available Options: IOSLAVE_UI_EDIT_MODE_ON, IOSLAVE_UI_EDIT_MODE_OFF.',
 				},
@@ -2348,7 +2349,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'EXT_REF_OUT_LOOPTHROUGH',
+					default: extRefOutChoices[0].id,
 					choices: extRefOutChoices,
 					tooltip:
 						'Options are EXT_REF_OUT_LOOPTHROUGH, EXT_REF_OUT_TERMINATE, and EXT_REF_OUT_PPS. EXT_REF_OUT_PPS is only supported for version 1 external reference boards',
@@ -2373,7 +2374,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'IP_FAST_SWITCH_ENABLE_ON',
+					default: ipFastSwitchEnableChoices[0].id,
 					choices: ipFastSwitchEnableChoices,
 					tooltip: 'Options: IP_FAST_SWITCH_ENABLE_ON, IP_FAST_SWITCH_ENABLE_OFF.',
 				},
@@ -2397,7 +2398,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'IP_IGNORE_RTP_SEQUENCE_ERROR_OFF',
+					default: ignoreRtpSequenceErrorChoices[0].id,
 					choices: ignoreRtpSequenceErrorChoices,
 					tooltip: 'Options: To report: IP_IGNORE_RTP_SEQUENCE_ERROR_OFF, To ignore: IP_IGNORE_RTP_SEQUENCE_ERROR_ON',
 				},
@@ -2421,7 +2422,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 1,
+					default: jitterMeterEnableChoices[0].id,
 					choices: jitterMeterEnableChoices,
 					tooltip: 'Options: 0 for jitter display off, 1 for jitter display on',
 				},
@@ -2451,7 +2452,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'Sweep Rate',
-					default: 0,
+					default: jitterSweepChoices[0].id,
 					choices: jitterSweepChoices,
 					tooltip: 'Options: 0 for 1 line, 1 for 2 line, 2 for 1 field, 3 for 2 field',
 				},
@@ -2485,7 +2486,6 @@ module.exports = function (self) {
 					...actionOptions.integerInput,
 					id: 'gain',
 					label: 'Gain',
-
 					default: 1,
 					min: 1,
 					max: 10,
@@ -2529,7 +2529,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'Enable',
-					default: 'LIGHTNING_V_VAR_ENABLE_ON',
+					default: lightningVerticalVarEnableChoices[0].id,
 					choices: lightningVerticalVarEnableChoices,
 					tooltip: 'Options are LIGHTNING_V_VAR_ENABLE_ON or LIGHTNING_V_VAR_ENABLE_OFF',
 				},
@@ -2607,7 +2607,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'Enable',
-					default: 'LIGHTNING_H_VAR_ENABLE_ON',
+					default: lightningHorizontalVarEnableChoices[0].id,
 					choices: lightningHorizontalVarEnableChoices,
 					tooltip: 'Options are LIGHTNING_H_VAR_ENABLE_ON or LIGHTNING_H_VAR_ENABLE_OFF',
 				},
@@ -2639,7 +2639,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'LIGHTNING_LUT_OFF ',
+					default: lightningLutChoices[0].id,
 					choices: lightningLutChoices,
 					tooltip: 'Options: LIGHTNING_LUT_OFF to Disable, LIGHTNING_LUT_ON to Enable',
 				},
@@ -2667,7 +2667,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'Application',
-					default: 'MEASURE_ASSIGN_WAVEFORM',
+					default: measureAssignChoices[0].id,
 					choices: measureAssignChoices,
 					tooltip:
 						'Options: MEASURE_ASSIGN_WAVEFORM, MEASURE_ASSIGN_VECTOR, MEASURE_ASSIGN_LIGHTNING, MEASURE_ASSIGN_PICTURE, MEASURE_ASSIGN_DIAMOND, MEASURE_ASSIGN_AUDIO, MEASURE_ASSIGN_ERROR_STATUS, MEASURE_ASSIGN_AUDIO, MEASURE_ASSIGN_DATALIST, MEASURE_ASSIGN_EYE, MEASURE_ASSIGN_JITTER, MEASURE_ASSIGN_DOLBY_STATUS, MEASURE_ASSIGN_ANC_DATA, MEASURE_ASSIGN_GEN_STATUS, MEASURE_ASSIGN_IP_STATUS, MEASURE_ASSIGN_IP_SESSION, MEASURE_ASSIGN_VIDEO_SESSION, MEASURE_ASSIGN_IP_GRAPHS, MEASURE_ASSIGN_IP_PIT, MEASURE_ASSIGN_TIMING_DISPLAY, MEASURE_ASSIGN_STREAM_TIMING, MEASURE_ASSIGN_PTP_GRAPHS, MEASURE_ASSIGN_FSTOP, MEASURE_ASSIGN_IP_GEN_STATUS, MEASURE_ASSIGN_SYNC_DISPLAY, MEASURE_ASSIGN_CIE, MEASURE_ASSIGN_CHANNEL_STATUS, MEASURE_ASSIGN_AV_DELAY, MEASURE_ASSIGN_CAMAPP, MEASURE_ASSIGN_EXTREF',
@@ -2695,7 +2695,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'MEASURE_LINE_SELECT_ENABLE_OFF',
+					default: lineSelectEnableChoices[0].id,
 					choices: lineSelectEnableChoices,
 					tooltip: 'Options: MEASURE_LINE_SELECT_ENABLE_OFF, MEASURE_LINE_SELECT_ENABLE_ON',
 				},
@@ -2722,7 +2722,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'MEASURE_BAR_TARGET_100',
+					default: measureBarTargetChoices[0].id,
 					choices: measureBarTargetChoices,
 					tooltip: 'Options: MEASURE_BAR_TARGET_75, MEASURE_BAR_TARGET_100. Default: MEASURE_BAR_TARGET_100',
 				},
@@ -2749,7 +2749,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'MEASURE_TILE_MODE_QUARTER_TILE',
+					default: measureTileModeChoices[0].id,
 					choices: measureTileModeChoices,
 					tooltip:
 						'Options: MEASURE_TILE_MODE_QUARTER_TILE, MEASURE_TILE_MODE_TWO_TILE_VERTICAL. Default: MEASURE_TILE_MODE_QUARTER_TILE',
@@ -2778,8 +2778,8 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'NMOS',
+					default: nmosDiscoveryChoices[0].id,
 					choices: nmosDiscoveryChoices,
-					default: 'NMOS_MANAGER_ENABLE_ENABLED',
 					tooltip: 'Options: NMOS_MANAGER_ENABLE_ENABLED, NMOS_MANAGER_ENABLE_DISABLED',
 				},
 			],
@@ -2803,7 +2803,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'DNS',
-					default: 'NMOS_DNS_TYPE_UNICAST',
+					default: nmosDnsTypeChoices[0].id,
 					choices: nmosDnsTypeChoices,
 					tooltip: 'Options: NMOS_DNS_TYPE_UNICAST, NMOS_DNS_TYPE_MULTICAST, NMOS_DNS_TYPE_AUTO',
 				},
@@ -2828,7 +2828,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'API',
-					default: 'NMOS_API_VERSION_1P3',
+					default: nmosApiVersion[0].id,
 					choices: nmosApiVersion,
 					tooltip: 'Options: NMOS_API_VERSION_1P2, NMOS_API_VERSION_1P3',
 				},
@@ -2852,7 +2852,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'NMOS_MANAGER_PERSISTENT_RECEIVERS_ENABLED',
+					default: nmosPersistentReceiversChoices[0].id,
 					choices: nmosPersistentReceiversChoices,
 					tooltip: 'Options: NMOS_MANAGER_PERSISTENT_RECEIVERS_ENABLED, NMOS_MANAGER_PERSISTENT_RECEIVERS_DISABLED',
 				},
@@ -2916,7 +2916,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 0,
+					default: jitterHpfChoices[0].id,
 					choices: jitterHpfChoices,
 					tooltip: 'Options: 0 for timing, 1 for alignment, 2 for 10Hz, 3 for 100Hz, 4 for 1kHz, 5 for 10kHz, 6 for 100kHz',
 				},
@@ -2945,7 +2945,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'PICTURE_CC_DISPLAY_OFF',
+					default: closedCaptionsDisplayChoices[0].id,
 					choices: closedCaptionsDisplayChoices,
 					tooltip:
 						'Options: PICTURE_CC_DISPLAY_OFF, PICTURE_CC_DISPLAY_AUTO, PICTURE_CC_DISPLAY_CEA608, PICTURE_CC_DISPLAY_CEA708 PICTURE_CC_DISPLAY_WST, PICTURE_CC_DISPLAY_ARIB',
@@ -2974,7 +2974,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'Graticle',
-					default: 'PICTURE_SAFE_GRAT_OFF',
+					default: pictureSafeChoices[0].id,
 					choices: pictureSafeChoices,
 					tooltip:
 						'Options: PICTURE_SAFE_GRAT_OFF, PICTURE_SAFE_GRAT_AUTO, PICTURE_SAFE_GRAT_4X3, PICTURE_SAFE_GRAT_14X9, PICTURE_SAFE_GRAT_16X9, PICTURE_SAFE_GRAT_CUSTOM_1, PICTURE_SAFE_GRAT_CUSTOM_2',
@@ -3003,7 +3003,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'Graticle',
-					default: 'PICTURE_SAFE_GRAT_OFF',
+					default: pictureSafeChoices[0].id,
 					choices: pictureSafeChoices,
 					tooltip:
 						'Options: PICTURE_SAFE_GRAT_OFF, PICTURE_SAFE_GRAT_AUTO, PICTURE_SAFE_GRAT_4X3, PICTURE_SAFE_GRAT_14X9, PICTURE_SAFE_GRAT_16X9, PICTURE_SAFE_GRAT_CUSTOM_1, PICTURE_SAFE_GRAT_CUSTOM_2',
@@ -3032,7 +3032,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'Graticle',
-					default: 'PICTURE_SAFE_GRAT_OFF',
+					default: pictureSafeChoices[0].id,
 					choices: pictureSafeChoices,
 					tooltip:
 						'Options: PICTURE_SAFE_GRAT_OFF, PICTURE_SAFE_GRAT_AUTO, PICTURE_SAFE_GRAT_4X3, PICTURE_SAFE_GRAT_14X9, PICTURE_SAFE_GRAT_16X9, PICTURE_SAFE_GRAT_CUSTOM_1, PICTURE_SAFE_GRAT_CUSTOM_2',
@@ -3061,7 +3061,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'Graticle',
-					default: 'PICTURE_SAFE_GRAT_OFF',
+					default: pictureSafeChoices[0].id,
 					choices: pictureSafeChoices,
 					tooltip:
 						'Options: PICTURE_SAFE_GRAT_OFF, PICTURE_SAFE_GRAT_AUTO, PICTURE_SAFE_GRAT_4X3, PICTURE_SAFE_GRAT_14X9, PICTURE_SAFE_GRAT_16X9, PICTURE_SAFE_GRAT_CUSTOM_1, PICTURE_SAFE_GRAT_CUSTOM_2',
@@ -3090,7 +3090,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'Graticle',
-					default: 'PICTURE_GRAT_CENTER_OFF',
+					default: pictureCenterGratChoices[0].id,
 					choices: pictureCenterGratChoices,
 					tooltip: 'Options: PICTURE_GRAT_CENTER_OFF, PICTURE_GRAT_CENTER_ON',
 				},
@@ -3118,7 +3118,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: '608 Channel',
-					default: 'PICTURE_CC_SERVICE_608_CC1',
+					default: closedCaptions608ChannelChoices[0].id,
 					choices: closedCaptions608ChannelChoices,
 					tooltip:
 						'Options: PICTURE_CC_SERVICE_608_CC1, PICTURE_CC_SERVICE_608_CC2, PICTURE_CC_SERVICE_608_CC3, PICTURE_CC_SERVICE_608_CC4',
@@ -3147,7 +3147,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: '708 Service',
-					default: 'PICTURE_CC_SERVICE_708_SVC1',
+					default: closedCaptions708ServiceChoices[0].id,
 					choices: closedCaptions708ServiceChoices,
 					tooltip:
 						'Options: PICTURE_CC_SERVICE_708_SVC1, PICTURE_CC_SERVICE_708_SVC2, PICTURE_CC_SERVICE_708_SVC3, PICTURE_CC_SERVICE_708_SVC4, PICTURE_CC_SERVICE_708_SVC5, PICTURE_CC_SERVICE_708_SVC6',
@@ -3219,7 +3219,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'ARIB Type',
-					default: 'PICTURE_CC_ARIB_B37_TYPE_HD',
+					default: closedCaptionsAribTypeChoices[0].id,
 					choices: closedCaptionsAribTypeChoices,
 					tooltip: 'Options: PICTURE_CC_ARIB_B37_TYPE_HD, PICTURE_CC_ARIB_B37_TYPE_SD, PICTURE_CC_ARIB_B37_TYPE_MOBILE',
 				},
@@ -3246,7 +3246,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'PICTURE_AFD_GRAT_ON',
+					default: pictureAfdGratChoices[0].id,
 					choices: pictureAfdGratChoices,
 					tooltip: 'Options: PICTURE_AFD_GRAT_ON, PICTURE_AFD_GRAT_OFF',
 				},
@@ -3273,7 +3273,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'PICTURE_AFD_GRAT_OVERLAY_ON',
+					default: pictureAfdGratOverlayChoices[0].id,
 					choices: pictureAfdGratOverlayChoices,
 					tooltip: 'Options: PICTURE_AFD_GRAT_OVERLAY_ON, PICTURE_AFD_GRAT_OVERLAY_OFF',
 				},
@@ -3300,7 +3300,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'PICTURE_LUT_OFF',
+					default: pictureLutChoices[0].id,
 					choices: pictureLutChoices,
 					tooltip: 'Options: PICTURE_LUT_OFF, PICTURE_LUT_ON. Default: PICTURE_LUT_OFF',
 				},
@@ -3327,7 +3327,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'PICTURE_TIMING_INFO_SWITCH_OFF',
+					default: pictureFormatOverlayChoices[0].id,
 					choices: pictureFormatOverlayChoices,
 					tooltip:
 						'Options: PICTURE_TIMING_INFO_SWITCH_OFF, PICTURE_TIMING_INFO_SWITCH_ON. Default: PICTURE_TIMING_INFO_SWITCH_OFF',
@@ -3355,7 +3355,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'PICTURE_OUTSIDE_709_MODE_709_P3',
+					default: pictureFormatOverlayChoices[0].id,
 					choices: pictureFormatOverlayChoices,
 					tooltip:
 						'Options: PICTURE_OUTSIDE_709_MODE_709_P3 for 709 - P3, PICTURE_OUTSIDE_709_MODE_P3_2020 for P3-2020, PICTURE_OUTSIDE_709_MODE_709_P3_2020 for Both.',
@@ -3380,7 +3380,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'PICTURE_FALSE_COLOR_OFF',
+					default: pictureFalseColorChoices[0].id,
 					choices: pictureFalseColorChoices,
 					tooltip:
 						'Options: PICTURE_FALSE_COLOR_OFF to disable false color, PICTURE_FALSE_COLOR_ON to enable false color.',
@@ -3408,7 +3408,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'FALSE_COLOR_MODE_LUMA',
+					default: pictureFalseColorChoices[0].id,
 					choices: pictureFalseColorChoices,
 					tooltip:
 						'Options: FALSE_COLOR_MODE_LUMA for Luminance false color, FALSE_COLOR_MODE_AREA for Percent Area false color, FALSE_COLOR_MODE_GAMUT for Gamut false color.',
@@ -3436,7 +3436,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'PICTURE_FALSE_COLOR_BAND_METER_HIDE',
+					default: pictureFalseColorBandMeterChoices[0].id,
 					choices: pictureFalseColorBandMeterChoices,
 					tooltip: 'Options: PICTURE_FALSE_COLOR_BAND_METER_[HIDE, SHOW]',
 				},
@@ -3463,7 +3463,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'PICTURE_CC_INFO_SWITCH_ON',
+					default: closedCaptionsInfoEnableChoices[0].id,
 					choices: closedCaptionsInfoEnableChoices,
 					tooltip: 'Options: PICTURE_CC_INFO_SWITCH_ON, PICTURE_CC_INFO_SWITCH_OFF',
 				},
@@ -3490,7 +3490,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'PICTURE_SOURCE_ID_INFO_ENABLE_ON',
+					default: sourceIdDisplayChoices[0].id,
 					choices: sourceIdDisplayChoices,
 					tooltip: 'Options: PICTURE_SOURCE_ID_INFO_ENABLE_OFF, PICTURE_SOURCE_ID_INFO_ENABLE_ON',
 				},
@@ -3517,7 +3517,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'PICTURE_ASPECT_RATIO_AUTO',
+					default: pictureAspectRatioChoices[0].id,
 					choices: pictureAspectRatioChoices,
 					tooltip: 'Options: PICTURE_ASPECT_RATIO_AUTO, PICTURE_ASPECT_RATIO_16x9.',
 				},
@@ -3541,7 +3541,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'PRESET_RECALL_SAVED_INPUTS_ON',
+					default: presetRecallSavedInputsChoices[0].id,
 					choices: presetRecallSavedInputsChoices,
 					tooltip: 'Options: PRESET_RECALL_SAVED_INPUTS_ON, PRESET_RECALL_SAVED_INPUTS_OFF',
 				},
@@ -3565,7 +3565,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'PRESET_EDIT_MODE_ON',
+					default: presetEditModeChoices[0].id,
 					choices: presetEditModeChoices,
 					tooltip: 'Options: PRESET_EDIT_MODE_ON, PRESET_EDIT_MODE_OFF',
 				},
@@ -3590,7 +3590,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'Profile',
-					default: 'PTP_PROFILE_2059',
+					default: ptpProfileChoices[0].id,
 					choices: ptpProfileChoices,
 					tooltip: 'Options are PTP_PROFILE_2059, PTP_PROFILE_AES67, and PTP_PROFILE_GENERIC',
 				},
@@ -3652,7 +3652,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'PTP_COMM_MODE_MULTICAST',
+					default: ptpCommMode2059ProfileChoices[0].id,
 					choices: ptpCommMode2059ProfileChoices,
 					tooltip: 'Options: PTP_COMM_MODE_MULTICAST and PTP_COMM_MODE_MIXED_SMPTE_NO_NEG',
 				},
@@ -3753,7 +3753,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'SNMP_TRAP_ENABLE_ON',
+					default: snmpTrapEnableChoices[0].id,
 					choices: snmpTrapEnableChoices,
 					tooltip: 'Options: SNMP_TRAP_ENABLE_ON : Enable snmp Traps, SNMP_TRAP_ENABLE_OFF : Disable snmp Traps.',
 				},
@@ -3777,7 +3777,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'STATUS_TIMING_MEASURE_MODE_VIDEO_TO_REF',
+					default: timingMeasureModeChoices[0].id,
 					choices: timingMeasureModeChoices,
 					tooltip: 'Options: STATUS_TIMING_MEASURE_MODE_VIDEO_TO_REF, STATUS_TIMING_MEASURE_MODE_ANALOG_TO_PTP',
 				},
@@ -3882,7 +3882,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'TILE_EXTENDED_STATUS_BAR_PINNED_MENU_OFF',
+					default: extendedStatusBarPinnedMenuChoices[0].id,
 					choices: extendedStatusBarPinnedMenuChoices,
 					tooltip:
 						'Options: TILE_EXTENDED_STATUS_BAR_PINNED_MENU_OFF, TILE_EXTENDED_STATUS_BAR_PINNED_MENU_INPUT, TILE_EXTENDED_STATUS_BAR_PINNED_MENU_PRESET.',
@@ -3907,7 +3907,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'TILE_CIE_COLOR_SPACE_1931',
+					default: cieColorSpaceChoices[0].id,
 					choices: cieColorSpaceChoices,
 					tooltip: 'Options: TILE_CIE_COLOR_SPACE_1931 or TILE_CIE_COLOR_SPACE_1976',
 				},
@@ -3931,7 +3931,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'TILE_CIE_COLOR_TRACE_ON',
+					default: cieTraceAppearanceChoices[0].id,
 					choices: cieTraceAppearanceChoices,
 					tooltip: 'Options: TILE_CIE_COLOR_TRACE_OFF or TILE_CIE_COLOR_TRACE_ON',
 				},
@@ -3955,7 +3955,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'GAMUT_ERROR_CHECK_ON',
+					default: outOfGamutAlarmChoices[0].id,
 					choices: outOfGamutAlarmChoices,
 					tooltip: 'Options: GAMUT_ERROR_CHECK_OFF, GAMUT_ERROR_CHECK_ON',
 				},
@@ -3979,7 +3979,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'GAMUT_ERROR_PRESET_R103',
+					default: gamutAlarmThresholdsPresetChoices[0].id,
 					choices: gamutAlarmThresholdsPresetChoices,
 					tooltip: 'Options: GAMUT_ERROR_PRESET_R103 (Sets the EBU R103 Preferred Min/Max)',
 				},
@@ -4003,7 +4003,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'HDR_ALARMS_ON',
+					default: hdrAlarmsChoices[0].id,
 					choices: hdrAlarmsChoices,
 					tooltip: 'Options: HDR_ALARMS_OFF, HDR_ALARMS_ON',
 				},
@@ -4184,7 +4184,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'Color',
-					default: 'PICTURE_GRAT_COLOR_GRAY',
+					default: gratColourChoices[0].id,
 					choices: gratColourChoices,
 					tooltip:
 						'Options: PICTURE_GRAT_COLOR_GRAY, PICTURE_GRAT_COLOR_BLACK, PICTURE_GRAT_COLOR_LIGHT_BLUE, PICTURE_GRAT_COLOR_MAGENTA, PICTURE_GRAT_COLOR_LIMEGREEN, PICTURE_GRAT_COLOR_ORANGE, PICTURE_GRAT_COLOR_TS_BLUE, PICTURE_GRAT_COLOR_WHITE, PICTURE_GRAT_COLOR_YELLOW',
@@ -4210,7 +4210,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'Color',
-					default: 'PICTURE_GRAT_COLOR_GRAY',
+					default: gratColourChoices[0].id,
 					choices: gratColourChoices,
 					tooltip:
 						'Options: PICTURE_GRAT_COLOR_GRAY, PICTURE_GRAT_COLOR_BLACK, PICTURE_GRAT_COLOR_LIGHT_BLUE, PICTURE_GRAT_COLOR_MAGENTA, PICTURE_GRAT_COLOR_LIMEGREEN, PICTURE_GRAT_COLOR_ORANGE, PICTURE_GRAT_COLOR_TS_BLUE, PICTURE_GRAT_COLOR_WHITE, PICTURE_GRAT_COLOR_YELLOW',
@@ -4236,7 +4236,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'Color',
-					default: 'PICTURE_GRAT_COLOR_GRAY',
+					default: gratColourChoices[0].id,
 					choices: gratColourChoices,
 					tooltip:
 						'Options: PICTURE_GRAT_COLOR_GRAY, PICTURE_GRAT_COLOR_BLACK, PICTURE_GRAT_COLOR_LIGHT_BLUE, PICTURE_GRAT_COLOR_MAGENTA, PICTURE_GRAT_COLOR_LIMEGREEN, PICTURE_GRAT_COLOR_ORANGE, PICTURE_GRAT_COLOR_TS_BLUE, PICTURE_GRAT_COLOR_WHITE, PICTURE_GRAT_COLOR_YELLOW',
@@ -4262,7 +4262,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'Color',
-					default: 'PICTURE_GRAT_COLOR_GRAY',
+					default: gratColourChoices[0].id,
 					choices: gratColourChoices,
 					tooltip:
 						'Options: PICTURE_GRAT_COLOR_GRAY, PICTURE_GRAT_COLOR_BLACK, PICTURE_GRAT_COLOR_LIGHT_BLUE, PICTURE_GRAT_COLOR_MAGENTA, PICTURE_GRAT_COLOR_LIMEGREEN, PICTURE_GRAT_COLOR_ORANGE, PICTURE_GRAT_COLOR_TS_BLUE, PICTURE_GRAT_COLOR_WHITE, PICTURE_GRAT_COLOR_YELLOW',
@@ -4287,7 +4287,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'PICTURE_SAFE_AREA_STD_S2046',
+					default: pictureSafeAreaStdChoices[0].id,
 					choices: pictureSafeAreaStdChoices,
 					tooltip:
 						'Options: PICTURE_SAFE_AREA_STD_S2046, PICTURE_SAFE_AREA_STD_SMPTE, PICTURE_SAFE_AREA_STD_ITU, PICTURE_SAFE_AREA_STD_ARIB',
@@ -4312,7 +4312,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'TILE_UI_TIMECODE_OVERLAY_ON',
+					default: timecodeOverlayChoices[0].id,
 					choices: timecodeOverlayChoices,
 					tooltip: 'Options: TILE_UI_TIMECODE_OVERLAY_ON, TILE_UI_TIMECODE_OVERLAY_OFF.',
 				},
@@ -4416,7 +4416,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'OFF',
+					default: timecodeSelectChoices[0].id,
 					choices: timecodeSelectChoices,
 					tooltip: 'Options: "OFF", "LTC", "VITC"',
 				},
@@ -4441,7 +4441,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'Source',
-					default: 'TIMING_REF_SOURCE_BLACK',
+					default: timingRefSourceChoices[0].id,
 					choices: timingRefSourceChoices,
 					tooltip: 'Options: TIMING_REF_SOURCE_BLACK, TIMING_REF_SOURCE_PTP, TIMING_REF_SOURCE_INTERNAL',
 				},
@@ -4466,7 +4466,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'Gain',
-					default: 'VECTOR_GAIN_X1',
+					default: vectorGainChoices[0].id,
 					choices: vectorGainChoices,
 					tooltip: 'Options: VECTOR_GAIN_X1, VECTOR_GAIN_X2, VECTOR_GAIN_X5, VECTOR_GAIN_X10',
 				},
@@ -4494,7 +4494,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'Enable',
-					default: 'VECTOR_VAR_ENABLE_ON',
+					default: vectorVarEnableChoices[0].id,
 					choices: vectorVarEnableChoices,
 					tooltip: 'Options are VECTOR_VAR_ENABLE_ON or VECTOR_VAR_ENABLE_OFF',
 				},
@@ -4522,7 +4522,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'Enable',
-					default: 'VECTOR_LUT_ON',
+					default: vectorLutChoices[0].id,
 					choices: vectorLutChoices,
 					tooltip: 'Options: VECTOR_LUT_OFF, VECTOR_LUT_ON',
 				},
@@ -4550,7 +4550,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'Enable',
-					default: 1,
+					default: vectorIqAxisChoices[0].id,
 					choices: vectorIqAxisChoices,
 					tooltip: 'Options: 0 to Hide Axis, 1 to Show Axis',
 				},
@@ -4578,7 +4578,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'Enable',
-					default: 1,
+					default: vectorSdiCompassRoseChoices[0].id,
 					choices: vectorSdiCompassRoseChoices,
 					tooltip: 'Options: 0 to Hide Compass Rose, 1 to Show Compass Rose',
 				},
@@ -4605,7 +4605,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'VID_OUT_MODE_GEN',
+					default: sdiVidOutChoices[0].id,
 					choices: sdiVidOutChoices,
 					tooltip: 'Options are VID_OUT_MODE_LOOPOUT and VID_OUT_MODE_GEN',
 				},
@@ -4629,7 +4629,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'VID_OUT_SDI_GEN_ENABLE_ON',
+					default: sdiGenEnableChoices[0].id,
 					choices: sdiGenEnableChoices,
 					tooltip: 'Options: VID_OUT_SDI_GEN_ENABLE_ON, VID_OUT_SDI_GEN_ENABLE_OFF',
 				},
@@ -4653,7 +4653,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'VID_OUT_SDI_MOVING_PIX_MODE_ON',
+					default: sdiGenVideoMovingPixChoices[0].id,
 					choices: sdiGenVideoMovingPixChoices,
 					tooltip: 'Options: VID_OUT_SDI_MOVING_PIX_MODE_OFF, VID_OUT_SDI_MOVING_PIX_MODE_ON',
 				},
@@ -4677,7 +4677,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'WAVEFORM_MODE_YPBPR',
+					default: waveformModeChoices[0].id,
 					choices: waveformModeChoices,
 					tooltip: 'Options: WAVEFORM_MODE_YPBPR, WAVEFORM_MODE_RGB, WAVEFORM_MODE_YRGB',
 				},
@@ -4704,7 +4704,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'WAVEFORM_FILTER_FLAT',
+					default: waveformFilterChoices[0].id,
 					choices: waveformFilterChoices,
 					tooltip: 'Options are WAVEFORM_FILTER_FLAT : Flat Filter and WAVEFORM_FILTER_LOW_PASS : Low Pass Filter',
 				},
@@ -4731,7 +4731,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'WAVEFORM_FILTER_FLAT',
+					default: waveformFilterChoices[0].id,
 					choices: waveformFilterChoices,
 					tooltip: 'Options are WAVEFORM_FILTER_FLAT : Flat Filter and WAVEFORM_FILTER_LOW_PASS : Low Pass Filter',
 				},
@@ -4758,7 +4758,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'WAVEFORM_FILTER_FLAT',
+					default: waveformFilterChoices[0].id,
 					choices: waveformFilterChoices,
 					tooltip: 'Options are WAVEFORM_FILTER_FLAT : Flat Filter and WAVEFORM_FILTER_LOW_PASS : Low Pass Filter',
 				},
@@ -4785,9 +4785,10 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 16,
+					default: waveformSweepChoices[0].id,
 					choices: waveformSweepChoices,
-					tooltip: 'Options are WAVEFORM_FILTER_FLAT : Flat Filter and WAVEFORM_FILTER_LOW_PASS : Low Pass Filter',
+					tooltip:
+						'Options: 16 for Parade style 1 line sweep, 18 for Parade style 1 field sweep, 0 for Overlay style 1 line sweep, 1 for Overlay style 2 line sweep, 2 for Overlay style 1 field sweep, 3 for Overlay style 2 field sweep',
 				},
 				actionOptions.tiles,
 			],
@@ -4812,7 +4813,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'WAVEFORM_COLOR_TRACE_ON',
+					default: waveformColorTraceChoices[0].id,
 					choices: waveformColorTraceChoices,
 					tooltip: 'Options are WAVEFORM_COLOR_TRACE_OFF or WAVEFORM_COLOR_TRACE_ON',
 				},
@@ -4883,7 +4884,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'Enable',
-					default: 'WAVEFORM_VAR_ENABLE_ON',
+					default: waveformVarEnableChoices[0].id,
 					choices: waveformVarEnableChoices,
 					tooltip: 'Options: WAVEFORM_VAR_ENABLE_OFF to Disable, WAVEFORM_VAR_ENABLE_ON',
 				},
@@ -4968,7 +4969,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'Enable',
-					default: 'WAVEFORM_VERTICAL_CURSOR_ENABLE_ON',
+					default: waveformVerticalCursorEnableChoices[0].id,
 					choices: waveformVerticalCursorEnableChoices,
 					tooltip: 'Valid options are WAVEFORM_VERTICAL_CURSOR_ENABLE_ON or WAVEFORM_VERTICAL_CURSOR_ENABLE_OFF',
 				},
@@ -4996,7 +4997,7 @@ module.exports = function (self) {
 				{
 					...actionOptions.modeDropdown,
 					label: 'Enable',
-					default: 'WAVEFORM_HORIZONTAL_CURSOR_ENABLE_ON',
+					default: waveformHorizontalCursorEnableChoices[0].id,
 					choices: waveformHorizontalCursorEnableChoices,
 					tooltip: 'Valid options are WAVEFORM_HORIZONTAL_CURSOR_ENABLE_ON or WAVEFORM_HORIZONTAL_CURSOR_ENABLE_OFF',
 				},
@@ -5023,7 +5024,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'WAVEFORM_GRAT_SDI_UNITS_MV',
+					default: waveformGratSdiUnits[0].id,
 					choices: waveformGratSdiUnits,
 					tooltip:
 						'Options: WAVEFORM_GRAT_SDI_UNITS_MV, WAVEFORM_GRAT_SDI_UNITS_PERCENT, WAVEFORM_GRAT_SDI_UNITS_NITS, WAVEFORM_GRAT_SDI_UNITS_REFLECTANCE, WAVEFORM_GRAT_SDI_UNITS_STOP, WAVEFORM_GRAT_SDI_UNITS_CV',
@@ -5051,7 +5052,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'WAVEFORM_LUT_OFF',
+					default: waveformLutChoices[0].id,
 					choices: waveformLutChoices,
 					tooltip: 'Options: WAVEFORM_LUT_OFF, WAVEFORM_LUT_ON. Default: WAVEFORM_LUT_OFF',
 				},
@@ -5078,7 +5079,7 @@ module.exports = function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					default: 'WAVEFORM_ACTIVE_AREA_ON',
+					default: waveformActiveAreaChoices[0].id,
 					choices: waveformActiveAreaChoices,
 					tooltip: 'Options : WAVEFORM_ACTIVE_AREA_OFF, WAVEFORM_ACTIVE_AREA_ON',
 				},
