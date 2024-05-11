@@ -6,7 +6,8 @@ const colors = {
 	text: combineRgb(218, 218, 218),
 	text_black: combineRgb(0, 0, 0),
 	bg: combineRgb(72, 72, 72),
-	bg_green: combineRgb(0, 130, 0),
+	bg_dark: combineRgb(36, 36, 36),
+	bg_green: combineRgb(0, 204, 0),
 }
 
 const button_defaults = {
@@ -14,7 +15,7 @@ const button_defaults = {
 	alignment: 'center:bottom',
 	pngalignment: 'center:center',
 	color: colors.text,
-	bgcolor: colors.bg,
+	bgcolor: colors.bg_dark,
 	show_topbar: false,
 }
 
@@ -41,7 +42,7 @@ module.exports = async function (self) {
 				up: [],
 			},
 		],
-		feedbacks: [{}],
+		feedbacks: [],
 	}
 	presets[`set_active_dec`] = {
 		type: 'button',
@@ -68,7 +69,7 @@ module.exports = async function (self) {
 				up: [],
 			},
 		],
-		feedbacks: [{}],
+		feedbacks: [],
 	}
 	presets[`set_active_inc`] = {
 		type: 'button',
@@ -95,7 +96,7 @@ module.exports = async function (self) {
 				up: [],
 			},
 		],
-		feedbacks: [{}],
+		feedbacks: [],
 	}
 	presets['Header-Input-Select'] = {
 		category: 'Input',
@@ -136,7 +137,7 @@ module.exports = async function (self) {
 						input: i - 1,
 					},
 					style: {
-						color: colors.text,
+						color: colors.text_black,
 						bgcolor: colors.bg_green,
 					},
 				},
@@ -146,7 +147,7 @@ module.exports = async function (self) {
 	presets['Header-MeasurementAppsGreen'] = {
 		category: 'Measurement Application',
 		type: 'text',
-		name: 'Shading',
+		name: '',
 		text: '',
 	}
 	presets[`application_waveform`] = {
@@ -328,7 +329,7 @@ module.exports = async function (self) {
 	presets['Header-MeasurementAppsBlue'] = {
 		category: 'Measurement Application',
 		type: 'text',
-		name: 'Core',
+		name: '',
 		text: '',
 	}
 	presets[`application_picture`] = {
@@ -484,7 +485,7 @@ module.exports = async function (self) {
 	presets['Header-MeasurementAppsYellow'] = {
 		category: 'Measurement Application',
 		type: 'text',
-		name: 'IP / PTP',
+		name: '',
 		text: '',
 	}
 	presets[`application_ip_status`] = {
@@ -640,7 +641,7 @@ module.exports = async function (self) {
 	presets['Header-MeasurementOrange'] = {
 		category: 'Measurement Application',
 		type: 'text',
-		name: 'Engineering',
+		name: '',
 		text: '',
 	}
 	presets[`application_anc_session`] = {
@@ -821,7 +822,7 @@ module.exports = async function (self) {
 	presets['Header-MeasurementPurple'] = {
 		category: 'Measurement Application',
 		type: 'text',
-		name: 'Generator',
+		name: '',
 		text: '',
 	}
 	presets[`application_ip_generator`] = {
@@ -970,7 +971,7 @@ module.exports = async function (self) {
 						tile: i,
 					},
 					style: {
-						color: colors.text,
+						color: colors.text_black,
 						bgcolor: colors.bg_green,
 					},
 				},
@@ -990,7 +991,7 @@ module.exports = async function (self) {
 		style: {
 			...button_defaults,
 			text: ``,
-			png64: icons.quarter,
+			png64: icons.fullscreen_reduce,
 			pngalignment: 'center:top',
 		},
 		steps: [
@@ -1015,7 +1016,7 @@ module.exports = async function (self) {
 			name: tileSelectChoices[i].label,
 			style: {
 				...button_defaults,
-				text: `${tileSelectChoices[i].label}`,
+				text: `${tileSelectChoices[i].label}\\n`,
 				png64: icons.fullscreen,
 				pngalignment: 'center:top',
 			},
@@ -1047,7 +1048,7 @@ module.exports = async function (self) {
 		name: 'Two Tile Vertical',
 		style: {
 			...button_defaults,
-			text: `Tile $(generic-module:tileInFocus)`,
+			text: `Tile $(generic-module:tileInFocus)\\n`,
 			png64: icons.two_tile_vertical,
 			pngalignment: 'center:top',
 		},
