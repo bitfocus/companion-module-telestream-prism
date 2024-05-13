@@ -2910,7 +2910,7 @@ module.exports = function (self) {
 				}
 			},
 		},
-		/* 		jitterHpf: {
+		jitterHpf: {
 			name: 'Jitter HPF',
 			description: `High-pass filter selection for jitter measurements`,
 			options: [
@@ -2918,7 +2918,8 @@ module.exports = function (self) {
 					...actionOptions.modeDropdown,
 					default: jitterHpfChoices[0].id,
 					choices: jitterHpfChoices,
-					tooltip: 'Options: 0 for timing, 1 for alignment, 2 for 10Hz, 3 for 100Hz, 4 for 1kHz, 5 for 10kHz, 6 for 100kHz',
+					tooltip:
+						'Options: 0 for timing, 1 for alignment, 2 for 10Hz, 3 for 100Hz, 4 for 1kHz, 5 for 10kHz, 6 for 100kHz',
 				},
 			],
 			callback: async ({ options }) => {
@@ -2927,18 +2928,18 @@ module.exports = function (self) {
 				}
 				let mode = parseInt(await self.parseVariablesInString(options.mode))
 				if (isNaN(mode) || mode < 0 || mode > 6) {
-					this.log('warn, `jitter_hpf has been passed an out of range variable: ${mode})
+					this.log('warn', `jitter_hpf has been passed an out of range variable: ${mode}`)
 					return undefined
 				}
 				let msg = JSON.stringify({ ints: [mode] })
 				try {
-					const response = await self.axios.post(`/jitter_hpf`, msg)
+					const response = await self.axios.post(`/jitter_hpf/index0`, msg)
 					self.logResponse(response)
 				} catch (error) {
 					self.logError(error)
 				}
 			},
-		}, */
+		},
 		closedCaptionsDisplay: {
 			name: 'Closed Captions Display',
 			description: `The format of captions/subtitles displayed for the picture. The first value in the list is the requested value, the second is the effective value`,
