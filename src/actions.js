@@ -2039,7 +2039,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/audio_pair_aux_out_mode`, msg)
 					self.logResponse(response)
-					
 				} catch (error) {
 					self.logError(error)
 				}
@@ -2215,7 +2214,6 @@ module.exports = function (self) {
 				try {
 					const response = await self.axios.post(`/audio_pcm_program/${scope}`, msg)
 					self.logResponse(response)
-					
 				} catch (error) {
 					self.logError(error)
 				}

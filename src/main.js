@@ -92,7 +92,7 @@ class Telestream_PRISM extends InstanceBase {
 			try {
 				this.log(
 					'error',
-					`${error.response.status}: ${JSON.stringify(error.code)}\n${JSON.stringify(error.response.data)}`
+					`${error.response.status}: ${JSON.stringify(error.code)}\n${JSON.stringify(error.response.data)}`,
 				)
 				this.updateStatus(InstanceStatus.ConnectionFailure, `${error.response.status}: ${JSON.stringify(error.code)}`)
 			} catch {
