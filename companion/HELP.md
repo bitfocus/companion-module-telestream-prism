@@ -21,7 +21,7 @@ Some actions require specific hardware models, or licensed software modules.
 - **Audio Display Loudness Meter**
 - **Audio Downmix Mode**
 - **Audio Input Type**
-- **Audio Pair Output Mode**
+- **Audio Pair Aux Output Mode**
 - **Audio PCM Program**
 - **Audio Program Surround Order**
 - **Audio Session Control**
