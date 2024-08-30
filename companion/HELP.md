@@ -1,6 +1,6 @@
 ## Telestream Prism
 
-Control the [Telestream Prism](https://www.telestream.net/video/prism.htm) Waveform monitor. Minimum supported firmware 4.1.
+Control the [Telestream Prism](https://www.telestream.net/video/prism.htm) Waveform monitor. Minimum supported firmware 4.2.1.
 
 Connection is made via HTTP on TCP:9000.
 
@@ -22,6 +22,8 @@ Some actions require specific hardware models, or licensed software modules.
 - **Audio Display Loudness Meter** 
 - **Audio Downmix Mode** 
 - **Audio Input Type**
+- **Audio Pair Output Mode**
+- **Audio PCM Program**
 - **Audio Program Surround Order** 
 - **Audio Session Control** 
 - **Audio Session Display**

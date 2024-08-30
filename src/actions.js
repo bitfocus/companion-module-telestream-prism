@@ -2020,8 +2020,7 @@ module.exports = function (self) {
 				}
 			},
 		},
-		//audio_pair_aux_out_mode does not respond as described. A GET returns {"ints": [ 0 ]}
-		/* audioPairAuxOutMode: {
+		audioPairAuxOutMode: {
 			name: 'Audio Pair Aux Out Mode',
 			description: `Select audio aux out mode for ST2110`,
 			options: [
@@ -2045,7 +2044,7 @@ module.exports = function (self) {
 					self.logError(error)
 				}
 			},
-		}, */
+		},
 		sourceConfigVidLinks: {
 			name: 'Source Config Video Links',
 			description: `Configuration setting for changing the number of links`,
@@ -2195,8 +2194,7 @@ module.exports = function (self) {
 				}
 			},
 		},
-		//audio_pcm_program POSTs return a "ERROR: S_ioslave_INVALID_SCOPEExecution failed." when pointed at a valid tile which successfully returns a GET.
-		/* audioPcmProgram: {
+		audioPcmProgram: {
 			name: 'Audio PCM Program',
 			description: `Enable/Disable custom program configuration for PCM channels`,
 			options: [
@@ -2213,7 +2211,7 @@ module.exports = function (self) {
 					return undefined
 				}
 				let scope = await self.parseVariablesInString(options.scope)
-				let msg = JSON.stringify({ ints: await self.parseVariablesInString(options.mode) })
+				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/audio_pcm_program/${scope}`, msg)
 					self.logResponse(response)
@@ -2222,7 +2220,7 @@ module.exports = function (self) {
 					self.logError(error)
 				}
 			},
-		}, */
+		},
 		xmitMode2110: {
 			name: 'ST 2110.21 Transmit Mode',
 			description: `Set S2110.21 transmit mode to Gapped (N), Narrow Linear(NL), Wide Linear(W)`,
