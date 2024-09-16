@@ -1,5 +1,5 @@
-const { Regex } = require('@companion-module/base')
-const {
+import { Regex } from '@companion-module/base'
+import {
 	actionOptions,
 	activeInputChoices,
 	audioSessionControlChoices,
@@ -136,9 +136,9 @@ const {
 	waveformGratSdiUnits,
 	waveformLutChoices,
 	waveformActiveAreaChoices,
-} = require('./choices.js')
+} from './choices.js'
 
-module.exports = function (self) {
+export default function (self) {
 	self.setActionDefinitions({
 		activeInput: {
 			name: 'Active Input',

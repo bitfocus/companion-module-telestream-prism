@@ -1,10 +1,10 @@
-const { InstanceBase, Regex, runEntrypoint, InstanceStatus } = require('@companion-module/base')
-const UpgradeScripts = require('./upgrades')
-const UpdateActions = require('./actions')
-const UpdateFeedbacks = require('./feedbacks')
-const UpdateVariableDefinitions = require('./variables')
-const UpdatePresetsDefinitions = require('./presets')
-const axios = require('axios')
+import { InstanceBase, Regex, runEntrypoint, InstanceStatus } from '@companion-module/base'
+import UpgradeScripts from './upgrades.js'
+import UpdateActions from './actions.js'
+import UpdateFeedbacks from './feedbacks.js'
+import UpdateVariableDefinitions from './variables.js'
+import UpdatePresetsDefinitions from './presets.js'
+import axios from 'axios'
 
 const port = 9000
 const apiPath = '/api'

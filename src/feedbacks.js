@@ -1,7 +1,7 @@
-const { combineRgb } = require('@companion-module/base')
-const { actionOptions, tileInFocusChoices } = require('./choices.js')
+import { combineRgb } from '@companion-module/base'
+import { actionOptions, tileInFocusChoices } from './choices.js'
 
-module.exports = async function (self) {
+export default async function (self) {
 	self.setFeedbackDefinitions({
 		activeInput: {
 			name: 'Active Input',

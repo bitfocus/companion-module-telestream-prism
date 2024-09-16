@@ -1,6 +1,6 @@
-const { combineRgb } = require('@companion-module/base')
-const { measureAssignChoices, tiles, tileSelectChoices, measureTileModeChoices } = require('./choices.js')
-const { icons } = require('./icons.js')
+import { combineRgb } from '@companion-module/base'
+import { measureAssignChoices, tiles, tileSelectChoices, measureTileModeChoices } from './choices.js'
+import { icons } from './icons.js'
 
 const colors = {
 	text: combineRgb(218, 218, 218),
