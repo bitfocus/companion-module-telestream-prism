@@ -1,6 +1,6 @@
-const { combineRgb } = require('@companion-module/base')
-const { measureAssignChoices, tiles, tileSelectChoices, measureTileModeChoices } = require('./choices.js')
-const { icons } = require('./icons.js')
+import { combineRgb } from '@companion-module/base'
+import { measureAssignChoices, tiles, tileSelectChoices, measureTileModeChoices } from './choices.js'
+import { icons } from './icons.js'
 
 const colors = {
 	text: combineRgb(218, 218, 218),
@@ -19,7 +19,7 @@ const button_defaults = {
 	show_topbar: false,
 }
 
-module.exports = async function (self) {
+export default async function (self) {
 	let presets = {}
 	presets['Header-Input-Active'] = {
 		category: 'Input',

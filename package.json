@@ -1,11 +1,14 @@
 {
 	"name": "telestream-prism",
-	"version": "1.1.7",
+	"version": "1.2.0",
 	"main": "src/main.js",
+	"type": "module",
 	"scripts": {
 		"format": "prettier -w .",
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"package": "companion-module-build"
+		"package": "companion-module-build",
+		"lint:raw": "eslint",
+		"lint": "yarn lint:raw ."
 	},
 	"license": "MIT",
 	"repository": {
@@ -14,11 +17,13 @@
 	},
 	"dependencies": {
 		"@companion-module/base": "~1.10.0",
-		"axios": "^1.7.5"
+		"axios": "^1.7.7"
 	},
 	"devDependencies": {
-		"@companion-module/tools": "^2.0.0",
+		"@companion-module/tools": "^2.0.4",
+		"eslint": "^9.10.0",
 		"prettier": "^3.3.3"
 	},
-	"prettier": "@companion-module/tools/.prettierrc.json"
+	"prettier": "@companion-module/tools/.prettierrc.json",
+	"packageManager": "yarn@4.4.1"
 }

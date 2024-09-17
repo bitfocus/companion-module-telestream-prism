@@ -1,5 +1,5 @@
-const { Regex } = require('@companion-module/base')
-const {
+import { Regex } from '@companion-module/base'
+import {
 	actionOptions,
 	activeInputChoices,
 	audioSessionControlChoices,
@@ -136,9 +136,9 @@ const {
 	waveformGratSdiUnits,
 	waveformLutChoices,
 	waveformActiveAreaChoices,
-} = require('./choices.js')
+} from './choices.js'
 
-module.exports = function (self) {
+export default function (self) {
 	self.setActionDefinitions({
 		activeInput: {
 			name: 'Active Input',
@@ -5091,6 +5091,178 @@ module.exports = function (self) {
 				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
 				try {
 					const response = await self.axios.post(`/waveform_active_area/${scope}`, msg)
+					self.logResponse(response)
+				} catch (error) {
+					self.logError(error)
+				}
+			},
+		},
+		loudnessLoudLevel: {
+			name: 'Loudness Loud Level',
+			description: `Set Loudness Loud Level`,
+			options: [
+				{
+					...actionOptions.integerInput,
+					id: 'level',
+					label: 'Level',
+					default: -6,
+					min: -31,
+					max: 0,
+				},
+				{
+					...actionOptions.modeVar,
+					id: 'levelVar',
+					label: 'Level',
+					tooltip: 'Varible must return a number between -31 and 0.',
+				},
+				actionOptions.useVar,
+			],
+			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
+				const level = options.useVar
+					? parseInt(await self.parseVariablesInString(options.levelVar))
+					: parseInt(options.level)
+				if (isNaN(level) || level < -31 || level > 0) {
+					self.log('warn', `level out of range: ${level}`)
+					return undefined
+				}
+				let msg = JSON.stringify({ floats: [level] })
+				try {
+					const response = await self.axios.post(`/loudness_loud_level`, msg)
+					self.logResponse(response)
+				} catch (error) {
+					self.logError(error)
+				}
+			},
+		},
+		loudnessQuietLevel: {
+			name: 'Loudness Quiet Level',
+			description: `Set Loudness Quiet Level`,
+			options: [
+				{
+					...actionOptions.integerInput,
+					id: 'level',
+					label: 'Level',
+					default: -30,
+					min: -60,
+					max: 0,
+				},
+				{
+					...actionOptions.modeVar,
+					id: 'levelVar',
+					label: 'Level',
+					tooltip: 'Varible must return a number between -60 and 0.',
+				},
+				actionOptions.useVar,
+			],
+			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
+				const level = options.useVar
+					? parseInt(await self.parseVariablesInString(options.levelVar))
+					: parseInt(options.level)
+				if (isNaN(level) || level < -60 || level > 0) {
+					self.log('warn', `level out of range: ${level}`)
+					return undefined
+				}
+				let msg = JSON.stringify({ floats: [level] })
+				try {
+					const response = await self.axios.post(`/loudness_quiet_level`, msg)
+					self.logResponse(response)
+				} catch (error) {
+					self.logError(error)
+				}
+			},
+		},
+		loudnessTargetLevel: {
+			name: 'Loudness Target Level',
+			description: `Set Loudness Target Level`,
+			options: [
+				{
+					...actionOptions.integerInput,
+					id: 'target',
+					label: 'Target',
+					default: -23,
+					min: -31,
+					max: 0,
+				},
+				{
+					...actionOptions.modeVar,
+					id: 'targetVar',
+					label: 'Target',
+					tooltip: 'Varible must return a number between -31 and 0.',
+				},
+				{
+					...actionOptions.integerInput,
+					id: 'high',
+					label: 'High',
+					default: 2,
+					min: 0,
+					max: 10,
+					step: 0.1,
+				},
+				{
+					...actionOptions.modeVar,
+					id: 'highVar',
+					label: 'High',
+					tooltip: 'Varible must return a number between 0 and 10.',
+				},
+				{
+					...actionOptions.integerInput,
+					id: 'low',
+					label: 'Low',
+					default: 2,
+					min: 0,
+					max: 10,
+					step: 0.1,
+				},
+				{
+					...actionOptions.modeVar,
+					id: 'lowVar',
+					label: 'Low',
+					tooltip: 'Varible must return a number between 0 and 10.',
+				},
+				actionOptions.useVar,
+			],
+			callback: async ({ options }) => {
+				if (self.axios === undefined) {
+					return undefined
+				}
+				const target = options.useVar
+					? parseInt(await self.parseVariablesInString(options.targetVar))
+					: parseInt(options.target)
+				const high = options.useVar
+					? parseInt(Number(await self.parseVariablesInString(options.highVar)) * 10) / 10
+					: options.high
+				const low = options.useVar
+					? parseInt(Number(await self.parseVariablesInString(options.lowVar)) * 10) / 10
+					: options.low
+				if (
+					isNaN(target) ||
+					target < -31 ||
+					target > 0 ||
+					isNaN(low) ||
+					low < 0 ||
+					low > 10 ||
+					isNaN(high) ||
+					high < 0 ||
+					high > 10
+				) {
+					self.log('warn', `params out of range. target: ${target}, high: ${high}, low: ${low}`)
+					return undefined
+				}
+				let msg = JSON.stringify({
+					object: {
+						target: target,
+						targetLow: low,
+						targetHigh: high,
+					},
+				})
+				try {
+					const response = await self.axios.post(`/loudness_target_level`, msg)
 					self.logResponse(response)
 				} catch (error) {
 					self.logError(error)
