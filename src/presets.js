@@ -19,7 +19,7 @@ const button_defaults = {
 	show_topbar: false,
 }
 
-module.exports = async function (self) {
+export default async function (self) {
 	let presets = {}
 	presets['Header-Input-Active'] = {
 		category: 'Input',
