@@ -30,7 +30,7 @@ class Telestream_PRISM extends InstanceBase {
 		if (status === this.currentStatus.status && message === this.currentStatus.message) return false
 		this.updateStatus(status, message.toString())
 		this.currentStatus.status = status
-		this.checkStatus.message = message
+		this.currentStatus.message = message
 		return true
 	}
 
