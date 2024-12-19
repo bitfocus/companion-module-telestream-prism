@@ -138,6 +138,11 @@ import {
 	waveformActiveAreaChoices,
 } from './choices.js'
 
+async function parseTileScope(options, self) {
+	const scope = await self.parseVariablesInString(options.scope)
+	return scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
+}
+
 export default function (self) {
 	self.setActionDefinitions({
 		activeInput: {
@@ -180,9 +185,6 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
 				let prismInput
 				switch (options.action) {
 					case 'set':
@@ -204,13 +206,9 @@ export default function (self) {
 					self.log('warn', `input out of range ${prismInput}`)
 					return undefined
 				}
-				try {
-					const response = await self.axios.post('/activeinput', JSON.stringify({ input: prismInput }))
-					self.logResponse(response)
-					self.getInput()
-				} catch (error) {
-					self.logError(error)
-				}
+				const result = await self.postCommand('/activeinput', { input: prismInput })
+				if (result) await self.getInput()
+				return result
 			},
 			learn: async (action) => {
 				const newInput = await self.getInput()
@@ -222,28 +220,19 @@ export default function (self) {
 					input: newInput,
 				}
 			},
-			subscribe: () => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				self.getInput()
+			subscribe: async () => {
+				await self.getInput()
 			},
 		},
 		getPresets: {
 			name: 'Get Presets',
 			description: `Get list of presets`,
 			options: [],
-			callback: () => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				self.getPresets()
+			callback: async () => {
+				return await self.getPresets()
 			},
-			subscribe: () => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				self.getPresets()
+			subscribe: async () => {
+				await self.getPresets()
 			},
 		},
 		loadPreset: {
@@ -264,22 +253,10 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				try {
-					let preset = JSON.stringify({ string: await self.parseVariablesInString(options.preset) })
-					const response = await self.axios.post('/loadpreset', preset)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand('/loadpreset', { string: await self.parseVariablesInString(options.preset) })
 			},
-			subscribe: () => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				self.getPresets()
+			subscribe: async () => {
+				await self.getPresets()
 			},
 		},
 		ancSessionControl: {
@@ -287,16 +264,7 @@ export default function (self) {
 			description: `Reset anc session`,
 			options: [],
 			callback: async () => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: ['ANC_ENGINE_SESSION_CONTROL_RESET'] })
-				try {
-					const response = await self.axios.post('/anc_session_control', msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand('/anc_session_control', { ints: ['ANC_ENGINE_SESSION_CONTROL_RESET'] })
 			},
 		},
 		audioSessionControl: {
@@ -316,16 +284,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.action)] })
-				try {
-					const response = await self.axios.post('/audio_session_control', msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand('/audio_session_control', {
+					ints: [await self.parseVariablesInString(options.action)],
+				})
 			},
 		},
 		loudnessSessionControl: {
@@ -346,16 +307,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.action)] })
-				try {
-					const response = await self.axios.post('/loudness_session_control', msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand('/loudness_session_control', {
+					ints: [await self.parseVariablesInString(options.action)],
+				})
 			},
 		},
 		videoSessionControl: {
@@ -375,16 +329,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.action)] })
-				try {
-					const response = await self.axios.post('/video_session_control', msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand('/video_session_control', {
+					ints: [await self.parseVariablesInString(options.action)],
+				})
 			},
 		},
 		ipSessionControl: {
@@ -404,16 +351,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.action)] })
-				try {
-					const response = await self.axios.post('/ip_session_control', msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand('/ip_session_control', {
+					ints: [await self.parseVariablesInString(options.action)],
+				})
 			},
 		},
 		tileSelect: {
@@ -430,20 +370,12 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let tile = parseInt(await self.parseVariablesInString(options.tile))
+				const tile = parseInt(await self.parseVariablesInString(options.tile))
 				if (isNaN(tile) || tile < 0 || tile > 8) {
 					self.log('warn', `An out of range variable has been passed to Tile Select: ${tile}`)
 					return undefined
 				}
-				try {
-					const response = await self.axios.post('/tile_select', JSON.stringify({ ints: [tile] }))
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand('/tile_select', { ints: [tile] })
 			},
 		},
 		tileFullscreenMode: {
@@ -458,15 +390,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				try {
-					const response = await self.axios.post('/tile_fullscreen_mode', JSON.stringify({ ints: [options.mode] }))
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand('/tile_fullscreen_mode', {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		tileInFocus: {
@@ -483,34 +409,31 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
 				let tile = parseInt(await self.parseVariablesInString(options.tile))
 				if (isNaN(tile) || tile < 1 || tile > 8) {
 					self.log('warn', `An out of range variable has been passed to Tile In Focus: ${tile}`)
 					return undefined
 				}
-				try {
-					const response = await self.axios.post('/tile_in_focus', JSON.stringify({ ints: [tile] }))
-					self.logResponse(response)
-					if (response.data === undefined || response.data.ints === undefined || !Array.isArray(response.data.ints)) {
-						self.log('warn', 'tile_in_focus response contains no data')
-						return undefined
-					}
-					if (response.data.ints.length == 1 && !isNaN(parseInt(response.data.ints[0]))) {
-						let varList = []
-						self.prism.tileInFocus = parseInt(response.data.ints[0])
-						varList['tileInFocus'] = self.prism.tileInFocus
-						self.setVariableValues(varList)
-						self.checkFeedbacks('tileInFocus')
-						return self.prism.input
-					} else {
-						self.log('warn', 'tile_in_focus returned a NaN or unexpected  length')
-						return undefined
-					}
-				} catch (error) {
-					self.logError(error)
+				const response = await self.postCommand('/tile_in_focus', { ints: [tile] })
+				if (
+					response === undefined ||
+					response.data === undefined ||
+					response.data.ints === undefined ||
+					!Array.isArray(response.data.ints)
+				) {
+					self.log('warn', 'tile_in_focus response contains no data')
+					return undefined
+				}
+				if (response.data.ints.length == 1 && !isNaN(parseInt(response.data.ints[0]))) {
+					let varList = []
+					self.prism.tileInFocus = parseInt(response.data.ints[0])
+					varList['tileInFocus'] = self.prism.tileInFocus
+					self.setVariableValues(varList)
+					self.checkFeedbacks('tileInFocus')
+					return self.prism.input
+				} else {
+					self.log('warn', 'tile_in_focus returned a NaN or unexpected  length')
+					return undefined
 				}
 			},
 			learn: async (action) => {
@@ -537,16 +460,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post('/audio_ballistic', msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand('/audio_ballistic', { ints: [await self.parseVariablesInString(options.mode)] })
 			},
 		},
 		loudnessMeteringMode: {
@@ -563,16 +477,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post('/loudness_metering_mode', msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand('/loudness_metering_mode', {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		loudnessFullScaleUnits: {
@@ -588,16 +495,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post('/loudness_full_scale_units', msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand('/loudness_full_scale_units', {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		loudnessTruePeakDcBlock: {
@@ -613,16 +513,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post('/loudness_true_peak_dc_block', msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand('/loudness_true_peak_dc_block', {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		loudnessTruePeakEmphasis: {
@@ -638,16 +531,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post('/loudness_true_peak_emphasis', msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand('/loudness_true_peak_emphasis', {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		loudnessBallistic: {
@@ -664,16 +550,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post('/loudness_ballistic', msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand('/loudness_ballistic', {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		loudnessShortGatingWindow: {
@@ -690,16 +569,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post('/loudness_short_gating_window', msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand('/loudness_short_gating_window', {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		loudnessLoadPreset: {
@@ -715,16 +587,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post('/loudness_load_preset', msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand('/loudness_load_preset', {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		audioProgramSurroundOrder: {
@@ -740,16 +605,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post('/audio_program_surround_order', msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand('/audio_program_surround_order', {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		dolbyMetadataSource: {
@@ -766,16 +624,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post('/dolby_metadata_source', msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand('/dolby_metadata_source', {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		audioDownmixMode: {
@@ -792,16 +643,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post('/audio_downmix_mode', msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand('/audio_downmix_mode', {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		audioSoloMode: {
@@ -817,16 +661,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post('/audio_solo_mode', msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand('/audio_solo_mode', {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		dolbyDrcMode: {
@@ -841,16 +678,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post('/dolby_drc_mode', msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand('/dolby_drc_mode', {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		analogAudioOutputMode: {
@@ -865,16 +695,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post('/analog_audio_output_mode', msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand('/analog_audio_output_mode', {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		audioAuxDisplayMode: {
@@ -891,18 +714,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/audio_aux_display_mode/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/audio_aux_display_mode/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		audioDisplayLoudnessMeter: {
@@ -918,18 +732,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/audio_display_loudness_meter/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/audio_display_loudness_meter/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		audioSessionDisplay: {
@@ -945,18 +750,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/audio_session_display/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/audio_session_display/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		surroundDominanceIndicator: {
@@ -973,18 +769,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/surround_dominance_indicator/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/surround_dominance_indicator/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		surroundImmersiveDominanceIndicator: {
@@ -1001,18 +788,12 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/surround_immersive_dominance_indicator/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(
+					`/surround_immersive_dominance_indicator/${await parseTileScope(options, self)}`,
+					{
+						ints: [await self.parseVariablesInString(options.mode)],
+					},
+				)
 			},
 		},
 		surroundBedSelect: {
@@ -1029,18 +810,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/surround_bed_select/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/surround_bed_select/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		surroundImmersivePsiBedSelect: {
@@ -1057,18 +829,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/surround_immersive_psi_bed_select/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/surround_immersive_psi_bed_select/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		avdelayUserOffsetMode: {
@@ -1083,16 +846,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post('/avdelay_user_offset_mode', msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/avdelay_user_offset_mode`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		sdiLoopThrough: {
@@ -1107,16 +863,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post('/sdi_loop_through', msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/sdi_loop_through`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		ipVideoPhyBitRate: {
@@ -1132,21 +881,14 @@ export default function (self) {
 				actionOptions.ip,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let mode = parseInt(await self.parseVariablesInString(options.mode))
-				let scope = await self.parseVariablesInString(options.scope)
+				const mode = parseInt(await self.parseVariablesInString(options.mode))
 				if (isNaN(mode) || (mode !== 10 && mode !== 25)) {
 					this.log('warn', `IP Video PHY Bite Rate Mode passed out of range value: ${mode}`)
+					return undefined
 				}
-				let msg = JSON.stringify({ ints: [mode] })
-				try {
-					const response = await self.axios.post(`/ip_video_phy_bit_rate/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/ip_video_phy_bit_rate/${await parseTileScope(options, self)}`, {
+					ints: [mode],
+				})
 			},
 		},
 		ipVideoPhyFecMode: {
@@ -1162,17 +904,9 @@ export default function (self) {
 				actionOptions.ip,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/ip_video_phy_fec_mode/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/ip_video_phy_fec_mode/${await self.parseVariablesInString(options.scope)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		camappDisplayType: {
@@ -1188,18 +922,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/camapp_display_type/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/camapp_display_type/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		camappGain: {
@@ -1216,18 +941,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/camapp_gain/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/camapp_gain/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		camappSweep: {
@@ -1244,18 +960,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/camapp_sweep/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/camapp_sweep/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		camappFilter: {
@@ -1272,18 +979,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/camapp_filter/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/camapp_filter/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		camappThumbnail: {
@@ -1300,18 +998,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/camapp_thumbnail/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/camapp_thumbnail/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		camappGraticuleUnits: {
@@ -1329,18 +1018,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/camapp_graticule_units/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/camapp_graticule_units/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		diagnosticUrlPreset: {
@@ -1357,16 +1037,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post('/diagnostic_url_preset', msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/diagnostic_url_preset`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		extendedDisplayMode: {
@@ -1381,16 +1054,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post('/extended_display_mode', msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/extended_display_mode`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		diamondMode: {
@@ -1406,23 +1072,14 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let mode = parseInt(await self.parseVariablesInString(options.mode))
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
+				const mode = parseInt(await self.parseVariablesInString(options.mode))
 				if (isNaN(mode || mode < 0 || mode > 1)) {
-					self.log('warn', `Mode out of range: ${mode}`)
+					self.log('warn', `Dimond Mode out of range: ${mode}`)
 					return undefined
 				}
-				let msg = JSON.stringify({ ints: [mode] })
-				try {
-					const response = await self.axios.post(`/diamond_mode/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/diamond_mode/${await parseTileScope(options, self)}`, {
+					ints: [mode],
+				})
 			},
 		},
 		diamondLut: {
@@ -1438,18 +1095,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/diamond_lut/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/diamond_lut/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		mpiLedBrightness: {
@@ -1472,26 +1120,15 @@ export default function (self) {
 				actionOptions.useVar,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [parseInt(options.brightness)] })
+				let brightness = parseInt(options.brightness)
 				if (options.useVar) {
-					let brightness = parseInt(await self.parseVariablesInString(options.brightnessVar))
+					brightness = parseInt(await self.parseVariablesInString(options.brightnessVar))
 					if (isNaN(brightness) || brightness < 0 || brightness > 31) {
 						self.log('warn', `mpi_led_brightness has been passed an out of range variable: ${brightness}`)
 						return undefined
 					}
-					msg = JSON.stringify({ ints: [brightness] })
 				}
-				try {
-					const response = await self.axios.post('/mpi_led_brightness', msg)
-					self.logResponse(response)
-
-					self.getInput()
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/mpi_led_brightness`, { ints: [brightness] })
 			},
 		},
 		mpiLedColor: {
@@ -1508,16 +1145,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: await self.parseVariablesInString(options.mode) })
-				try {
-					const response = await self.axios.post('/mpi_led_color', msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/mpi_led_color`, { ints: await self.parseVariablesInString(options.mode) })
 			},
 		},
 		extrefSweep: {
@@ -1533,23 +1161,12 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
 				let mode = parseInt(await self.parseVariablesInString(options.mode))
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				if (isNaN(mode) || mode < 0 || mode > 3) {
 					self.log('warn', `Sweep Mode out of range: ${mode}`)
 					return undefined
 				}
-				let msg = JSON.stringify({ ints: [mode] })
-				try {
-					const response = await self.axios.post(`/extref_sweep/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`//extref_sweep/${await parseTileScope(options, self)}`, { ints: [mode] })
 			},
 		},
 		extrefGain: {
@@ -1566,23 +1183,14 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
 				let mode = parseInt(await self.parseVariablesInString(options.mode))
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				if (isNaN(mode) || (mode !== 1 && mode !== 2 && mode !== 5)) {
-					self.log('warn', `Gain out of range: ${mode}`)
+					self.log('warn', `ExRef Gain out of range: ${mode}`)
 					return undefined
 				}
-				let msg = JSON.stringify({ ints: [mode] })
-				try {
-					const response = await self.axios.post(`/extref_gain/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/extref_gain/${await parseTileScope(options, self)}`, {
+					ints: [mode],
+				})
 			},
 		},
 		extrefHmag: {
@@ -1608,13 +1216,8 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
 				let hmag = parseInt(await self.parseVariablesInString(options.hmag))
 				let bestView = parseInt(await self.parseVariablesInString(options.bestView))
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				if (isNaN(hmag) || hmag < 0 || hmag > 1) {
 					self.log('warn', `Hmag out of range: ${hmag}`)
 					return undefined
@@ -1623,13 +1226,7 @@ export default function (self) {
 					self.log('warn', `Best View out of range: ${bestView}`)
 					return undefined
 				}
-				let msg = JSON.stringify({ ints: [hmag, bestView] })
-				try {
-					const response = await self.axios.post(`/extref_hmag/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/extref_hmag/${await parseTileScope(options, self)}`, { ints: [hmag, bestView] })
 			},
 		},
 		eyeMeterEnable: {
@@ -1645,23 +1242,12 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let mode = parseInt(await self.parseVariablesInString(options.mode))
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
+				const mode = parseInt(await self.parseVariablesInString(options.mode))
 				if (isNaN(mode) || mode < 0 || mode > 1) {
 					self.log('warn', `Mode out of range: ${mode}`)
 					return undefined
 				}
-				let msg = JSON.stringify({ ints: [mode] })
-				try {
-					const response = await self.axios.post(`/eye_meter_enable/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/eye_meter_enable/${await parseTileScope(options, self)}`, { ints: [mode] })
 			},
 		},
 		eyeSweep: {
@@ -1678,23 +1264,12 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
 				let mode = parseInt(await self.parseVariablesInString(options.mode))
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 				if (isNaN(mode) || mode < 0 || mode > 3) {
 					self.log('warn', `Rate out of range: ${mode}`)
 					return undefined
 				}
-				let msg = JSON.stringify({ ints: [mode] })
-				try {
-					const response = await self.axios.post(`/eye_sweep/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/eye_sweep/${await parseTileScope(options, self)}`, { ints: [mode] })
 			},
 		},
 		fpTestMode: {
@@ -1709,16 +1284,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/fp_test_mode`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/fp_test_mode`, { ints: [await self.parseVariablesInString(options.mode)] })
 			},
 		},
 		stopSweep: {
@@ -1735,23 +1301,12 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let mode = parseInt(await self.parseVariablesInString(options.mode))
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
+				const mode = parseInt(await self.parseVariablesInString(options.mode))
 				if (isNaN(mode) || mode < 0 || mode > 18) {
 					self.log('warn', `Rate out of range: ${mode}`)
 					return undefined
 				}
-				let msg = JSON.stringify({ ints: [mode] })
-				try {
-					const response = await self.axios.post(`/stop_sweep/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/stop_sweep/${await parseTileScope(options, self)}`, { ints: [mode] })
 			},
 		},
 		stopColorTrace: {
@@ -1767,18 +1322,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/stop_color_trace/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/stop_color_trace/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		stopDisplayGain: {
@@ -1789,7 +1335,7 @@ export default function (self) {
 					...actionOptions.integerInput,
 					id: 'gain',
 					label: 'Gain',
-
+					min: 0,
 					max: 10,
 				},
 				{
@@ -1802,26 +1348,15 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
 				let gain = parseInt(options.gain)
 				if (options.useVar) {
-					let gain = parseInt(await self.parseVariablesInString(options.gainVar))
+					gain = parseInt(await self.parseVariablesInString(options.gainVar))
 					if (isNaN(gain) || gain < 0 || gain > 10) {
 						self.log('warn', `stop_display_gain has been passed an out of range variable: ${gain}`)
 						return undefined
 					}
 				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [gain] })
-				try {
-					const response = await self.axios.post(`/stop_display_gain/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/stop_display_gain/${await parseTileScope(options, self)}`, { ints: [gain] })
 			},
 		},
 		stopEnableBestGain: {
@@ -1837,18 +1372,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/stop_enable_best_gain/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/stop_enable_best_gain/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		stopHmag: {
@@ -1859,7 +1385,6 @@ export default function (self) {
 					...actionOptions.integerInput,
 					id: 'hmag',
 					label: 'Hmag',
-
 					default: 1,
 					min: 1,
 					max: 25,
@@ -1882,16 +1407,10 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let hmag = parseInt(options.hmag)
-				let bestView = parseInt(await self.parseVariablesInString(options.bestView))
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				if (options.useVar) {
-					hmag = parseInt(await self.parseVariablesInString(options.hmagVar))
-				}
+				const hmag = options.useVar
+					? parseInt(await self.parseVariablesInString(options.hmagVar))
+					: parseInt(options.hmag)
+				const bestView = parseInt(await self.parseVariablesInString(options.bestView))
 				if (isNaN(hmag) || hmag < 1 || hmag > 25) {
 					self.log('warn', `Hmag out of range: ${hmag}`)
 					return undefined
@@ -1900,13 +1419,7 @@ export default function (self) {
 					self.log('warn', `Best View out of range: ${bestView}`)
 					return undefined
 				}
-				let msg = JSON.stringify({ ints: [hmag, bestView] })
-				try {
-					const response = await self.axios.post(`/stop_hmag/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/stop_hmag/${await parseTileScope(options, self)}`, { ints: [hmag, bestView] })
 			},
 		},
 		stopActiveArea: {
@@ -1922,18 +1435,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/stop_active_area/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/stop_active_area/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		stopGammaReference: {
@@ -1950,23 +1454,12 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let mode = parseInt(await self.parseVariablesInString(options.mode))
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
+				const mode = parseInt(await self.parseVariablesInString(options.mode))
 				if (isNaN(mode) || mode < 0 || mode > 1) {
 					self.log('warn', `Reference out of range: ${mode}`)
 					return undefined
 				}
-				let msg = JSON.stringify({ ints: [mode] })
-				try {
-					const response = await self.axios.post(`/stop_gamma_reference/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/stop_gamma_reference/${await parseTileScope(options, self)}`, { ints: [mode] })
 			},
 		},
 		stopEnableLowPassFilter: {
@@ -1982,18 +1475,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/stop_enable_low_pass_filter/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/stop_enable_low_pass_filter/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		gpioPresetRecallEnable: {
@@ -2008,16 +1492,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/gpio_preset_recall_enable`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/gpio_preset_recall_enable`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		audioPairAuxOutMode: {
@@ -2032,16 +1509,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/audio_pair_aux_out_mode`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/audio_pair_aux_out_mode`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		sourceConfigVidLinks: {
@@ -2057,17 +1527,9 @@ export default function (self) {
 				actionOptions.config,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/source_config_vid_links/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`//source_config_vid_links/${await self.parseVariablesInString(options.scope)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		sourceConfigColorimetry: {
@@ -2083,17 +1545,12 @@ export default function (self) {
 				actionOptions.config,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/source_config_colorimetry/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(
+					`/source_config_colorimetry/${await self.parseVariablesInString(options.scope)}`,
+					{
+						ints: [await self.parseVariablesInString(options.mode)],
+					},
+				)
 			},
 		},
 		sourceConfigEotf: {
@@ -2110,17 +1567,9 @@ export default function (self) {
 				actionOptions.config,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/source_config_eotf/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/source_config_eotf/${await self.parseVariablesInString(options.scope)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		audioInputType: {
@@ -2136,17 +1585,9 @@ export default function (self) {
 				actionOptions.config,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/audio_input_type/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/audio_input_type/${await self.parseVariablesInString(options.scope)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		dolby_aes_pair: {
@@ -2172,25 +1613,16 @@ export default function (self) {
 				actionOptions.config,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
+				const mode = options.useVar
+					? parseInt(await self.parseVariablesInString(options.modeVar))
+					: parseInt(options.mode)
+				if (isNaN(mode) || mode < 1 || mode > 8) {
+					self.log('warn', `dolby_aes_pair has been passed an out of range variable: ${mode}`)
 					return undefined
 				}
-				let mode = parseInt(options.mode)
-				if (options.useVar) {
-					mode = parseInt(await self.parseVariablesInString(options.modeVar))
-					if (isNaN(mode) || mode < 1 || mode > 8) {
-						self.log('warn', `dolby_aes_pair has been passed an out of range variable: ${mode}`)
-						return undefined
-					}
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				let msg = JSON.stringify({ ints: [mode] })
-				try {
-					const response = await self.axios.post(`/dolby_aes_pair/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/dolby_aes_pair/${await self.parseVariablesInString(options.scope)}`, {
+					ints: [mode],
+				})
 			},
 		},
 		audioPcmProgram: {
@@ -2206,17 +1638,9 @@ export default function (self) {
 				actionOptions.config,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/audio_pcm_program/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/audio_pcm_program/${await self.parseVariablesInString(options.scope)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		xmitMode2110: {
@@ -2233,17 +1657,9 @@ export default function (self) {
 				actionOptions.config,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/xmit_mode_2110/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/xmit_mode_2110/${await self.parseVariablesInString(options.scope)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		trOffset2110: {
@@ -2268,25 +1684,16 @@ export default function (self) {
 				actionOptions.config,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
+				const mode = options.useVar
+					? parseInt(await self.parseVariablesInString(options.modeVar))
+					: parseInt(await self.parseVariablesInString(options.mode))
+				if (isNaN(mode) || mode < -1 || mode > 50000) {
+					self.log('warn', `tr_offset_2110 has been passed an out of range variable: ${mode}`)
 					return undefined
 				}
-				let mode = parseInt(await self.parseVariablesInString(options.mode))
-				if (options.useVar) {
-					mode = parseInt(await self.parseVariablesInString(options.modeVar))
-					if (isNaN(mode) || mode < -1 || mode > 50000) {
-						self.log('warn', `tr_offset_2110 has been passed an out of range variable: ${mode}`)
-						return undefined
-					}
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				let msg = JSON.stringify({ ints: [mode] })
-				try {
-					const response = await self.axios.post(`/tr_offset_2110/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/tr_offset_2110/${await self.parseVariablesInString(options.scope)}`, {
+					ints: [mode],
+				})
 			},
 		},
 		remoteConfigMode: {
@@ -2302,17 +1709,9 @@ export default function (self) {
 				actionOptions.config,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/remote_config_mode/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/remote_config_mode/${await self.parseVariablesInString(options.scope)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		inputEditMode: {
@@ -2327,16 +1726,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/input_edit_mode`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/input_edit_mode`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		extRefOut: {
@@ -2352,16 +1744,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/ext_ref_out`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/ext_ref_out`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		ipFastSwitchEnable: {
@@ -2376,16 +1761,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/ip_fast_switch_enable`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/ip_fast_switch_enable`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		ignoreRtpSequenceError: {
@@ -2400,16 +1778,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/ignore_rtp_sequence_error`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/ignore_rtp_sequence_error`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		jitterMeterEnable: {
@@ -2424,21 +1795,14 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let mode = parseInt(await self.parseVariablesInString(options.mode))
+				const mode = parseInt(await self.parseVariablesInString(options.mode))
 				if (isNaN(mode) || mode < 0 || mode > 1) {
 					self.log('warn', `Jitter Meter Mode passed out of range value: ${mode}`)
 					return undefined
 				}
-				let msg = JSON.stringify({ ints: [mode] })
-				try {
-					const response = await self.axios.post(`/jitter_meter_enable`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/jitter_meter_enable`, {
+					ints: [mode],
+				})
 			},
 		},
 		jitterSweep: {
@@ -2455,23 +1819,14 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let mode = parseInt(await self.parseVariablesInString(options.mode))
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
+				const mode = parseInt(await self.parseVariablesInString(options.mode))
 				if (isNaN(mode) || mode < 0 || mode > 3) {
 					self.log('warn', `Jitter Sweep Rate passed out of range value: ${mode}`)
 					return undefined
 				}
-				let msg = JSON.stringify({ ints: [mode] })
-				try {
-					const response = await self.axios.post(`/jitter_sweep/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/jitter_sweep/${await parseTileScope(options, self)}`, {
+					ints: [mode],
+				})
 			},
 		},
 		lightningVerticalGain: {
@@ -2496,26 +1851,16 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
+				const mode = options.useVar
+					? parseInt(await self.parseVariablesInString(options.gainVar))
+					: parseInt(options.gain)
+				if (isNaN(mode) || mode < 1 || mode > 10) {
+					self.log('warn', `lightning_vertical_gain has been passed an out of range variable: ${mode}`)
 					return undefined
 				}
-				let mode = parseInt(options.gain)
-				if (options.useVar) {
-					mode = parseInt(await self.parseVariablesInString(options.gainVar))
-					if (isNaN(mode) || mode < 1 || mode > 10) {
-						self.log('warn', `lightning_vertical_gain has been passed an out of range variable: ${mode}`)
-						return undefined
-					}
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [mode] })
-				try {
-					const response = await self.axios.post(`/lightning_vertical_gain/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/lightning_vertical_gain/${await parseTileScope(options, self)}`, {
+					ints: [mode],
+				})
 			},
 		},
 		lightningVerticalVarEnable: {
@@ -2527,28 +1872,14 @@ export default function (self) {
 					label: 'Enable',
 					default: lightningVerticalVarEnableChoices[0].id,
 					choices: lightningVerticalVarEnableChoices,
-					tooltip: 'Options are LIGHTNING_V_VAR_ENABLE_ON or LIGHTNING_V_VAR_ENABLE_OFF',
+					tooltip: 'Options: LIGHTNING_V_VAR_ENABLE_ON or LIGHTNING_V_VAR_ENABLE_OFF',
 				},
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let mode = parseInt(await self.parseVariablesInString(options.mode))
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				if (isNaN(mode) || mode < 0 || mode > 3) {
-					self.log('warn', `Jitter Sweep Rate passed out of range value: ${mode}`)
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [mode] })
-				try {
-					const response = await self.axios.post(`/lightning_vertical_var_enable/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/lightning_vertical_var_enable/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		lightningHorizontalGain: {
@@ -2559,7 +1890,6 @@ export default function (self) {
 					...actionOptions.integerInput,
 					id: 'gain',
 					label: 'Gain',
-
 					default: 1,
 					min: 1,
 					max: 10,
@@ -2574,26 +1904,16 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
+				const mode = options.useVar
+					? parseInt(await self.parseVariablesInString(options.gainVar))
+					: parseInt(options.gain)
+				if (isNaN(mode) || mode < 1 || mode > 10) {
+					self.log('warn', `lightning_horizontal_gain has been passed an out of range variable: ${mode}`)
 					return undefined
 				}
-				let mode = parseInt(options.gain)
-				if (options.useVar) {
-					mode = parseInt(await self.parseVariablesInString(options.gainVar))
-					if (isNaN(mode) || mode < 1 || mode > 10) {
-						self.log('warn', `lightning_horizontal_gain has been passed an out of range variable: ${mode}`)
-						return undefined
-					}
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [mode] })
-				try {
-					const response = await self.axios.post(`/lightning_horizontal_gain/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/lightning_horizontal_gain/${await parseTileScope(options, self)}`, {
+					ints: [mode],
+				})
 			},
 		},
 		lightningHorizontalVarEnable: {
@@ -2605,28 +1925,14 @@ export default function (self) {
 					label: 'Enable',
 					default: lightningHorizontalVarEnableChoices[0].id,
 					choices: lightningHorizontalVarEnableChoices,
-					tooltip: 'Options are LIGHTNING_H_VAR_ENABLE_ON or LIGHTNING_H_VAR_ENABLE_OFF',
+					tooltip: 'Options: LIGHTNING_H_VAR_ENABLE_ON or LIGHTNING_H_VAR_ENABLE_OFF',
 				},
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let mode = parseInt(await self.parseVariablesInString(options.mode))
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				if (isNaN(mode) || mode < 0 || mode > 3) {
-					self.log('warn', `Jitter Sweep Rate passed out of range value: ${mode}`)
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [mode] })
-				try {
-					const response = await self.axios.post(`/lightning_horizontal_var_enable/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/lightning_horizontal_var_enable/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		lightningLut: {
@@ -2642,18 +1948,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/lightning_lut/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/lightning_lut/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		measureAssign: {
@@ -2671,18 +1968,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/measure_assign/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/measure_assign/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		lineSelectEnable: {
@@ -2698,18 +1986,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/line_select_enable/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/line_select_enable/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		measureBarTarget: {
@@ -2725,18 +2004,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/measure_bar_target/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/measure_bar_target/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		measureTileMode: {
@@ -2753,18 +2023,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/measure_tile_mode/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/measure_tile_mode/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		nmosDiscovery: {
@@ -2780,16 +2041,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/nmos_discovery`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/nmos_discovery`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		nmosDnsType: {
@@ -2805,16 +2059,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/nmos_dns_type`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/nmos_dns_type`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		nmosApiVersion: {
@@ -2830,16 +2077,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/nmos_api_version`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/nmos_api_version`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		nmosPersistentReceivers: {
@@ -2854,16 +2094,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/nmos_persistent_receivers`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/nmos_persistent_receivers`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		nmos_target_input: {
@@ -2873,7 +2106,6 @@ export default function (self) {
 				{
 					...actionOptions.integerInput,
 					label: 'Input',
-
 					default: 1,
 					min: 1,
 					max: 6,
@@ -2886,24 +2118,16 @@ export default function (self) {
 				actionOptions.useVar,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
+				const mode = options.useVar
+					? parseInt(await self.parseVariablesInString(options.modeVar))
+					: parseInt(options.mode)
+				if (isNaN(mode) || mode < 1 || mode > 6) {
+					self.log('warn', `nmos_target_input has been passed an out of range variable: ${mode}`)
 					return undefined
 				}
-				let mode = parseInt(options.mode)
-				if (options.useVar) {
-					mode = parseInt(await self.parseVariablesInString(options.gainVar))
-					if (isNaN(mode) || mode < 1 || mode > 6) {
-						self.log('warn', `nmos_persistent_receivers has been passed an out of range variable: ${mode}`)
-						return undefined
-					}
-				}
-				let msg = JSON.stringify({ ints: [mode] })
-				try {
-					const response = await self.axios.post(`/nmos_persistent_receivers`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/nmos_target_input`, {
+					ints: [mode],
+				})
 			},
 		},
 		jitterHpf: {
@@ -2919,21 +2143,14 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let mode = parseInt(await self.parseVariablesInString(options.mode))
+				const mode = parseInt(await self.parseVariablesInString(options.mode))
 				if (isNaN(mode) || mode < 0 || mode > 6) {
 					this.log('warn', `jitter_hpf has been passed an out of range variable: ${mode}`)
 					return undefined
 				}
-				let msg = JSON.stringify({ ints: [mode] })
-				try {
-					const response = await self.axios.post(`/jitter_hpf/index0`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/jitter_hpf/index0`, {
+					ints: [mode],
+				})
 			},
 		},
 		closedCaptionsDisplay: {
@@ -2950,18 +2167,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/closed_captions_display/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/closed_captions_display/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		pictureSafeAction1: {
@@ -2979,18 +2187,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/picture_safe_action_1/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/picture_safe_action_1/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		pictureSafeAction2: {
@@ -3008,18 +2207,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/picture_safe_action_2/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/picture_safe_action_2/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		pictureSafeTitle1: {
@@ -3037,18 +2227,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/picture_safe_title_1/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/picture_safe_title_1/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		pictureSafeTitle2: {
@@ -3066,18 +2247,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/picture_safe_title_2/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/picture_safe_title_2/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		pictureCenterGrat: {
@@ -3094,18 +2266,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/picture_center_grat/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/picture_center_grat/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		closedCaptions608Channel: {
@@ -3123,18 +2286,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/closed_captions_608_channel/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/closed_captions_608_channel/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		closedCaptions708Service: {
@@ -3152,18 +2306,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/closed_captions_708_service/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/closed_captions_708_service/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		closedCaptionsWstPage: {
@@ -3187,26 +2332,16 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
+				const mode = options.useVar
+					? parseInt(await self.parseVariablesInString(options.modeVar))
+					: parseInt(options.mode)
+				if (isNaN(mode) || mode < 100 || mode > 899) {
+					self.log('warn', `closed_captions_wst_page has been passed an out of range variable: ${mode}`)
 					return undefined
 				}
-				let mode = parseInt(options.mode)
-				if (options.useVar) {
-					mode = parseInt(await self.parseVariablesInString(options.modeVar))
-					if (isNaN(mode) || mode < 100 || mode > 899) {
-						self.log('warn', `closed_captions_wst_page has been passed an out of range variable: ${mode}`)
-						return undefined
-					}
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [mode] })
-				try {
-					const response = await self.axios.post(`/closed_captions_wst_page/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/closed_captions_wst_page/${await parseTileScope(options, self)}`, {
+					ints: [mode],
+				})
 			},
 		},
 		closedCaptionsAribType: {
@@ -3223,18 +2358,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/closed_captions_arib_type/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/closed_captions_arib_type/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		pictureAfdGrat: {
@@ -3250,18 +2376,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/picture_afd_grat/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/picture_afd_grat/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		pictureAfdGratOverlay: {
@@ -3277,18 +2394,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/picture_afd_grat_overlay/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/picture_afd_grat_overlay/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		pictureLut: {
@@ -3304,18 +2412,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/picture_lut/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/picture_lut/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		pictureFormatOverlay: {
@@ -3332,18 +2431,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/picture_format_overlay/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/picture_format_overlay/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		pictureFalseColorGamutMode: {
@@ -3359,16 +2449,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/picture_false_color_gamut_mode`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/picture_false_color_gamut_mode`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		pictureFalseColor: {
@@ -3385,18 +2468,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/picture_false_color/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/picture_false_color/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		pictureFalseColorMode: {
@@ -3413,18 +2487,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/picture_false_color_mode/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/picture_false_color_mode/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		pictureFalseColorBandMeter: {
@@ -3440,18 +2505,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/picture_false_color_band_meter/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/picture_false_color_band_meter/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		closedCaptionsInfoEnable: {
@@ -3467,18 +2523,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/closed_captions_info_enable/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/closed_captions_info_enable/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		sourceIdDisplay: {
@@ -3494,18 +2541,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/source_id_display/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/source_id_display/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		pictureAspectRatio: {
@@ -3520,16 +2558,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/picture_aspect_ratio`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/picture_aspect_ratio`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		presetRecallSavedInputs: {
@@ -3544,16 +2575,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/preset_recall_saved_inputs`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/preset_recall_saved_inputs`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		presetEditMode: {
@@ -3568,16 +2592,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/preset_edit_mode`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/preset_edit_mode`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		ptpProfile: {
@@ -3593,16 +2610,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/ptp_profile`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/ptp_profile`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		ptpDomain2059Profile: {
@@ -3612,7 +2622,6 @@ export default function (self) {
 				{
 					...actionOptions.integerInput,
 					label: 'Domain',
-
 					max: 127,
 				},
 				{
@@ -3623,24 +2632,16 @@ export default function (self) {
 				actionOptions.useVar,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
+				const mode = options.useVar
+					? parseInt(await self.parseVariablesInString(options.gainVar))
+					: parseInt(options.mode)
+				if (isNaN(mode) || mode < 0 || mode > 127) {
+					self.log('warn', `ptp_domain_2059_profile has been passed an out of range variable: ${mode}`)
 					return undefined
 				}
-				let mode = parseInt(options.mode)
-				if (options.useVar) {
-					mode = parseInt(await self.parseVariablesInString(options.gainVar))
-					if (isNaN(mode) || mode < 0 || mode > 127) {
-						self.log('warn', `ptp_domain_2059_profile has been passed an out of range variable: ${mode}`)
-						return undefined
-					}
-				}
-				let msg = JSON.stringify({ ints: [mode] })
-				try {
-					const response = await self.axios.post(`/ptp_domain_2059_profile`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/ptp_domain_2059_profile`, {
+					ints: [mode],
+				})
 			},
 		},
 		ptpCommMode2059Profile: {
@@ -3655,16 +2656,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/ptp_comm_mode_2059_profile`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/ptp_comm_mode_2059_profile`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		ptpDomainAes67Profile: {
@@ -3686,24 +2680,16 @@ export default function (self) {
 				actionOptions.useVar,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
+				const mode = options.useVar
+					? parseInt(await self.parseVariablesInString(options.gainVar))
+					: parseInt(options.mode)
+				if (isNaN(mode) || mode < 0 || mode > 127) {
+					self.log('warn', `ptp_domain_aes67_profile has been passed an out of range variable: ${mode}`)
 					return undefined
 				}
-				let mode = parseInt(options.mode)
-				if (options.useVar) {
-					mode = parseInt(await self.parseVariablesInString(options.gainVar))
-					if (isNaN(mode) || mode < 0 || mode > 127) {
-						self.log('warn', `ptp_domain_aes67_profile has been passed an out of range variable: ${mode}`)
-						return undefined
-					}
-				}
-				let msg = JSON.stringify({ ints: [mode] })
-				try {
-					const response = await self.axios.post(`/ptp_domain_aes67_profile`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/ptp_domain_aes67_profile`, {
+					ints: [mode],
+				})
 			},
 		},
 		ptpDomainGeneralProfile: {
@@ -3724,24 +2710,16 @@ export default function (self) {
 				actionOptions.useVar,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
+				const mode = options.useVar
+					? parseInt(await self.parseVariablesInString(options.gainVar))
+					: parseInt(options.mode)
+				if (isNaN(mode) || mode < 0 || mode > 127) {
+					self.log('warn', `ptp_domain_general_profile has been passed an out of range variable: ${mode}`)
 					return undefined
 				}
-				let mode = parseInt(options.mode)
-				if (options.useVar) {
-					mode = parseInt(await self.parseVariablesInString(options.gainVar))
-					if (isNaN(mode) || mode < 0 || mode > 127) {
-						self.log('warn', `ptp_domain_general_profile has been passed an out of range variable: ${mode}`)
-						return undefined
-					}
-				}
-				let msg = JSON.stringify({ ints: [mode] })
-				try {
-					const response = await self.axios.post(`/ptp_domain_general_profile`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/ptp_domain_general_profile`, {
+					ints: [mode],
+				})
 			},
 		},
 		snmpTrapEnable: {
@@ -3756,16 +2734,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [parseInt(options.mode)] })
-				try {
-					const response = await self.axios.post(`/snmp_trap_enable`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/snmp_trap_enable`, { ints: [parseInt(options.mode)] })
 			},
 		},
 		timingMeasureMode: {
@@ -3781,18 +2750,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/timing_measure_mode/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/timing_measure_mode/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		tileGratIntensity: {
@@ -3802,7 +2762,6 @@ export default function (self) {
 				{
 					...actionOptions.integerInput,
 					label: 'Intensity',
-
 					min: -50,
 					max: 50,
 				},
@@ -3814,24 +2773,16 @@ export default function (self) {
 				actionOptions.useVar,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
+				const mode = options.useVar
+					? parseInt(await self.parseVariablesInString(options.modeVar))
+					: parseInt(options.mode)
+				if (isNaN(mode) || mode < -50 || mode > 50) {
+					self.log('warn', `tile_grat_intensity has been passed an out of range variable: ${mode}`)
 					return undefined
 				}
-				let mode = parseInt(options.mode)
-				if (options.useVar) {
-					mode = parseInt(await self.parseVariablesInString(options.gainVar))
-					if (isNaN(mode) || mode < -50 || mode > 50) {
-						self.log('warn', `tile_grat_intensity has been passed an out of range variable: ${mode}`)
-						return undefined
-					}
-				}
-				let msg = JSON.stringify({ ints: [mode] })
-				try {
-					const response = await self.axios.post(`/tile_grat_intensity`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/tile_grat_intensity`, {
+					ints: [mode],
+				})
 			},
 		},
 		trace_intensity: {
@@ -3853,24 +2804,16 @@ export default function (self) {
 				actionOptions.useVar,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
+				let mode = options.useVar
+					? parseInt(await self.parseVariablesInString(options.gainVar))
+					: parseInt(options.mode)
+				if (isNaN(mode) || mode < -50 || mode > 50) {
+					self.log('warn', `trace_intensity has been passed an out of range variable: ${mode}`)
 					return undefined
 				}
-				let mode = parseInt(options.mode)
-				if (options.useVar) {
-					mode = parseInt(await self.parseVariablesInString(options.gainVar))
-					if (isNaN(mode) || mode < -50 || mode > 50) {
-						self.log('warn', `trace_intensity has been passed an out of range variable: ${mode}`)
-						return undefined
-					}
-				}
-				let msg = JSON.stringify({ ints: [mode] })
-				try {
-					const response = await self.axios.post(`/trace_intensity`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/trace_intensity`, {
+					ints: [mode],
+				})
 			},
 		},
 		extendedStatusBarPinnedMenu: {
@@ -3886,16 +2829,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/extended_status_bar_pinned_menu`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/extended_status_bar_pinned_menu`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		cieColorSpace: {
@@ -3910,16 +2846,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/cie_color_space`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/cie_color_space`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		cieTraceAppearance: {
@@ -3934,16 +2863,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/cie_trace_appearance`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/cie_trace_appearance`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		outOfGamutAlarm: {
@@ -3958,16 +2880,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/out_of_gamut_alarm`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/out_of_gamut_alarm`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		gamutAlarmThresholdsPreset: {
@@ -3982,16 +2897,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/gamut_alarm_thresholds_preset`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/gamut_alarm_thresholds_preset`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		hdrAlarms: {
@@ -4006,16 +2914,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/hdr_alarms`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/hdr_alarms`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		hdrTotalAreaThreshold: {
@@ -4037,24 +2938,16 @@ export default function (self) {
 				actionOptions.useVar,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
+				const mode = options.useVar
+					? parseInt(await self.parseVariablesInString(options.modeVar))
+					: parseInt(options.mode)
+				if (isNaN(mode) || mode < 0 || mode > 10000) {
+					self.log('warn', `hdr_total_area_threshold has been passed an out of range variable: ${mode}`)
 					return undefined
 				}
-				let mode = parseInt(options.mode)
-				if (options.useVar) {
-					mode = parseInt(await self.parseVariablesInString(options.gainVar))
-					if (isNaN(mode) || mode < 0 || mode > 10000) {
-						self.log('warn', `hdr_total_area_threshold has been passed an out of range variable: ${mode}`)
-						return undefined
-					}
-				}
-				let msg = JSON.stringify({ ints: [mode] })
-				try {
-					const response = await self.axios.post(`/hdr_total_area_threshold`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/hdr_total_area_threshold`, {
+					ints: [mode],
+				})
 			},
 		},
 		hdrBrightestAreaThreshold: {
@@ -4064,7 +2957,6 @@ export default function (self) {
 				{
 					...actionOptions.integerInput,
 					label: '%',
-
 					default: 50,
 					max: 100,
 				},
@@ -4076,24 +2968,16 @@ export default function (self) {
 				actionOptions.useVar,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
+				const mode = options.useVar
+					? parseInt(await self.parseVariablesInString(options.modeVar))
+					: parseInt(options.mode)
+				if (isNaN(mode) || mode < 0 || mode > 100) {
+					self.log('warn', `hdr_brightest_area_threshold has been passed an out of range variable: ${mode}`)
 					return undefined
 				}
-				let mode = parseInt(options.mode)
-				if (options.useVar) {
-					mode = parseInt(await self.parseVariablesInString(options.gainVar))
-					if (isNaN(mode) || mode < 0 || mode > 100) {
-						self.log('warn', `hdr_brightest_area_threshold has been passed an out of range variable: ${mode}`)
-						return undefined
-					}
-				}
-				let msg = JSON.stringify({ ints: [mode] })
-				try {
-					const response = await self.axios.post(`/hdr_brightest_area_threshold`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/hdr_brightest_area_threshold`, {
+					ints: [mode],
+				})
 			},
 		},
 		hdrAreaThreshold: {
@@ -4103,7 +2987,6 @@ export default function (self) {
 				{
 					...actionOptions.integerInput,
 					label: '%',
-
 					default: 50,
 					max: 100,
 				},
@@ -4115,24 +2998,16 @@ export default function (self) {
 				actionOptions.useVar,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
+				const mode = options.useVar
+					? parseInt(await self.parseVariablesInString(options.modeVar))
+					: parseInt(options.mode)
+				if (isNaN(mode) || mode < 0 || mode > 100) {
+					self.log('warn', `hdr_area_threshold has been passed an out of range variable: ${mode}`)
 					return undefined
 				}
-				let mode = parseInt(options.mode)
-				if (options.useVar) {
-					mode = parseInt(await self.parseVariablesInString(options.gainVar))
-					if (isNaN(mode) || mode < 0 || mode > 100) {
-						self.log('warn', `hdr_area_threshold has been passed an out of range variable: ${mode}`)
-						return undefined
-					}
-				}
-				let msg = JSON.stringify({ ints: [mode] })
-				try {
-					const response = await self.axios.post(`/hdr_area_threshold`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/hdr_area_threshold`, {
+					ints: [mode],
+				})
 			},
 		},
 		hdr_darkest_area_threshold: {
@@ -4142,7 +3017,6 @@ export default function (self) {
 				{
 					...actionOptions.integerInput,
 					label: '%',
-
 					default: 50,
 					max: 100,
 				},
@@ -4154,24 +3028,16 @@ export default function (self) {
 				actionOptions.useVar,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
+				const mode = options.useVar
+					? parseInt(await self.parseVariablesInString(options.modeVar))
+					: parseInt(options.mode)
+				if (isNaN(mode) || mode < 0 || mode > 100) {
+					self.log('warn', `hdr_darkest_area_threshold has been passed an out of range variable: ${mode}`)
 					return undefined
 				}
-				let mode = parseInt(options.mode)
-				if (options.useVar) {
-					mode = parseInt(await self.parseVariablesInString(options.gainVar))
-					if (isNaN(mode) || mode < 0 || mode > 100) {
-						self.log('warn', `hdr_darkest_area_threshold has been passed an out of range variable: ${mode}`)
-						return undefined
-					}
-				}
-				let msg = JSON.stringify({ ints: [mode] })
-				try {
-					const response = await self.axios.post(`/hdr_darkest_area_threshold`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/hdr_darkest_area_threshold`, {
+					ints: [mode],
+				})
 			},
 		},
 		centerGratColor: {
@@ -4188,16 +3054,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/center_grat_color`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/center_grat_color`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		afd_grat_color: {
@@ -4214,16 +3073,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/afd_grat_color`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/afd_grat_color`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		safeArea1Color: {
@@ -4240,16 +3092,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/safe_area_1_color`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/safe_area_1_color`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		safeArea2Color: {
@@ -4266,16 +3111,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/safe_area_2_color`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/safe_area_2_color`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		pictureSafeAreaStd: {
@@ -4291,16 +3129,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/picture_safe_area_std`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/picture_safe_area_std`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		timecodeOverlay: {
@@ -4315,16 +3146,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/timecode_overlay`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/timecode_overlay`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		tileAvAdvancedThreshold: {
@@ -4347,24 +3171,16 @@ export default function (self) {
 				actionOptions.useVar,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
+				const mode = options.useVar
+					? parseInt(await self.parseVariablesInString(options.modeVar))
+					: parseInt(options.mode)
+				if (isNaN(mode) || mode < 1 || mode > 2500) {
+					self.log('warn', `tile_av_advanced_threshold has been passed an out of range variable: ${mode}`)
 					return undefined
 				}
-				let mode = parseInt(options.mode)
-				if (options.useVar) {
-					mode = parseInt(await self.parseVariablesInString(options.gainVar))
-					if (isNaN(mode) || mode < 1 || mode > 2500) {
-						self.log('warn', `tile_av_advanced_threshold has been passed an out of range variable: ${mode}`)
-						return undefined
-					}
-				}
-				let msg = JSON.stringify({ ints: [mode] })
-				try {
-					const response = await self.axios.post(`/tile_av_advanced_threshold`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/tile_av_advanced_threshold`, {
+					ints: [mode],
+				})
 			},
 		},
 		tileAvDelayedThreshold: {
@@ -4387,24 +3203,16 @@ export default function (self) {
 				actionOptions.useVar,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
+				const mode = options.useVar
+					? parseInt(await self.parseVariablesInString(options.modeVar))
+					: parseInt(options.mode)
+				if (isNaN(mode) || mode < 1 || mode > 2500) {
+					self.log('warn', `tile_av_delayed_threshold has been passed an out of range variable: ${mode}`)
 					return undefined
 				}
-				let mode = parseInt(options.mode)
-				if (options.useVar) {
-					mode = parseInt(await self.parseVariablesInString(options.gainVar))
-					if (isNaN(mode) || mode < 1 || mode > 2500) {
-						self.log('warn', `tile_av_delayed_threshold has been passed an out of range variable: ${mode}`)
-						return undefined
-					}
-				}
-				let msg = JSON.stringify({ ints: [mode] })
-				try {
-					const response = await self.axios.post(`/tile_av_delayed_threshold`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/tile_av_delayed_threshold`, {
+					ints: [mode],
+				})
 			},
 		},
 		timecodeSelect: {
@@ -4419,16 +3227,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				try {
-					let msg = JSON.stringify({ string: await self.parseVariablesInString(options.mode) })
-					const response = await self.axios.post('/timecode_select', msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/timecode_select`, {
+					string: await self.parseVariablesInString(options.mode),
+				})
 			},
 		},
 		timingRefSource: {
@@ -4444,16 +3245,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/timing_ref_source`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/timing_ref_source`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		vectorGain: {
@@ -4470,18 +3264,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/vector_gain/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/vector_gain/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		vectorVarEnable: {
@@ -4498,18 +3283,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/vector_var_enable/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/vector_var_enable/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		vectorLut: {
@@ -4526,18 +3302,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/vector_lut/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/vector_lut/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		vectorIqAxis: {
@@ -4554,18 +3321,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [parseInt(await self.parseVariablesInString(options.mode))] })
-				try {
-					const response = await self.axios.post(`/vector_iq_axis/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/vector_iq_axis/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		vectorSdiCompassRose: {
@@ -4582,18 +3340,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [parseInt(await self.parseVariablesInString(options.mode))] })
-				try {
-					const response = await self.axios.post(`/vector_sdi_compass_rose/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/vector_sdi_compass_rose/${await parseTileScope(options, self)}`, {
+					ints: [parseInt(await self.parseVariablesInString(options.mode))],
+				})
 			},
 		},
 		sdiVidOut: {
@@ -4608,16 +3357,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/sdi_vid_out`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/sdi_vid_out`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		sdiGenEnable: {
@@ -4632,16 +3374,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/sdi_gen_enable`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/sdi_gen_enable`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		sdiGenVideoMovingPix: {
@@ -4656,16 +3391,9 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/sdi_gen_enable`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/sdi_gen_video_moving_pix`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		waveformMode: {
@@ -4681,18 +3409,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/waveform_mode/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/waveform_mode/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		waveformFilterYpbpr: {
@@ -4708,18 +3427,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/waveform_filter_ypbpr/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/waveform_filter_ypbpr/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		waveformFilterRgb: {
@@ -4735,18 +3445,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/waveform_filter_rgb/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/waveform_filter_rgb/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		waveformFilterYrgb: {
@@ -4762,18 +3463,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/waveform_filter_yrgb/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/waveform_filter_yrgb/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		waveformSweep: {
@@ -4790,18 +3482,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [parseInt(await self.parseVariablesInString(options.mode))] })
-				try {
-					const response = await self.axios.post(`/waveform_sweep/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/waveform_sweep/${await parseTileScope(options, self)}`, {
+					ints: [parseInt(await self.parseVariablesInString(options.mode))],
+				})
 			},
 		},
 		waveformColorTrace: {
@@ -4817,18 +3500,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/waveform_color_trace/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/waveform_color_trace/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		waveformGain: {
@@ -4852,26 +3526,16 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
+				const mode = options.useVar
+					? parseInt(await self.parseVariablesInString(options.modeVar))
+					: parseInt(options.mode)
+				if (isNaN(mode) || mode < 1 || mode > 10) {
+					self.log('warn', `waveform_gain has been passed an out of range variable: ${mode}`)
 					return undefined
 				}
-				let mode = parseInt(await self.parseVariablesInString(options.mode))
-				if (options.useVar) {
-					mode = parseInt(await self.parseVariablesInString(options.gainVar))
-					if (isNaN(mode) || mode < 1 || mode > 10) {
-						self.log('warn', `waveform_gain has been passed an out of range variable: ${mode}`)
-						return undefined
-					}
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [mode] })
-				try {
-					const response = await self.axios.post(`/waveform_gain/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/waveform_gain/${await parseTileScope(options, self)}`, {
+					ints: [mode],
+				})
 			},
 		},
 		waveformVarEnable: {
@@ -4888,18 +3552,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/waveform_var_enable/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/waveform_var_enable/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		waveformHmag: {
@@ -4932,31 +3587,21 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let hmag = parseInt(options.hmag)
-				if (options.useVar) {
-					hmag = parseInt(await self.parseVariablesInString(options.hmagVar))
-				}
-				let bestView = parseInt(await self.parseVariablesInString(options.bestView))
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
+				const hmag = options.useVar
+					? parseInt(await self.parseVariablesInString(options.hmagVar))
+					: parseInt(options.hmag)
+				const bestView = parseInt(await self.parseVariablesInString(options.bestView))
 				if (isNaN(hmag) || hmag < 1 || hmag > 25) {
-					self.log('warn', `Hmag out of range: ${hmag}`)
+					self.log('warn', `Waveform Hmag: Hmag out of range: ${hmag}`)
 					return undefined
 				}
 				if (isNaN(bestView) || bestView < 0 || bestView > 1) {
-					self.log('warn', `Best View out of range: ${bestView}`)
+					self.log('warn', `Waveform Hmag: Best View out of range: ${bestView}`)
 					return undefined
 				}
-				let msg = JSON.stringify({ ints: [hmag, bestView] })
-				try {
-					const response = await self.axios.post(`/waveform_hmag/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/waveform_hmag/${await parseTileScope(options, self)}`, {
+					ints: [hmag, bestView],
+				})
 			},
 		},
 		waveformVerticalCursorEnable: {
@@ -4973,18 +3618,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/waveform_vertical_cursor_enable/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/waveform_vertical_cursor_enable/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		waveformHorizontalCursorEnable: {
@@ -5001,18 +3637,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/waveform_horizontal_cursor_enable/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/waveform_horizontal_cursor_enable/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		waveformGratSdiUnits: {
@@ -5029,18 +3656,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/waveform_grat_sdi_units/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/waveform_grat_sdi_units/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		waveformLut: {
@@ -5056,18 +3674,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/waveform_lut/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/waveform_lut/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		waveformActiveArea: {
@@ -5083,18 +3692,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
-				let scope = await self.parseVariablesInString(options.scope)
-				scope = scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
-				let msg = JSON.stringify({ ints: [await self.parseVariablesInString(options.mode)] })
-				try {
-					const response = await self.axios.post(`/waveform_active_area/${scope}`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/waveform_active_area/${await parseTileScope(options, self)}`, {
+					ints: [await self.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		loudnessLoudLevel: {
@@ -5118,9 +3718,6 @@ export default function (self) {
 				actionOptions.useVar,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
 				const level = options.useVar
 					? parseInt(await self.parseVariablesInString(options.levelVar))
 					: parseInt(options.level)
@@ -5128,13 +3725,9 @@ export default function (self) {
 					self.log('warn', `level out of range: ${level}`)
 					return undefined
 				}
-				let msg = JSON.stringify({ floats: [level] })
-				try {
-					const response = await self.axios.post(`/loudness_loud_level`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/loudness_loud_level/`, {
+					floats: [level],
+				})
 			},
 		},
 		loudnessQuietLevel: {
@@ -5158,9 +3751,6 @@ export default function (self) {
 				actionOptions.useVar,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
 				const level = options.useVar
 					? parseInt(await self.parseVariablesInString(options.levelVar))
 					: parseInt(options.level)
@@ -5168,13 +3758,9 @@ export default function (self) {
 					self.log('warn', `level out of range: ${level}`)
 					return undefined
 				}
-				let msg = JSON.stringify({ floats: [level] })
-				try {
-					const response = await self.axios.post(`/loudness_quiet_level`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
+				return await self.postCommand(`/loudness_quiet_level/`, {
+					floats: [level],
+				})
 			},
 		},
 		loudnessTargetLevel: {
@@ -5228,9 +3814,6 @@ export default function (self) {
 				actionOptions.useVar,
 			],
 			callback: async ({ options }) => {
-				if (self.axios === undefined) {
-					return undefined
-				}
 				const target = options.useVar
 					? parseInt(await self.parseVariablesInString(options.targetVar))
 					: parseInt(options.target)
@@ -5251,22 +3834,16 @@ export default function (self) {
 					high < 0 ||
 					high > 10
 				) {
-					self.log('warn', `params out of range. target: ${target}, high: ${high}, low: ${low}`)
+					self.log('warn', `loudnessTargetLevel params out of range. Target: ${target}, High: ${high}, Low: ${low}`)
 					return undefined
 				}
-				let msg = JSON.stringify({
+				return await self.postCommand(`/loudness_target_level/`, {
 					object: {
 						target: target,
 						targetLow: low,
 						targetHigh: high,
 					},
 				})
-				try {
-					const response = await self.axios.post(`/loudness_target_level`, msg)
-					self.logResponse(response)
-				} catch (error) {
-					self.logError(error)
-				}
 			},
 		},
 	})
