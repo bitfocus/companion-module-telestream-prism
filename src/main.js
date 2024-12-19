@@ -22,7 +22,16 @@ class Telestream_PRISM extends InstanceBase {
 		this.pollTimer_fast = {}
 		this.pollTimer_reg = {}
 		this.pollTimer_slow = {}
+		this.currentStatus = { status: InstanceStatus.Disconnected, message: '' }
 		this.queue = new PQueue({ concurrency: 1, interval: 100, intervalCap: 1 })
+	}
+
+	checkStatus(status = InstanceStatus.Disconnected, message = '') {
+		if (status === this.currentStatus.status && message === this.currentStatus.message) return false
+		this.updateStatus(status, message.toString())
+		this.currentStatus.status = status
+		this.checkStatus.message = message
+		return true
 	}
 
 	killTimers() {
@@ -78,10 +87,10 @@ class Telestream_PRISM extends InstanceBase {
 			console.log(response)
 		}
 		if (response.data !== undefined) {
-			this.updateStatus(InstanceStatus.Ok)
+			this.checkStatus(InstanceStatus.Ok)
 			this.log('debug', `Data Recieved: ${JSON.stringify(response.data)}`)
 		} else {
-			this.updateStatus(InstanceStatus.UnknownWarning, 'No Data')
+			this.checkStatus(InstanceStatus.UnknownWarning, 'No Data')
 			this.log('warn', `Response contains no data`)
 		}
 	}
@@ -96,14 +105,14 @@ class Telestream_PRISM extends InstanceBase {
 					'error',
 					`${error.response.status}: ${JSON.stringify(error.code)}\n${JSON.stringify(error.response.data)}`,
 				)
-				this.updateStatus(InstanceStatus.ConnectionFailure, `${error.response.status}: ${JSON.stringify(error.code)}`)
+				this.checkStatus(InstanceStatus.ConnectionFailure, `${error.response.status}: ${JSON.stringify(error.code)}`)
 			} catch {
 				this.log('error', `${JSON.stringify(error.code)}\n${JSON.stringify(error)}`)
-				this.updateStatus(InstanceStatus.ConnectionFailure, `${JSON.stringify(error.code)}`)
+				this.checkStatus(InstanceStatus.ConnectionFailure, `${JSON.stringify(error.code)}`)
 			}
 		} else {
 			this.log('error', `No error code\n${JSON.stringify(error)}`)
-			this.updateStatus(InstanceStatus.UnknownError)
+			this.checkStatus(InstanceStatus.UnknownError)
 		}
 	}
 
@@ -301,12 +310,12 @@ class Telestream_PRISM extends InstanceBase {
 			this.startTimers()
 		} else {
 			this.log('warn', `Host undefined`)
-			this.updateStatus(InstanceStatus.BadConfig)
+			this.checkStatus(InstanceStatus.BadConfig)
 		}
 	}
 
 	async init(config) {
-		this.updateStatus(InstanceStatus.Connecting)
+		this.checkStatus(InstanceStatus.Connecting)
 		this.config = config
 		this.setupAxios()
 		this.initPrism()
@@ -318,7 +327,7 @@ class Telestream_PRISM extends InstanceBase {
 	}
 	// When module gets deleted
 	async destroy() {
-		this.log('debug', 'destroy')
+		this.log('debug', `destroy ${this.id}:${this.label}`)
 		this.killTimers()
 		this.queue.clear()
 		if (this.axios) {
@@ -330,7 +339,7 @@ class Telestream_PRISM extends InstanceBase {
 	}
 
 	async configUpdated(config) {
-		this.updateStatus(InstanceStatus.Connecting)
+		this.checkStatus(InstanceStatus.Connecting)
 		this.queue.clear()
 		this.killTimers()
 		this.config = config
