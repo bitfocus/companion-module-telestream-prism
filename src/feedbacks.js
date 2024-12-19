@@ -1,15 +1,23 @@
 import { combineRgb } from '@companion-module/base'
 import { actionOptions, tileInFocusChoices } from './choices.js'
 
+const colours = {
+	black: combineRgb(0, 0, 0),
+	green: combineRgb(0, 204, 0),
+}
+const styles = {
+	blackOnGreen: {
+		bgcolor: colours.green,
+		color: colours.black,
+	},
+}
+
 export default async function (self) {
 	self.setFeedbackDefinitions({
 		activeInput: {
 			name: 'Active Input',
 			type: 'boolean',
-			defaultStyle: {
-				bgcolor: combineRgb(0, 204, 0),
-				color: combineRgb(0, 0, 0),
-			},
+			defaultStyle: styles.blackOnGreen,
 			options: [
 				{
 					...actionOptions.modeDropdown,
@@ -38,10 +46,7 @@ export default async function (self) {
 		tileInFocus: {
 			name: 'Tile In Focus',
 			type: 'boolean',
-			defaultStyle: {
-				bgcolor: combineRgb(0, 204, 0),
-				color: combineRgb(0, 0, 0),
-			},
+			defaultStyle: styles.blackOnGreen,
 			options: [
 				{
 					...actionOptions.modeDropdown,
