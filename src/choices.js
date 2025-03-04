@@ -70,7 +70,7 @@ export const actionOptions = {
 		id: 'modeVar',
 		type: 'textinput',
 		default: '',
-		useVariables: true,
+		useVariables: { local: true },
 		regex: Regex.SOMETHING,
 		isVisible: (options) => {
 			return options.useVar
