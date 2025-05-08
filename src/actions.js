@@ -2366,7 +2366,7 @@ export default function (self) {
 					label: 'Page',
 					tooltip: 'Varible must return a hex string ie 0x801.',
 					default: '0x801',
-					useVariables: true,
+					useVariables: { local: true },
 					isVisible: (options) => {
 						return !options.legacy
 					},
@@ -2398,15 +2398,14 @@ export default function (self) {
 					}
 					arguments.ints = [mode]
 				} else {
-					const mode = context.parseVariablesInString(options.newPage).trim().substring(0,5)
-					if (mode.startsWith('0x')) {
+					const mode = context.parseVariablesInString(options.newPage).trim().substring(0, 5)
+					if (mode.startsWith('0x') && mode.length == 5) {
 						args.string = mode
 					} else {
 						self.log('warn', `closed_captions_wst_page has been passed an out of range variable: ${mode}`)
 						return undefined
 					}
 				}
-				
 				return await self.postCommand(`/closed_captions_wst_page/${await parseTileScope(options, self, context)}`, args)
 			},
 		},
