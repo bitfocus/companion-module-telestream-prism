@@ -9,7 +9,7 @@ function closedCaptionsWstPageLegacyMode(_context, props) {
 	for (const action of props.actions) {
 		switch (action.actionId) {
 			case 'closedCaptionsWstPage':
-				action.options.legacy ??= false
+				action.options.legacy ??= true
 				action.options.newPage ??= '0x801'
 				result.updatedActions.push(action)
 				break
