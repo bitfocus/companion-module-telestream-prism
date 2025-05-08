@@ -1,13 +1,22 @@
-export default [
-	/*
-	 * Place your upgrade scripts here
-	 * Remember that once it has been added it cannot be removed!
-	 */
-	// function (context, props) {
-	// 	return {
-	// 		updatedConfig: null,
-	// 		updatedActions: [],
-	// 		updatedFeedbacks: [],
-	// 	}
-	// },
-]
+
+function closedCaptionsWstPageLegacyMode(_context, props) {
+	const result = {
+		updatedActions: [],
+		updatedConfig: null,
+		updatedFeedbacks: [],
+	}
+
+	for (const action of props.actions) {
+		switch (action.actionId) {
+			case 'closedCaptionsWstPage':
+				action.options.legacy ??= false
+				action.options.newPage ??= '0x801'
+				result.updatedActions.push(action)
+				break
+		}
+	}
+
+	return result
+}
+
+export default [closedCaptionsWstPageLegacyMode]
