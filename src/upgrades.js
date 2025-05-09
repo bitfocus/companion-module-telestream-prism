@@ -1,4 +1,3 @@
-
 function closedCaptionsWstPageLegacyMode(_context, props) {
 	const result = {
 		updatedActions: [],
