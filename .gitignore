@@ -3,6 +3,7 @@ node_modules/
 package-lock.json
 /pkg
 /pkg.tgz
+telestream-prism-*.tgz
 *.zip
 .yarn/
 DEBUG-*

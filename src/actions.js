@@ -2348,26 +2348,65 @@ export default function (self) {
 					default: 100,
 					min: 100,
 					max: 899,
+					isVisible: (options) => {
+						return !options.useVar && options.legacy
+					},
 				},
 				{
 					...actionOptions.modeVar,
 					label: 'Page',
 					tooltip: 'Varible must return an integer between 100 and 899.',
+					isVisible: (options) => {
+						return options.useVar && options.legacy
+					},
 				},
-				actionOptions.useVar,
+				{
+					...actionOptions.modeVar,
+					id: 'newPage',
+					label: 'Page',
+					tooltip: 'Varible must return a hex string ie 0x801.',
+					default: '0x801',
+					useVariables: { local: true },
+					isVisible: (options) => {
+						return !options.legacy
+					},
+				},
+				{
+					...actionOptions.useVar,
+					isVisible: (options) => {
+						return options.legacy
+					},
+				},
 				actionOptions.tiles,
+				{
+					type: 'checkbox',
+					id: 'legacy',
+					label: 'Legacy Mode',
+					default: false,
+					tooltip: 'Enable for compatibility with FW versions < 4.21',
+				},
 			],
 			callback: async ({ options }, context) => {
-				const mode = options.useVar
-					? parseInt(await context.parseVariablesInString(options.modeVar))
-					: parseInt(options.mode)
-				if (isNaN(mode) || mode < 100 || mode > 899) {
-					self.log('warn', `closed_captions_wst_page has been passed an out of range variable: ${mode}`)
-					return undefined
+				const args = {}
+				if (options.legacy) {
+					const mode = options.useVar
+						? parseInt(await context.parseVariablesInString(options.modeVar))
+						: parseInt(options.mode)
+					if (isNaN(mode) || mode < 100 || mode > 899) {
+						self.log('warn', `closed_captions_wst_page has been passed an out of range variable: ${mode}`)
+						return undefined
+					}
+					arguments.ints = [mode]
+				} else {
+					const mode = context.parseVariablesInString(options.newPage).trim().substring(0, 5)
+					if (mode.startsWith('0x') && mode.length == 5) {
+						args.string = mode
+					} else {
+						self.log('warn', `closed_captions_wst_page has been passed an out of range variable: ${mode}`)
+						return undefined
+					}
 				}
-				return await self.postCommand(`/closed_captions_wst_page/${await parseTileScope(options, self, context)}`, {
-					ints: [mode],
-				})
+				return await self.postCommand(`/closed_captions_wst_page/${await parseTileScope(options, self, context)}`, args)
 			},
 		},
 		closedCaptionsAribType: {
