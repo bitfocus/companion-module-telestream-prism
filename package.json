@@ -16,18 +16,18 @@
 		"url": "git+https://github.com/bitfocus/companion-module-telestream-prism.git"
 	},
 	"dependencies": {
-		"@companion-module/base": "~1.11.3",
+		"@companion-module/base": "~1.14.1",
 		"axios": "^1.13.5",
-		"p-queue": "~8.1.0"
+		"p-queue": "~9.1.0"
 	},
 	"devDependencies": {
 		"@companion-module/tools": "^2.6.1",
-		"eslint": "^9.26.0",
-		"prettier": "^3.5.3"
+		"eslint": "^9.39.2",
+		"prettier": "^3.8.1"
 	},
 	"engines": {
 		"node": "^22.13"
 	},
 	"prettier": "@companion-module/tools/.prettierrc.json",
-	"packageManager": "yarn@4.9.1"
+	"packageManager": "yarn@4.12.0"
 }
