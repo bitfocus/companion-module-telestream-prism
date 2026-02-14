@@ -69,9 +69,7 @@ export const actionOptions = {
 		default: '',
 		useVariables: { local: true },
 		regex: Regex.SOMETHING,
-		isVisible: (options) => {
-			return options.useVar
-		},
+		isVisibleExpression: '$(options:useVar)',
 	},
 
 	modeDropdown: {
@@ -88,9 +86,7 @@ export const actionOptions = {
 		min: 0,
 		step: 1,
 		default: 0,
-		isVisible: (options) => {
-			return !options.useVar
-		},
+		isVisibleExpression: '!$(options:useVar)',
 	},
 }
 export const activeInputChoices = [
