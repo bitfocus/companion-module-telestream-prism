@@ -143,6 +143,34 @@ async function parseTileScope(options, self, context) {
 	return scope == 'focus' ? `tile${self.prism.tileInFocus}` : scope
 }
 
+function validateIntRange(value, min, max, paramName) {
+	const num = parseInt(value)
+	if (isNaN(num) || num < min || num > max) {
+		throw new Error(`${paramName} out of range: ${value} (expected ${min}-${max})`)
+	}
+	return num
+}
+
+function validateFloatRange(value, min, max, paramName) {
+	const num = parseFloat(value)
+	if (isNaN(num) || num < min || num > max) {
+		throw new Error(`${paramName} out of range: ${value} (expected ${min}-${max})`)
+	}
+	return num
+}
+
+async function parseIntOption(options, context, key, varKey) {
+	return options.useVar
+		? parseInt(await context.parseVariablesInString(options[varKey]))
+		: parseInt(options[key])
+}
+
+async function parseFloatOption(options, context, key, varKey) {
+	return options.useVar
+		? parseFloat(await context.parseVariablesInString(options[varKey]))
+		: parseFloat(options[key])
+}
+
 export default function (self) {
 	self.setActionDefinitions({
 		activeInput: {
@@ -188,9 +216,8 @@ export default function (self) {
 				let prismInput
 				switch (options.action) {
 					case 'set':
-						prismInput = options.useVar
-							? parseInt(await context.parseVariablesInString(options.inputVar))
-							: parseInt(options.input)
+						prismInput = await parseIntOption(options, context, 'input', 'inputVar')
+						prismInput = validateIntRange(prismInput, 0, 5, 'input')
 						break
 					case 'inc':
 						prismInput = self.prism.input >= 5 ? 0 : self.prism.input + 1
@@ -201,10 +228,6 @@ export default function (self) {
 					case 'get':
 						self.getInput()
 						return
-				}
-				if (isNaN(prismInput) || prismInput < 0 || prismInput > 5) {
-					self.log('warn', `input out of range ${prismInput}`)
-					return undefined
 				}
 				const result = await self.postCommand('/activeinput', { input: prismInput })
 				if (result) await self.getInput()
@@ -370,11 +393,12 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				const tile = parseInt(await context.parseVariablesInString(options.tile))
-				if (isNaN(tile) || tile < 0 || tile > 8) {
-					self.log('warn', `An out of range variable has been passed to Tile Select: ${tile}`)
-					return undefined
-				}
+				const tile = validateIntRange(
+					await context.parseVariablesInString(options.tile),
+					0,
+					8,
+					'Tile Select'
+				)
 				return await self.postCommand('/tile_select', { ints: [tile] })
 			},
 		},
@@ -409,11 +433,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				let tile = parseInt(await context.parseVariablesInString(options.tile))
-				if (isNaN(tile) || tile < 1 || tile > 8) {
-					self.log('warn', `An out of range variable has been passed to Tile In Focus: ${tile}`)
-					return undefined
-				}
+				let tile = validateIntRange((await context.parseVariablesInString(options.tile)), 1, 8, 'Tile in Focus')
 				const response = await self.postCommand('/tile_in_focus', { ints: [tile] })
 				if (
 					response === undefined ||
@@ -425,7 +445,7 @@ export default function (self) {
 					return undefined
 				}
 				if (response.data.ints.length == 1 && !isNaN(parseInt(response.data.ints[0]))) {
-					let varList = []
+					let varList = {}
 					self.prism.tileInFocus = parseInt(response.data.ints[0])
 					varList['tileInFocus'] = self.prism.tileInFocus
 					self.setVariableValues(varList)
@@ -1009,7 +1029,7 @@ export default function (self) {
 			},
 		},
 		camappGraticuleUnits: {
-			name: 'Cam App Graticle Units',
+			name: 'Cam App Graticule Units',
 			description: `Set graticule units for CAM App traces. Options depend on the selected display type`,
 			options: [
 				{
@@ -1077,11 +1097,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				const mode = parseInt(await context.parseVariablesInString(options.mode))
-				if (isNaN(mode || mode < 0 || mode > 1)) {
-					self.log('warn', `Dimond Mode out of range: ${mode}`)
-					return undefined
-				}
+				const mode = validateIntRange((await context.parseVariablesInString(options.mode)), 0, 1, 'Diamond Mode')
 				return await self.postCommand(`/diamond_mode/${await parseTileScope(options, self, context)}`, {
 					ints: [mode],
 				})
@@ -1125,14 +1141,8 @@ export default function (self) {
 				actionOptions.useVar,
 			],
 			callback: async ({ options }, context) => {
-				let brightness = parseInt(options.brightness)
-				if (options.useVar) {
-					brightness = parseInt(await context.parseVariablesInString(options.brightnessVar))
-					if (isNaN(brightness) || brightness < 0 || brightness > 31) {
-						self.log('warn', `mpi_led_brightness has been passed an out of range variable: ${brightness}`)
-						return undefined
-					}
-				}
+				let brightness = await parseIntOption(options, context, 'brightness', 'brightnessVar')
+				brightness = validateIntRange(brightness, 0, 31, 'MPI LED Brightness')
 				return await self.postCommand(`/mpi_led_brightness`, { ints: [brightness] })
 			},
 		},
@@ -1166,11 +1176,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				let mode = parseInt(await context.parseVariablesInString(options.mode))
-				if (isNaN(mode) || mode < 0 || mode > 3) {
-					self.log('warn', `Sweep Mode out of range: ${mode}`)
-					return undefined
-				}
+				let mode = validateIntRange(await context.parseVariablesInString(options.mode), 0, 3, 'Sweep mode')
 				return await self.postCommand(`//extref_sweep/${await parseTileScope(options, self, context)}`, {
 					ints: [mode],
 				})
@@ -1190,10 +1196,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				let mode = parseInt(await context.parseVariablesInString(options.mode))
-				if (isNaN(mode) || (mode !== 1 && mode !== 2 && mode !== 5)) {
-					self.log('warn', `ExRef Gain out of range: ${mode}`)
-					return undefined
+				let mode = validateIntRange(await context.parseVariablesInString(options.mode), 1, 5, 'ExRef Gain')
+				if (mode !== 1 && mode !== 2 && mode !== 5) {
+					throw new Error( `ExRef Gain out of range: ${mode}`)
 				}
 				return await self.postCommand(`/extref_gain/${await parseTileScope(options, self, context)}`, {
 					ints: [mode],
@@ -1223,16 +1228,8 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				let hmag = parseInt(await context.parseVariablesInString(options.hmag))
-				let bestView = parseInt(await context.parseVariablesInString(options.bestView))
-				if (isNaN(hmag) || hmag < 0 || hmag > 1) {
-					self.log('warn', `Hmag out of range: ${hmag}`)
-					return undefined
-				}
-				if (isNaN(bestView) || bestView < 0 || bestView > 1) {
-					self.log('warn', `Best View out of range: ${bestView}`)
-					return undefined
-				}
+				const hmag = validateIntRange(await context.parseVariablesInString(options.hmag), 0, 1, 'Hmag')
+				const bestView = validateIntRange(await context.parseVariablesInString(options.bestView), 0, 1, 'Best View')
 				return await self.postCommand(`/extref_hmag/${await parseTileScope(options, self, context)}`, {
 					ints: [hmag, bestView],
 				})
@@ -1251,11 +1248,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				const mode = parseInt(await context.parseVariablesInString(options.mode))
-				if (isNaN(mode) || mode < 0 || mode > 1) {
-					self.log('warn', `Mode out of range: ${mode}`)
-					return undefined
-				}
+				const mode = validateIntRange(await context.parseVariablesInString(options.mode), 0, 1, 'Mode')
 				return await self.postCommand(`/eye_meter_enable/${await parseTileScope(options, self, context)}`, {
 					ints: [mode],
 				})
@@ -1275,11 +1268,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				let mode = parseInt(await context.parseVariablesInString(options.mode))
-				if (isNaN(mode) || mode < 0 || mode > 3) {
-					self.log('warn', `Rate out of range: ${mode}`)
-					return undefined
-				}
+				const mode = validateIntRange(await context.parseVariablesInString(options.mode), 0, 3, 'Eye Sweep Rate')
 				return await self.postCommand(`/eye_sweep/${await parseTileScope(options, self, context)}`, { ints: [mode] })
 			},
 		},
@@ -1312,11 +1301,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				const mode = parseInt(await context.parseVariablesInString(options.mode))
-				if (isNaN(mode) || mode < 0 || mode > 18) {
-					self.log('warn', `Rate out of range: ${mode}`)
-					return undefined
-				}
+				const mode = validateIntRange(await context.parseVariablesInString(options.mode), 0, 18, 'Stop Sweep')
 				return await self.postCommand(`/stop_sweep/${await parseTileScope(options, self, context)}`, { ints: [mode] })
 			},
 		},
@@ -1359,14 +1344,8 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				let gain = parseInt(options.gain)
-				if (options.useVar) {
-					gain = parseInt(await context.parseVariablesInString(options.gainVar))
-					if (isNaN(gain) || gain < 0 || gain > 10) {
-						self.log('warn', `stop_display_gain has been passed an out of range variable: ${gain}`)
-						return undefined
-					}
-				}
+				let gain = await parseIntOption(options, context, 'gain', 'gainVar')
+				gain = validateIntRange(gain, 0, 10, 'Stop Display Gain')
 				return await self.postCommand(`/stop_display_gain/${await parseTileScope(options, self, context)}`, {
 					ints: [gain],
 				})
@@ -1420,18 +1399,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				const hmag = options.useVar
-					? parseInt(await context.parseVariablesInString(options.hmagVar))
-					: parseInt(options.hmag)
-				const bestView = parseInt(await context.parseVariablesInString(options.bestView))
-				if (isNaN(hmag) || hmag < 1 || hmag > 25) {
-					self.log('warn', `Hmag out of range: ${hmag}`)
-					return undefined
-				}
-				if (isNaN(bestView) || bestView < 0 || bestView > 1) {
-					self.log('warn', `Best View out of range: ${bestView}`)
-					return undefined
-				}
+				let hmag = await parseIntOption(options, context, 'hmag', 'hmagVar')
+				hmag = validateIntRange(hmag, 1, 25, 'Hmag')
+				const bestView = validateIntRange(await context.parseVariablesInString(options.bestView), 0, 1, 'Best View')
 				return await self.postCommand(`/stop_hmag/${await parseTileScope(options, self, context)}`, {
 					ints: [hmag, bestView],
 				})
@@ -1469,11 +1439,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				const mode = parseInt(await context.parseVariablesInString(options.mode))
-				if (isNaN(mode) || mode < 0 || mode > 1) {
-					self.log('warn', `Reference out of range: ${mode}`)
-					return undefined
-				}
+				const mode = validateIntRange(await context.parseVariablesInString(options.mode), 0, 1, 'Reference')
 				return await self.postCommand(`/stop_gamma_reference/${await parseTileScope(options, self, context)}`, {
 					ints: [mode],
 				})
@@ -1633,13 +1599,8 @@ export default function (self) {
 				actionOptions.config,
 			],
 			callback: async ({ options }, context) => {
-				const mode = options.useVar
-					? parseInt(await context.parseVariablesInString(options.modeVar))
-					: parseInt(options.mode)
-				if (isNaN(mode) || mode < 1 || mode > 8) {
-					self.log('warn', `dolby_aes_pair has been passed an out of range variable: ${mode}`)
-					return undefined
-				}
+				const mode = await parseIntOption(options, context, 'mode', 'modeVar')
+				validateIntRange(mode, 0, 8, 'Dolby AES Pair')
 				return await self.postCommand(`/dolby_aes_pair/${await context.parseVariablesInString(options.scope)}`, {
 					ints: [mode],
 				})
@@ -1704,13 +1665,8 @@ export default function (self) {
 				actionOptions.config,
 			],
 			callback: async ({ options }, context) => {
-				const mode = options.useVar
-					? parseInt(await context.parseVariablesInString(options.modeVar))
-					: parseInt(await context.parseVariablesInString(options.mode))
-				if (isNaN(mode) || mode < -1 || mode > 50000) {
-					self.log('warn', `tr_offset_2110 has been passed an out of range variable: ${mode}`)
-					return undefined
-				}
+				const mode = await parseIntOption(options, context, 'mode', 'modeVar')
+				validateIntRange(mode, -1, 50000, 'tr_offset_2110')
 				return await self.postCommand(`/tr_offset_2110/${await context.parseVariablesInString(options.scope)}`, {
 					ints: [mode],
 				})
@@ -1815,11 +1771,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				const mode = parseInt(await context.parseVariablesInString(options.mode))
-				if (isNaN(mode) || mode < 0 || mode > 1) {
-					self.log('warn', `Jitter Meter Mode passed out of range value: ${mode}`)
-					return undefined
-				}
+				const mode = validateIntRange(await context.parseVariablesInString(options.mode), 0, 1, 'Jitter Meter Mode')
 				return await self.postCommand(`/jitter_meter_enable`, {
 					ints: [mode],
 				})
@@ -1839,11 +1791,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				const mode = parseInt(await context.parseVariablesInString(options.mode))
-				if (isNaN(mode) || mode < 0 || mode > 3) {
-					self.log('warn', `Jitter Sweep Rate passed out of range value: ${mode}`)
-					return undefined
-				}
+				const mode = validateIntRange(await context.parseVariablesInString(options.mode), 0, 3, 'Jitter Meter Sweep Rate')
 				return await self.postCommand(`/jitter_sweep/${await parseTileScope(options, self, context)}`, {
 					ints: [mode],
 				})
@@ -1871,13 +1819,8 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				const mode = options.useVar
-					? parseInt(await context.parseVariablesInString(options.gainVar))
-					: parseInt(options.gain)
-				if (isNaN(mode) || mode < 1 || mode > 10) {
-					self.log('warn', `lightning_vertical_gain has been passed an out of range variable: ${mode}`)
-					return undefined
-				}
+				const mode = await parseIntOption(options, context, 'gain', 'gainVar')
+				validateIntRange(mode, 1, 10, 'Lightning Vertical Gain')
 				return await self.postCommand(`/lightning_vertical_gain/${await parseTileScope(options, self, context)}`, {
 					ints: [mode],
 				})
@@ -1927,13 +1870,8 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				const mode = options.useVar
-					? parseInt(await context.parseVariablesInString(options.gainVar))
-					: parseInt(options.gain)
-				if (isNaN(mode) || mode < 1 || mode > 10) {
-					self.log('warn', `lightning_horizontal_gain has been passed an out of range variable: ${mode}`)
-					return undefined
-				}
+				const mode = await parseIntOption(options, context, 'gain', 'gainVar')
+				validateIntRange(mode, 1, 10, 'Lightning Horizontal Gain')
 				return await self.postCommand(`/lightning_horizontal_gain/${await parseTileScope(options, self, context)}`, {
 					ints: [mode],
 				})
@@ -2144,13 +2082,8 @@ export default function (self) {
 				actionOptions.useVar,
 			],
 			callback: async ({ options }, context) => {
-				const mode = options.useVar
-					? parseInt(await context.parseVariablesInString(options.modeVar))
-					: parseInt(options.mode)
-				if (isNaN(mode) || mode < 1 || mode > 6) {
-					self.log('warn', `nmos_target_input has been passed an out of range variable: ${mode}`)
-					return undefined
-				}
+				const mode = await parseIntOption(options, context, 'mode', 'modeVar')
+				validateIntRange(mode, 1, 6, 'NMOS Target Input')
 				return await self.postCommand(`/nmos_target_input`, {
 					ints: [mode],
 				})
@@ -2169,11 +2102,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				const mode = parseInt(await context.parseVariablesInString(options.mode))
-				if (isNaN(mode) || mode < 0 || mode > 6) {
-					this.log('warn', `jitter_hpf has been passed an out of range variable: ${mode}`)
-					return undefined
-				}
+				const mode = validateIntRange(await context.parseVariablesInString(options.mode), 0, 6, 'Jitter HPF')
 				return await self.postCommand(`/jitter_hpf/index0`, {
 					ints: [mode],
 				})
@@ -2204,7 +2133,7 @@ export default function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					label: 'Graticle',
+					label: 'Graticule',
 					default: pictureSafeChoices[0].id,
 					choices: pictureSafeChoices,
 					tooltip:
@@ -2224,7 +2153,7 @@ export default function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					label: 'Graticle',
+					label: 'Graticule',
 					default: pictureSafeChoices[0].id,
 					choices: pictureSafeChoices,
 					tooltip:
@@ -2244,7 +2173,7 @@ export default function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					label: 'Graticle',
+					label: 'Graticule',
 					default: pictureSafeChoices[0].id,
 					choices: pictureSafeChoices,
 					tooltip:
@@ -2264,7 +2193,7 @@ export default function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					label: 'Graticle',
+					label: 'Graticule',
 					default: pictureSafeChoices[0].id,
 					choices: pictureSafeChoices,
 					tooltip:
@@ -2284,7 +2213,7 @@ export default function (self) {
 			options: [
 				{
 					...actionOptions.modeDropdown,
-					label: 'Graticle',
+					label: 'Graticule',
 					default: pictureCenterGratChoices[0].id,
 					choices: pictureCenterGratChoices,
 					tooltip: 'Options: PICTURE_GRAT_CENTER_OFF, PICTURE_GRAT_CENTER_ON',
@@ -2389,13 +2318,8 @@ export default function (self) {
 			callback: async ({ options }, context) => {
 				const args = {}
 				if (options.legacy) {
-					const mode = options.useVar
-						? parseInt(await context.parseVariablesInString(options.modeVar))
-						: parseInt(options.mode)
-					if (isNaN(mode) || mode < 100 || mode > 899) {
-						self.log('warn', `closed_captions_wst_page has been passed an out of range variable: ${mode}`)
-						return undefined
-					}
+					const mode = await parseIntOption(options, context, 'mode', 'modeVar')
+					validateIntRange(mode, 100, 899, 'closed_captions_wst_page')
 					arguments.ints = [mode]
 				} else {
 					const mode = context.parseVariablesInString(options.newPage).trim().substring(0, 5)
@@ -2700,13 +2624,8 @@ export default function (self) {
 				actionOptions.useVar,
 			],
 			callback: async ({ options }, context) => {
-				const mode = options.useVar
-					? parseInt(await context.parseVariablesInString(options.gainVar))
-					: parseInt(options.mode)
-				if (isNaN(mode) || mode < 0 || mode > 127) {
-					self.log('warn', `ptp_domain_2059_profile has been passed an out of range variable: ${mode}`)
-					return undefined
-				}
+				const mode = await parseIntOption(options, context, 'mode', 'modeVar')
+				validateIntRange(mode, 0, 127, 'ptp_domain_2059_profile')
 				return await self.postCommand(`/ptp_domain_2059_profile`, {
 					ints: [mode],
 				})
@@ -2742,19 +2661,14 @@ export default function (self) {
 				{
 					...actionOptions.modeVar,
 					id: 'gainVar',
-					label: 'Gain',
+					label: 'Domain',
 					tooltip: 'Varible must return an integer between 0 and 127.',
 				},
 				actionOptions.useVar,
 			],
 			callback: async ({ options }, context) => {
-				const mode = options.useVar
-					? parseInt(await context.parseVariablesInString(options.gainVar))
-					: parseInt(options.mode)
-				if (isNaN(mode) || mode < 0 || mode > 127) {
-					self.log('warn', `ptp_domain_aes67_profile has been passed an out of range variable: ${mode}`)
-					return undefined
-				}
+				const mode = await parseIntOption(options, context, 'mode', 'gainVar')
+				validateIntRange(mode, 0, 127, 'ptp_domain_aes67_profile')
 				return await self.postCommand(`/ptp_domain_aes67_profile`, {
 					ints: [mode],
 				})
@@ -2778,13 +2692,8 @@ export default function (self) {
 				actionOptions.useVar,
 			],
 			callback: async ({ options }, context) => {
-				const mode = options.useVar
-					? parseInt(await context.parseVariablesInString(options.gainVar))
-					: parseInt(options.mode)
-				if (isNaN(mode) || mode < 0 || mode > 127) {
-					self.log('warn', `ptp_domain_general_profile has been passed an out of range variable: ${mode}`)
-					return undefined
-				}
+				const mode = await parseIntOption(options, context, 'mode', 'modeVar')
+				validateIntRange(mode, 0, 127, 'ptp_domain_general_profile')
 				return await self.postCommand(`/ptp_domain_general_profile`, {
 					ints: [mode],
 				})
@@ -2841,13 +2750,8 @@ export default function (self) {
 				actionOptions.useVar,
 			],
 			callback: async ({ options }, context) => {
-				const mode = options.useVar
-					? parseInt(await context.parseVariablesInString(options.modeVar))
-					: parseInt(options.mode)
-				if (isNaN(mode) || mode < -50 || mode > 50) {
-					self.log('warn', `tile_grat_intensity has been passed an out of range variable: ${mode}`)
-					return undefined
-				}
+				const mode = await parseIntOption(options, context, 'mode', 'modeVar')
+				validateIntRange(mode, -50, 50, 'tile_grat_intensity')
 				return await self.postCommand(`/tile_grat_intensity`, {
 					ints: [mode],
 				})
@@ -2872,13 +2776,8 @@ export default function (self) {
 				actionOptions.useVar,
 			],
 			callback: async ({ options }, context) => {
-				let mode = options.useVar
-					? parseInt(await context.parseVariablesInString(options.gainVar))
-					: parseInt(options.mode)
-				if (isNaN(mode) || mode < -50 || mode > 50) {
-					self.log('warn', `trace_intensity has been passed an out of range variable: ${mode}`)
-					return undefined
-				}
+				const mode = await parseIntOption(options, context, 'mode', 'modeVar')
+				validateIntRange(mode, -50, 50, 'trace_intensity')
 				return await self.postCommand(`/trace_intensity`, {
 					ints: [mode],
 				})
@@ -3006,13 +2905,8 @@ export default function (self) {
 				actionOptions.useVar,
 			],
 			callback: async ({ options }, context) => {
-				const mode = options.useVar
-					? parseInt(await context.parseVariablesInString(options.modeVar))
-					: parseInt(options.mode)
-				if (isNaN(mode) || mode < 0 || mode > 10000) {
-					self.log('warn', `hdr_total_area_threshold has been passed an out of range variable: ${mode}`)
-					return undefined
-				}
+				const mode = await parseIntOption(options, context, 'mode', 'modeVar')
+				validateIntRange(mode, 0, 10000, 'hdr_total_area_threshold')
 				return await self.postCommand(`/hdr_total_area_threshold`, {
 					ints: [mode],
 				})
@@ -3036,13 +2930,8 @@ export default function (self) {
 				actionOptions.useVar,
 			],
 			callback: async ({ options }, context) => {
-				const mode = options.useVar
-					? parseInt(await context.parseVariablesInString(options.modeVar))
-					: parseInt(options.mode)
-				if (isNaN(mode) || mode < 0 || mode > 100) {
-					self.log('warn', `hdr_brightest_area_threshold has been passed an out of range variable: ${mode}`)
-					return undefined
-				}
+				const mode = await parseIntOption(options, context, 'mode', 'modeVar')
+				validateIntRange(mode, 0, 100, 'hdr_brightest_area_threshold')
 				return await self.postCommand(`/hdr_brightest_area_threshold`, {
 					ints: [mode],
 				})
@@ -3066,13 +2955,8 @@ export default function (self) {
 				actionOptions.useVar,
 			],
 			callback: async ({ options }, context) => {
-				const mode = options.useVar
-					? parseInt(await context.parseVariablesInString(options.modeVar))
-					: parseInt(options.mode)
-				if (isNaN(mode) || mode < 0 || mode > 100) {
-					self.log('warn', `hdr_area_threshold has been passed an out of range variable: ${mode}`)
-					return undefined
-				}
+				const mode = await parseIntOption(options, context, 'mode', 'modeVar')
+				validateIntRange(mode, 0, 100, 'hdr_area_threshold')
 				return await self.postCommand(`/hdr_area_threshold`, {
 					ints: [mode],
 				})
@@ -3096,13 +2980,8 @@ export default function (self) {
 				actionOptions.useVar,
 			],
 			callback: async ({ options }, context) => {
-				const mode = options.useVar
-					? parseInt(await context.parseVariablesInString(options.modeVar))
-					: parseInt(options.mode)
-				if (isNaN(mode) || mode < 0 || mode > 100) {
-					self.log('warn', `hdr_darkest_area_threshold has been passed an out of range variable: ${mode}`)
-					return undefined
-				}
+				const mode = await parseIntOption(options, context, 'mode', 'modeVar')
+				validateIntRange(mode, 0, 100, 'hdr_darkest_area_threshold')
 				return await self.postCommand(`/hdr_darkest_area_threshold`, {
 					ints: [mode],
 				})
@@ -3239,13 +3118,8 @@ export default function (self) {
 				actionOptions.useVar,
 			],
 			callback: async ({ options }, context) => {
-				const mode = options.useVar
-					? parseInt(await context.parseVariablesInString(options.modeVar))
-					: parseInt(options.mode)
-				if (isNaN(mode) || mode < 1 || mode > 2500) {
-					self.log('warn', `tile_av_advanced_threshold has been passed an out of range variable: ${mode}`)
-					return undefined
-				}
+				const mode = await parseIntOption(options, context, 'mode', 'modeVar')
+				validateIntRange(mode, 1, 2500, 'tile_av_advanced_threshold')
 				return await self.postCommand(`/tile_av_advanced_threshold`, {
 					ints: [mode],
 				})
@@ -3271,13 +3145,8 @@ export default function (self) {
 				actionOptions.useVar,
 			],
 			callback: async ({ options }, context) => {
-				const mode = options.useVar
-					? parseInt(await context.parseVariablesInString(options.modeVar))
-					: parseInt(options.mode)
-				if (isNaN(mode) || mode < 1 || mode > 2500) {
-					self.log('warn', `tile_av_delayed_threshold has been passed an out of range variable: ${mode}`)
-					return undefined
-				}
+				const mode = await parseIntOption(options, context, 'mode', 'modeVar')
+				validateIntRange(mode, 1, 2500, 'tile_av_delayed_threshold')
 				return await self.postCommand(`/tile_av_delayed_threshold`, {
 					ints: [mode],
 				})
@@ -3594,13 +3463,8 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				const mode = options.useVar
-					? parseInt(await context.parseVariablesInString(options.modeVar))
-					: parseInt(options.mode)
-				if (isNaN(mode) || mode < 1 || mode > 10) {
-					self.log('warn', `waveform_gain has been passed an out of range variable: ${mode}`)
-					return undefined
-				}
+				const mode = await parseIntOption(options, context, 'mode', 'modeVar')
+				validateIntRange(mode, 1, 10, 'waveform_gain')
 				return await self.postCommand(`/waveform_gain/${await parseTileScope(options, self, context)}`, {
 					ints: [mode],
 				})
@@ -3655,18 +3519,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				const hmag = options.useVar
-					? parseInt(await context.parseVariablesInString(options.hmagVar))
-					: parseInt(options.hmag)
-				const bestView = parseInt(await context.parseVariablesInString(options.bestView))
-				if (isNaN(hmag) || hmag < 1 || hmag > 25) {
-					self.log('warn', `Waveform Hmag: Hmag out of range: ${hmag}`)
-					return undefined
-				}
-				if (isNaN(bestView) || bestView < 0 || bestView > 1) {
-					self.log('warn', `Waveform Hmag: Best View out of range: ${bestView}`)
-					return undefined
-				}
+				const hmag = await parseIntOption(options, context, 'hmag', 'hmagVar')
+				validateIntRange(hmag, 1, 25, 'Hmag')
+				const bestView = validateIntRange(await context.parseVariablesInString(options.bestView), 0, 1, 'Best view')
 				return await self.postCommand(`/waveform_hmag/${await parseTileScope(options, self, context)}`, {
 					ints: [hmag, bestView],
 				})
@@ -3717,7 +3572,7 @@ export default function (self) {
 			},
 		},
 		waveformGratSdiUnits: {
-			name: 'Waveform SDI Graticle Units',
+			name: 'Waveform SDI Graticule Units',
 			description: `SDI graticule units`,
 			options: [
 				{
@@ -3792,13 +3647,8 @@ export default function (self) {
 				actionOptions.useVar,
 			],
 			callback: async ({ options }, context) => {
-				const level = options.useVar
-					? parseInt(await context.parseVariablesInString(options.levelVar))
-					: parseInt(options.level)
-				if (isNaN(level) || level < -31 || level > 0) {
-					self.log('warn', `level out of range: ${level}`)
-					return undefined
-				}
+				const level = await parseFloatOption(options, context, 'level', 'levelVar')
+				validateFloatRange(level, -31, 0, 'level')
 				return await self.postCommand(`/loudness_loud_level/`, {
 					floats: [level],
 				})
@@ -3825,13 +3675,8 @@ export default function (self) {
 				actionOptions.useVar,
 			],
 			callback: async ({ options }, context) => {
-				const level = options.useVar
-					? parseInt(await context.parseVariablesInString(options.levelVar))
-					: parseInt(options.level)
-				if (isNaN(level) || level < -60 || level > 0) {
-					self.log('warn', `level out of range: ${level}`)
-					return undefined
-				}
+				const level = await parseFloatOption(options, context, 'level', 'levelVar')
+				validateFloatRange(level, -60, 0, 'level')
 				return await self.postCommand(`/loudness_quiet_level/`, {
 					floats: [level],
 				})
@@ -3888,29 +3733,14 @@ export default function (self) {
 				actionOptions.useVar,
 			],
 			callback: async ({ options }, context) => {
-				const target = options.useVar
-					? parseInt(await context.parseVariablesInString(options.targetVar))
-					: parseInt(options.target)
-				const high = options.useVar
-					? parseInt(Number(await context.parseVariablesInString(options.highVar)) * 10) / 10
-					: options.high
-				const low = options.useVar
-					? parseInt(Number(await context.parseVariablesInString(options.lowVar)) * 10) / 10
-					: options.low
-				if (
-					isNaN(target) ||
-					target < -31 ||
-					target > 0 ||
-					isNaN(low) ||
-					low < 0 ||
-					low > 10 ||
-					isNaN(high) ||
-					high < 0 ||
-					high > 10
-				) {
-					self.log('warn', `loudnessTargetLevel params out of range. Target: ${target}, High: ${high}, Low: ${low}`)
-					return undefined
-				}
+				const target = await parseIntOption(options, context, 'target', 'targetVar')
+				validateIntRange(level, -31, 0, 'loudnessTargetLevel: Target')
+				let high = await parseFloatOption(options, context, 'high', 'highVar')
+				validateFloatRange(level, -31, 0, 'loudnessTargetLevel: High')
+				high = Math.round(high * 10) / 10
+				let low = await parseFloatOption(options, context, 'low', 'lowVar')
+				validateFloatRange(level, -31, 0, 'loudnessTargetLevel: Low')
+				low = Math.round(low * 10) / 10
 				return await self.postCommand(`/loudness_target_level/`, {
 					object: {
 						target: target,
