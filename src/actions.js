@@ -160,15 +160,11 @@ function validateFloatRange(value, min, max, paramName) {
 }
 
 async function parseIntOption(options, context, key, varKey) {
-	return options.useVar
-		? parseInt(await context.parseVariablesInString(options[varKey]))
-		: parseInt(options[key])
+	return options.useVar ? parseInt(await context.parseVariablesInString(options[varKey])) : parseInt(options[key])
 }
 
 async function parseFloatOption(options, context, key, varKey) {
-	return options.useVar
-		? parseFloat(await context.parseVariablesInString(options[varKey]))
-		: parseFloat(options[key])
+	return options.useVar ? parseFloat(await context.parseVariablesInString(options[varKey])) : parseFloat(options[key])
 }
 
 export default function (self) {
@@ -393,12 +389,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				const tile = validateIntRange(
-					await context.parseVariablesInString(options.tile),
-					0,
-					8,
-					'Tile Select'
-				)
+				const tile = validateIntRange(await context.parseVariablesInString(options.tile), 0, 8, 'Tile Select')
 				return await self.postCommand('/tile_select', { ints: [tile] })
 			},
 		},
@@ -433,7 +424,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				let tile = validateIntRange((await context.parseVariablesInString(options.tile)), 1, 8, 'Tile in Focus')
+				let tile = validateIntRange(await context.parseVariablesInString(options.tile), 1, 8, 'Tile in Focus')
 				const response = await self.postCommand('/tile_in_focus', { ints: [tile] })
 				if (
 					response === undefined ||
@@ -1097,7 +1088,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				const mode = validateIntRange((await context.parseVariablesInString(options.mode)), 0, 1, 'Diamond Mode')
+				const mode = validateIntRange(await context.parseVariablesInString(options.mode), 0, 1, 'Diamond Mode')
 				return await self.postCommand(`/diamond_mode/${await parseTileScope(options, self, context)}`, {
 					ints: [mode],
 				})
@@ -1198,7 +1189,7 @@ export default function (self) {
 			callback: async ({ options }, context) => {
 				let mode = validateIntRange(await context.parseVariablesInString(options.mode), 1, 5, 'ExRef Gain')
 				if (mode !== 1 && mode !== 2 && mode !== 5) {
-					throw new Error( `ExRef Gain out of range: ${mode}`)
+					throw new Error(`ExRef Gain out of range: ${mode}`)
 				}
 				return await self.postCommand(`/extref_gain/${await parseTileScope(options, self, context)}`, {
 					ints: [mode],
@@ -1791,7 +1782,12 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				const mode = validateIntRange(await context.parseVariablesInString(options.mode), 0, 3, 'Jitter Meter Sweep Rate')
+				const mode = validateIntRange(
+					await context.parseVariablesInString(options.mode),
+					0,
+					3,
+					'Jitter Meter Sweep Rate',
+				)
 				return await self.postCommand(`/jitter_sweep/${await parseTileScope(options, self, context)}`, {
 					ints: [mode],
 				})
@@ -3734,12 +3730,12 @@ export default function (self) {
 			],
 			callback: async ({ options }, context) => {
 				const target = await parseIntOption(options, context, 'target', 'targetVar')
-				validateIntRange(level, -31, 0, 'loudnessTargetLevel: Target')
+				validateIntRange(target, -31, 0, 'loudnessTargetLevel: Target')
 				let high = await parseFloatOption(options, context, 'high', 'highVar')
-				validateFloatRange(level, -31, 0, 'loudnessTargetLevel: High')
+				validateFloatRange(high, 0, 10, 'loudnessTargetLevel: High')
 				high = Math.round(high * 10) / 10
 				let low = await parseFloatOption(options, context, 'low', 'lowVar')
-				validateFloatRange(level, -31, 0, 'loudnessTargetLevel: Low')
+				validateFloatRange(low, 0, 10, 'loudnessTargetLevel: Low')
 				low = Math.round(low * 10) / 10
 				return await self.postCommand(`/loudness_target_level/`, {
 					object: {
