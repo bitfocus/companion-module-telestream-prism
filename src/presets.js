@@ -1,5 +1,11 @@
 import { combineRgb } from '@companion-module/base'
-import { measureAssignChoices, tiles, tileSelectChoices, measureTileModeChoices } from './choices.js'
+import {
+	measureAssignChoices,
+	tiles,
+	tileSelectChoices,
+	tileSelectChoicesDisplay2,
+	measureTileModeChoices,
+} from './choices.js'
 import { icons } from './icons.js'
 
 const colors = {
@@ -19,8 +25,14 @@ const button_defaults = {
 	show_topbar: false,
 }
 
+/** @typedef {InstanceType<typeof import('./main.js').Telestream_PRISM>} Telestream_PRISM */
+
+/**
+ * @param {Telestream_PRISM} self
+ */
+
 export default async function (self) {
-	let presets = {}
+	const presets = {}
 	presets['Header-Input-Active'] = {
 		category: 'Input',
 		type: 'text',
@@ -1001,6 +1013,8 @@ export default async function (self) {
 						actionId: 'tileSelect',
 						options: {
 							tile: 0,
+							tile2: 0,
+							dualDisplay: true,
 						},
 					},
 				],
@@ -1009,7 +1023,7 @@ export default async function (self) {
 		],
 		feedbacks: [],
 	}
-	for (let i = 1; i <= 8; i++) {
+	for (let i = 1; i <= 4; i++) {
 		presets[`tile_fullscreen_${i}`] = {
 			type: 'button',
 			category: 'Tile',
@@ -1027,6 +1041,37 @@ export default async function (self) {
 							actionId: 'tileSelect',
 							options: {
 								tile: i,
+								tile2: 0,
+								dualDisplay: false,
+							},
+						},
+					],
+					up: [],
+				},
+			],
+			feedbacks: [],
+		}
+	}
+	for (let i = 5; i <= 8; i++) {
+		presets[`tile_fullscreen_${i}`] = {
+			type: 'button',
+			category: 'Tile',
+			name: tileSelectChoicesDisplay2[i - 4].label,
+			style: {
+				...button_defaults,
+				text: `${tileSelectChoicesDisplay2[i - 4].label}\\n`,
+				png64: icons.fullscreen,
+				pngalignment: 'center:top',
+			},
+			steps: [
+				{
+					down: [
+						{
+							actionId: 'tileSelect',
+							options: {
+								tile: 0,
+								tile2: i,
+								dualDisplay: true,
 							},
 						},
 					],

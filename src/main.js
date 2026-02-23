@@ -16,7 +16,7 @@ const contentType = 'application/json'
 const pollInterval_reg = 2000
 const pollInterval_slow = 20000
 
-class Telestream_PRISM extends InstanceBase {
+export class Telestream_PRISM extends InstanceBase {
 	constructor(internal) {
 		super(internal)
 		this.pollTimer_fast = {}
@@ -117,14 +117,17 @@ class Telestream_PRISM extends InstanceBase {
 	}
 
 	async postCommand(path, data) {
-		return await this.queue.add(async () => {
-			if (this.axios === undefined) {
-				throw new Error ('Client not initalized')
-			}
-			const response = await this.axios.post(path, JSON.stringify(data))
-			this.logResponse(response)
-			return response
-		}, { priority: 1 })
+		return await this.queue.add(
+			async () => {
+				if (this.axios === undefined) {
+					throw new Error('Client not initalized')
+				}
+				const response = await this.axios.post(path, JSON.stringify(data))
+				this.logResponse(response)
+				return response
+			},
+			{ priority: 1 },
+		)
 	}
 
 	async getInputConfig() {

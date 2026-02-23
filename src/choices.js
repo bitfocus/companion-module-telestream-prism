@@ -126,6 +126,10 @@ export const tileSelectChoices = [
 	{ id: 2, label: 'Tile 2' },
 	{ id: 3, label: 'Tile 3' },
 	{ id: 4, label: 'Tile 4' },
+]
+
+export const tileSelectChoicesDisplay2 = [
+	{ id: 0, label: 'None' },
 	{ id: 5, label: 'Tile 5' },
 	{ id: 6, label: 'Tile 6' },
 	{ id: 7, label: 'Tile 7' },

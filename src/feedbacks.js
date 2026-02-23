@@ -12,6 +12,12 @@ const styles = {
 	},
 }
 
+/** @typedef {InstanceType<typeof import('./main.js').Telestream_PRISM>} Telestream_PRISM */
+
+/**
+ * @param {Telestream_PRISM} self
+ */
+
 export default async function (self) {
 	self.setFeedbackDefinitions({
 		activeInput: {

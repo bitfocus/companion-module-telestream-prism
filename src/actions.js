@@ -7,6 +7,7 @@ import {
 	videoSessionControlChoices,
 	ipSessionControlChoices,
 	tileSelectChoices,
+	tileSelectChoicesDisplay2,
 	tileFullscreenModeChoices,
 	tileInFocusChoices,
 	audioBallisticChoices,
@@ -167,6 +168,12 @@ async function parseFloatOption(options, context, key, varKey) {
 	return options.useVar ? parseFloat(await context.parseVariablesInString(options[varKey])) : parseFloat(options[key])
 }
 
+/** @typedef {InstanceType<typeof import('./main.js').Telestream_PRISM>} Telestream_PRISM */
+
+/**
+ * @param {Telestream_PRISM} self
+ */
+
 export default function (self) {
 	self.setActionDefinitions({
 		activeInput: {
@@ -188,24 +195,18 @@ export default function (self) {
 					choices: self.prism.input_list,
 					default: self.prism.input_list[0].id,
 					allowCustom: false,
-					isVisible: (options) => {
-						return options.useVar === false && options.action == 'set'
-					},
+					isVisibleExpression: '$(options:useVar) === false && $(options:action) == "set"',
 				},
 				{
 					...actionOptions.modeVar,
 					id: 'inputVar',
 					label: 'Input',
-					isVisible: (options) => {
-						return options.useVar === true && options.action == 'set'
-					},
+					isVisibleExpression: '$(options:useVar) === true && $(options:action) == "set"',
 					tooltip: 'Varible must return an integer between 0 and 5',
 				},
 				{
 					...actionOptions.useVar,
-					isVisible: (options) => {
-						return options.action == 'set'
-					},
+					isVisibleExpression: '$(options:action) == "set"',
 				},
 			],
 			callback: async ({ options }, context) => {
@@ -248,7 +249,7 @@ export default function (self) {
 			description: `Get list of presets`,
 			options: [],
 			callback: async () => {
-				return await self.getPresets()
+				await self.getPresets()
 			},
 			subscribe: async () => {
 				await self.getPresets()
@@ -272,7 +273,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand('/loadpreset', { string: await context.parseVariablesInString(options.preset) })
+				await self.postCommand('/loadpreset', { string: await context.parseVariablesInString(options.preset) })
 			},
 			subscribe: async () => {
 				await self.getPresets()
@@ -283,7 +284,7 @@ export default function (self) {
 			description: `Reset anc session`,
 			options: [],
 			callback: async () => {
-				return await self.postCommand('/anc_session_control', { ints: ['ANC_ENGINE_SESSION_CONTROL_RESET'] })
+				await self.postCommand('/anc_session_control', { ints: ['ANC_ENGINE_SESSION_CONTROL_RESET'] })
 			},
 		},
 		audioSessionControl: {
@@ -303,7 +304,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand('/audio_session_control', {
+				await self.postCommand('/audio_session_control', {
 					ints: [await context.parseVariablesInString(options.action)],
 				})
 			},
@@ -326,7 +327,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand('/loudness_session_control', {
+				await self.postCommand('/loudness_session_control', {
 					ints: [await context.parseVariablesInString(options.action)],
 				})
 			},
@@ -348,7 +349,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand('/video_session_control', {
+				await self.postCommand('/video_session_control', {
 					ints: [await context.parseVariablesInString(options.action)],
 				})
 			},
@@ -370,7 +371,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand('/ip_session_control', {
+				await self.postCommand('/ip_session_control', {
 					ints: [await context.parseVariablesInString(options.action)],
 				})
 			},
@@ -380,17 +381,48 @@ export default function (self) {
 			description: `Select a tile to expand to full screen`,
 			options: [
 				{
+					type: 'checkbox',
+					id: 'dualDisplay',
+					label: 'Dual Display',
+					default: false,
+				},
+				{
 					...actionOptions.modeDropdown,
 					id: 'tile',
-					label: 'Tile',
+					label: 'Display 1',
 					default: tileSelectChoices[0].id,
 					choices: tileSelectChoices,
-					tooltip: 'Variable must return an integer between 0 and 8.',
+					tooltip: 'Variable must return an integer between 0 and 4.',
+				},
+				{
+					...actionOptions.modeDropdown,
+					id: 'tile2',
+					label: 'Display 2',
+					default: tileSelectChoicesDisplay2[0].id,
+					choices: tileSelectChoicesDisplay2,
+					tooltip: 'Variable must return an integer between 5 and 8 or 0.',
+					isVisibleExpression: '$(options:dualDisplay)',
 				},
 			],
 			callback: async ({ options }, context) => {
-				const tile = validateIntRange(await context.parseVariablesInString(options.tile), 0, 8, 'Tile Select')
-				return await self.postCommand('/tile_select', { ints: [tile] })
+				const tile = validateIntRange(
+					await context.parseVariablesInString(String(options.tile)),
+					0,
+					4,
+					'Tile Select - Display 1',
+				)
+				const ints = [tile]
+				if (options.dualDisplay) {
+					const tile2 = validateIntRange(
+						await context.parseVariablesInString(String(options.tile2)),
+						0,
+						8,
+						'Tile Select - Display 2',
+					)
+					if (tile2 > 0) validateIntRange(tile2, 5, 8, `Tile Select - Display 2`)
+					ints.push(tile2)
+				}
+				await self.postCommand('/tile_select', { ints: ints })
 			},
 		},
 		tileFullscreenMode: {
@@ -405,7 +437,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand('/tile_fullscreen_mode', {
+				await self.postCommand('/tile_fullscreen_mode', {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -424,7 +456,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				let tile = validateIntRange(await context.parseVariablesInString(options.tile), 1, 8, 'Tile in Focus')
+				let tile = validateIntRange(await context.parseVariablesInString(String(options.tile)), 1, 8, 'Tile in Focus')
 				const response = await self.postCommand('/tile_in_focus', { ints: [tile] })
 				if (
 					response === undefined ||
@@ -432,8 +464,7 @@ export default function (self) {
 					response.data.ints === undefined ||
 					!Array.isArray(response.data.ints)
 				) {
-					self.log('warn', 'tile_in_focus response contains no data')
-					return undefined
+					throw new Error('tile_in_focus response contains no data')
 				}
 				if (response.data.ints.length == 1 && !isNaN(parseInt(response.data.ints[0]))) {
 					let varList = {}
@@ -443,8 +474,7 @@ export default function (self) {
 					self.checkFeedbacks('tileInFocus')
 					return self.prism.input
 				} else {
-					self.log('warn', 'tile_in_focus returned a NaN or unexpected  length')
-					return undefined
+					throw new Error('tile_in_focus returned a NaN or unexpected  length')
 				}
 			},
 			learn: async (action) => {
@@ -471,7 +501,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand('/audio_ballistic', {
+				await self.postCommand('/audio_ballistic', {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -490,7 +520,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand('/loudness_metering_mode', {
+				await self.postCommand('/loudness_metering_mode', {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -508,7 +538,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand('/loudness_full_scale_units', {
+				await self.postCommand('/loudness_full_scale_units', {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -526,7 +556,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand('/loudness_true_peak_dc_block', {
+				await self.postCommand('/loudness_true_peak_dc_block', {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -544,7 +574,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand('/loudness_true_peak_emphasis', {
+				await self.postCommand('/loudness_true_peak_emphasis', {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -563,7 +593,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand('/loudness_ballistic', {
+				await self.postCommand('/loudness_ballistic', {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -582,7 +612,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand('/loudness_short_gating_window', {
+				await self.postCommand('/loudness_short_gating_window', {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -600,7 +630,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand('/loudness_load_preset', {
+				await self.postCommand('/loudness_load_preset', {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -618,7 +648,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand('/audio_program_surround_order', {
+				await self.postCommand('/audio_program_surround_order', {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -637,7 +667,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand('/dolby_metadata_source', {
+				await self.postCommand('/dolby_metadata_source', {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -656,7 +686,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand('/audio_downmix_mode', {
+				await self.postCommand('/audio_downmix_mode', {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -674,7 +704,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand('/audio_solo_mode', {
+				await self.postCommand('/audio_solo_mode', {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -691,7 +721,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand('/dolby_drc_mode', {
+				await self.postCommand('/dolby_drc_mode', {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -708,7 +738,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand('/analog_audio_output_mode', {
+				await self.postCommand('/analog_audio_output_mode', {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -727,7 +757,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/audio_aux_display_mode/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/audio_aux_display_mode/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -745,7 +775,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/audio_display_loudness_meter/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/audio_display_loudness_meter/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -763,7 +793,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/audio_session_display/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/audio_session_display/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -782,7 +812,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/surround_dominance_indicator/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/surround_dominance_indicator/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -801,7 +831,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(
+				await self.postCommand(
 					`/surround_immersive_dominance_indicator/${await parseTileScope(options, self, context)}`,
 					{
 						ints: [await context.parseVariablesInString(options.mode)],
@@ -823,7 +853,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/surround_bed_select/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/surround_bed_select/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -842,12 +872,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(
-					`/surround_immersive_psi_bed_select/${await parseTileScope(options, self, context)}`,
-					{
-						ints: [await context.parseVariablesInString(options.mode)],
-					},
-				)
+				await self.postCommand(`/surround_immersive_psi_bed_select/${await parseTileScope(options, self, context)}`, {
+					ints: [await context.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		avdelayUserOffsetMode: {
@@ -862,7 +889,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/avdelay_user_offset_mode`, {
+				await self.postCommand(`/avdelay_user_offset_mode`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -879,7 +906,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/sdi_loop_through`, {
+				await self.postCommand(`/sdi_loop_through`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -899,10 +926,9 @@ export default function (self) {
 			callback: async ({ options }, context) => {
 				const mode = parseInt(await context.parseVariablesInString(options.mode))
 				if (isNaN(mode) || (mode !== 10 && mode !== 25)) {
-					this.log('warn', `IP Video PHY Bite Rate Mode passed out of range value: ${mode}`)
-					return undefined
+					throw new Error(`IP Video PHY Bite Rate Mode passed out of range value: ${mode}`)
 				}
-				return await self.postCommand(`/ip_video_phy_bit_rate/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/ip_video_phy_bit_rate/${await parseTileScope(options, self, context)}`, {
 					ints: [mode],
 				})
 			},
@@ -920,7 +946,7 @@ export default function (self) {
 				actionOptions.ip,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/ip_video_phy_fec_mode/${await context.parseVariablesInString(options.scope)}`, {
+				await self.postCommand(`/ip_video_phy_fec_mode/${await context.parseVariablesInString(options.scope)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -938,7 +964,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/camapp_display_type/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/camapp_display_type/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -957,7 +983,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/camapp_gain/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/camapp_gain/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -976,7 +1002,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/camapp_sweep/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/camapp_sweep/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -995,7 +1021,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/camapp_filter/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/camapp_filter/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -1014,7 +1040,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/camapp_thumbnail/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/camapp_thumbnail/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -1034,7 +1060,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/camapp_graticule_units/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/camapp_graticule_units/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -1053,7 +1079,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/diagnostic_url_preset`, {
+				await self.postCommand(`/diagnostic_url_preset`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -1070,7 +1096,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/extended_display_mode`, {
+				await self.postCommand(`/extended_display_mode`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -1089,7 +1115,7 @@ export default function (self) {
 			],
 			callback: async ({ options }, context) => {
 				const mode = validateIntRange(await context.parseVariablesInString(options.mode), 0, 1, 'Diamond Mode')
-				return await self.postCommand(`/diamond_mode/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/diamond_mode/${await parseTileScope(options, self, context)}`, {
 					ints: [mode],
 				})
 			},
@@ -1107,7 +1133,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/diamond_lut/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/diamond_lut/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -1134,7 +1160,7 @@ export default function (self) {
 			callback: async ({ options }, context) => {
 				let brightness = await parseIntOption(options, context, 'brightness', 'brightnessVar')
 				brightness = validateIntRange(brightness, 0, 31, 'MPI LED Brightness')
-				return await self.postCommand(`/mpi_led_brightness`, { ints: [brightness] })
+				await self.postCommand(`/mpi_led_brightness`, { ints: [brightness] })
 			},
 		},
 		mpiLedColor: {
@@ -1151,7 +1177,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/mpi_led_color`, { ints: await context.parseVariablesInString(options.mode) })
+				await self.postCommand(`/mpi_led_color`, { ints: await context.parseVariablesInString(options.mode) })
 			},
 		},
 		extrefSweep: {
@@ -1168,7 +1194,7 @@ export default function (self) {
 			],
 			callback: async ({ options }, context) => {
 				let mode = validateIntRange(await context.parseVariablesInString(options.mode), 0, 3, 'Sweep mode')
-				return await self.postCommand(`//extref_sweep/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`//extref_sweep/${await parseTileScope(options, self, context)}`, {
 					ints: [mode],
 				})
 			},
@@ -1191,7 +1217,7 @@ export default function (self) {
 				if (mode !== 1 && mode !== 2 && mode !== 5) {
 					throw new Error(`ExRef Gain out of range: ${mode}`)
 				}
-				return await self.postCommand(`/extref_gain/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/extref_gain/${await parseTileScope(options, self, context)}`, {
 					ints: [mode],
 				})
 			},
@@ -1221,7 +1247,7 @@ export default function (self) {
 			callback: async ({ options }, context) => {
 				const hmag = validateIntRange(await context.parseVariablesInString(options.hmag), 0, 1, 'Hmag')
 				const bestView = validateIntRange(await context.parseVariablesInString(options.bestView), 0, 1, 'Best View')
-				return await self.postCommand(`/extref_hmag/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/extref_hmag/${await parseTileScope(options, self, context)}`, {
 					ints: [hmag, bestView],
 				})
 			},
@@ -1240,7 +1266,7 @@ export default function (self) {
 			],
 			callback: async ({ options }, context) => {
 				const mode = validateIntRange(await context.parseVariablesInString(options.mode), 0, 1, 'Mode')
-				return await self.postCommand(`/eye_meter_enable/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/eye_meter_enable/${await parseTileScope(options, self, context)}`, {
 					ints: [mode],
 				})
 			},
@@ -1260,7 +1286,7 @@ export default function (self) {
 			],
 			callback: async ({ options }, context) => {
 				const mode = validateIntRange(await context.parseVariablesInString(options.mode), 0, 3, 'Eye Sweep Rate')
-				return await self.postCommand(`/eye_sweep/${await parseTileScope(options, self, context)}`, { ints: [mode] })
+				await self.postCommand(`/eye_sweep/${await parseTileScope(options, self, context)}`, { ints: [mode] })
 			},
 		},
 		fpTestMode: {
@@ -1275,7 +1301,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/fp_test_mode`, { ints: [await context.parseVariablesInString(options.mode)] })
+				await self.postCommand(`/fp_test_mode`, { ints: [await context.parseVariablesInString(options.mode)] })
 			},
 		},
 		stopSweep: {
@@ -1293,7 +1319,7 @@ export default function (self) {
 			],
 			callback: async ({ options }, context) => {
 				const mode = validateIntRange(await context.parseVariablesInString(options.mode), 0, 18, 'Stop Sweep')
-				return await self.postCommand(`/stop_sweep/${await parseTileScope(options, self, context)}`, { ints: [mode] })
+				await self.postCommand(`/stop_sweep/${await parseTileScope(options, self, context)}`, { ints: [mode] })
 			},
 		},
 		stopColorTrace: {
@@ -1309,7 +1335,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/stop_color_trace/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/stop_color_trace/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -1337,7 +1363,7 @@ export default function (self) {
 			callback: async ({ options }, context) => {
 				let gain = await parseIntOption(options, context, 'gain', 'gainVar')
 				gain = validateIntRange(gain, 0, 10, 'Stop Display Gain')
-				return await self.postCommand(`/stop_display_gain/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/stop_display_gain/${await parseTileScope(options, self, context)}`, {
 					ints: [gain],
 				})
 			},
@@ -1355,7 +1381,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/stop_enable_best_gain/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/stop_enable_best_gain/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -1393,7 +1419,7 @@ export default function (self) {
 				let hmag = await parseIntOption(options, context, 'hmag', 'hmagVar')
 				hmag = validateIntRange(hmag, 1, 25, 'Hmag')
 				const bestView = validateIntRange(await context.parseVariablesInString(options.bestView), 0, 1, 'Best View')
-				return await self.postCommand(`/stop_hmag/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/stop_hmag/${await parseTileScope(options, self, context)}`, {
 					ints: [hmag, bestView],
 				})
 			},
@@ -1411,7 +1437,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/stop_active_area/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/stop_active_area/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -1431,7 +1457,7 @@ export default function (self) {
 			],
 			callback: async ({ options }, context) => {
 				const mode = validateIntRange(await context.parseVariablesInString(options.mode), 0, 1, 'Reference')
-				return await self.postCommand(`/stop_gamma_reference/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/stop_gamma_reference/${await parseTileScope(options, self, context)}`, {
 					ints: [mode],
 				})
 			},
@@ -1449,7 +1475,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/stop_enable_low_pass_filter/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/stop_enable_low_pass_filter/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -1466,7 +1492,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/gpio_preset_recall_enable`, {
+				await self.postCommand(`/gpio_preset_recall_enable`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -1483,7 +1509,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/audio_pair_aux_out_mode`, {
+				await self.postCommand(`/audio_pair_aux_out_mode`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -1501,12 +1527,9 @@ export default function (self) {
 				actionOptions.config,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(
-					`//source_config_vid_links/${await context.parseVariablesInString(options.scope)}`,
-					{
-						ints: [await context.parseVariablesInString(options.mode)],
-					},
-				)
+				await self.postCommand(`//source_config_vid_links/${await context.parseVariablesInString(options.scope)}`, {
+					ints: [await context.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		sourceConfigColorimetry: {
@@ -1522,12 +1545,9 @@ export default function (self) {
 				actionOptions.config,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(
-					`/source_config_colorimetry/${await context.parseVariablesInString(options.scope)}`,
-					{
-						ints: [await context.parseVariablesInString(options.mode)],
-					},
-				)
+				await self.postCommand(`/source_config_colorimetry/${await context.parseVariablesInString(options.scope)}`, {
+					ints: [await context.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		sourceConfigEotf: {
@@ -1544,7 +1564,7 @@ export default function (self) {
 				actionOptions.config,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/source_config_eotf/${await context.parseVariablesInString(options.scope)}`, {
+				await self.postCommand(`/source_config_eotf/${await context.parseVariablesInString(options.scope)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -1562,7 +1582,7 @@ export default function (self) {
 				actionOptions.config,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/audio_input_type/${await context.parseVariablesInString(options.scope)}`, {
+				await self.postCommand(`/audio_input_type/${await context.parseVariablesInString(options.scope)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -1592,7 +1612,7 @@ export default function (self) {
 			callback: async ({ options }, context) => {
 				const mode = await parseIntOption(options, context, 'mode', 'modeVar')
 				validateIntRange(mode, 0, 8, 'Dolby AES Pair')
-				return await self.postCommand(`/dolby_aes_pair/${await context.parseVariablesInString(options.scope)}`, {
+				await self.postCommand(`/dolby_aes_pair/${await context.parseVariablesInString(options.scope)}`, {
 					ints: [mode],
 				})
 			},
@@ -1610,7 +1630,7 @@ export default function (self) {
 				actionOptions.config,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/audio_pcm_program/${await context.parseVariablesInString(options.scope)}`, {
+				await self.postCommand(`/audio_pcm_program/${await context.parseVariablesInString(options.scope)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -1629,7 +1649,7 @@ export default function (self) {
 				actionOptions.config,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/xmit_mode_2110/${await context.parseVariablesInString(options.scope)}`, {
+				await self.postCommand(`/xmit_mode_2110/${await context.parseVariablesInString(options.scope)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -1658,7 +1678,7 @@ export default function (self) {
 			callback: async ({ options }, context) => {
 				const mode = await parseIntOption(options, context, 'mode', 'modeVar')
 				validateIntRange(mode, -1, 50000, 'tr_offset_2110')
-				return await self.postCommand(`/tr_offset_2110/${await context.parseVariablesInString(options.scope)}`, {
+				await self.postCommand(`/tr_offset_2110/${await context.parseVariablesInString(options.scope)}`, {
 					ints: [mode],
 				})
 			},
@@ -1676,7 +1696,7 @@ export default function (self) {
 				actionOptions.config,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/remote_config_mode/${await context.parseVariablesInString(options.scope)}`, {
+				await self.postCommand(`/remote_config_mode/${await context.parseVariablesInString(options.scope)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -1693,7 +1713,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/input_edit_mode`, {
+				await self.postCommand(`/input_edit_mode`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -1711,7 +1731,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/ext_ref_out`, {
+				await self.postCommand(`/ext_ref_out`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -1728,7 +1748,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/ip_fast_switch_enable`, {
+				await self.postCommand(`/ip_fast_switch_enable`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -1745,7 +1765,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/ignore_rtp_sequence_error`, {
+				await self.postCommand(`/ignore_rtp_sequence_error`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -1763,7 +1783,7 @@ export default function (self) {
 			],
 			callback: async ({ options }, context) => {
 				const mode = validateIntRange(await context.parseVariablesInString(options.mode), 0, 1, 'Jitter Meter Mode')
-				return await self.postCommand(`/jitter_meter_enable`, {
+				await self.postCommand(`/jitter_meter_enable`, {
 					ints: [mode],
 				})
 			},
@@ -1788,7 +1808,7 @@ export default function (self) {
 					3,
 					'Jitter Meter Sweep Rate',
 				)
-				return await self.postCommand(`/jitter_sweep/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/jitter_sweep/${await parseTileScope(options, self, context)}`, {
 					ints: [mode],
 				})
 			},
@@ -1817,7 +1837,7 @@ export default function (self) {
 			callback: async ({ options }, context) => {
 				const mode = await parseIntOption(options, context, 'gain', 'gainVar')
 				validateIntRange(mode, 1, 10, 'Lightning Vertical Gain')
-				return await self.postCommand(`/lightning_vertical_gain/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/lightning_vertical_gain/${await parseTileScope(options, self, context)}`, {
 					ints: [mode],
 				})
 			},
@@ -1836,12 +1856,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(
-					`/lightning_vertical_var_enable/${await parseTileScope(options, self, context)}`,
-					{
-						ints: [await context.parseVariablesInString(options.mode)],
-					},
-				)
+				await self.postCommand(`/lightning_vertical_var_enable/${await parseTileScope(options, self, context)}`, {
+					ints: [await context.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		lightningHorizontalGain: {
@@ -1868,7 +1885,7 @@ export default function (self) {
 			callback: async ({ options }, context) => {
 				const mode = await parseIntOption(options, context, 'gain', 'gainVar')
 				validateIntRange(mode, 1, 10, 'Lightning Horizontal Gain')
-				return await self.postCommand(`/lightning_horizontal_gain/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/lightning_horizontal_gain/${await parseTileScope(options, self, context)}`, {
 					ints: [mode],
 				})
 			},
@@ -1887,12 +1904,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(
-					`/lightning_horizontal_var_enable/${await parseTileScope(options, self, context)}`,
-					{
-						ints: [await context.parseVariablesInString(options.mode)],
-					},
-				)
+				await self.postCommand(`/lightning_horizontal_var_enable/${await parseTileScope(options, self, context)}`, {
+					ints: [await context.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		lightningLut: {
@@ -1908,7 +1922,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/lightning_lut/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/lightning_lut/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -1928,7 +1942,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/measure_assign/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/measure_assign/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -1946,7 +1960,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/line_select_enable/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/line_select_enable/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -1964,7 +1978,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/measure_bar_target/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/measure_bar_target/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -1983,7 +1997,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/measure_tile_mode/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/measure_tile_mode/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -2001,7 +2015,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/nmos_discovery`, {
+				await self.postCommand(`/nmos_discovery`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -2019,7 +2033,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/nmos_dns_type`, {
+				await self.postCommand(`/nmos_dns_type`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -2037,7 +2051,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/nmos_api_version`, {
+				await self.postCommand(`/nmos_api_version`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -2054,7 +2068,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/nmos_persistent_receivers`, {
+				await self.postCommand(`/nmos_persistent_receivers`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -2080,7 +2094,7 @@ export default function (self) {
 			callback: async ({ options }, context) => {
 				const mode = await parseIntOption(options, context, 'mode', 'modeVar')
 				validateIntRange(mode, 1, 6, 'NMOS Target Input')
-				return await self.postCommand(`/nmos_target_input`, {
+				await self.postCommand(`/nmos_target_input`, {
 					ints: [mode],
 				})
 			},
@@ -2099,7 +2113,7 @@ export default function (self) {
 			],
 			callback: async ({ options }, context) => {
 				const mode = validateIntRange(await context.parseVariablesInString(options.mode), 0, 6, 'Jitter HPF')
-				return await self.postCommand(`/jitter_hpf/index0`, {
+				await self.postCommand(`/jitter_hpf/index0`, {
 					ints: [mode],
 				})
 			},
@@ -2118,7 +2132,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/closed_captions_display/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/closed_captions_display/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -2138,7 +2152,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/picture_safe_action_1/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/picture_safe_action_1/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -2158,7 +2172,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/picture_safe_action_2/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/picture_safe_action_2/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -2178,7 +2192,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/picture_safe_title_1/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/picture_safe_title_1/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -2198,7 +2212,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/picture_safe_title_2/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/picture_safe_title_2/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -2217,7 +2231,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/picture_center_grat/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/picture_center_grat/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -2237,7 +2251,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/closed_captions_608_channel/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/closed_captions_608_channel/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -2257,7 +2271,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/closed_captions_708_service/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/closed_captions_708_service/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -2273,17 +2287,13 @@ export default function (self) {
 					default: 100,
 					min: 100,
 					max: 899,
-					isVisible: (options) => {
-						return !options.useVar && options.legacy
-					},
+					isVisibleExpression: '$(options:useVar) === false && $(options:legacy) === true',
 				},
 				{
 					...actionOptions.modeVar,
 					label: 'Page',
 					tooltip: 'Varible must return an integer between 100 and 899.',
-					isVisible: (options) => {
-						return options.useVar && options.legacy
-					},
+					isVisibleExpression: '$(options:useVar) === true && $(options:legacy) === true',
 				},
 				{
 					...actionOptions.modeVar,
@@ -2292,15 +2302,11 @@ export default function (self) {
 					tooltip: 'Varible must return a hex string ie 0x801.',
 					default: '0x801',
 					useVariables: { local: true },
-					isVisible: (options) => {
-						return !options.legacy
-					},
+					isVisibleExpression: '$(options:legacy) === false',
 				},
 				{
 					...actionOptions.useVar,
-					isVisible: (options) => {
-						return options.legacy
-					},
+					isVisibleExpression: '$(options:legacy) === true',
 				},
 				actionOptions.tiles,
 				{
@@ -2322,11 +2328,10 @@ export default function (self) {
 					if (mode.startsWith('0x') && mode.length == 5) {
 						args.string = mode
 					} else {
-						self.log('warn', `closed_captions_wst_page has been passed an out of range variable: ${mode}`)
-						return undefined
+						throw new Error(`closed_captions_wst_page has been passed an out of range variable: ${mode}`)
 					}
 				}
-				return await self.postCommand(`/closed_captions_wst_page/${await parseTileScope(options, self, context)}`, args)
+				await self.postCommand(`/closed_captions_wst_page/${await parseTileScope(options, self, context)}`, args)
 			},
 		},
 		closedCaptionsAribType: {
@@ -2343,7 +2348,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/closed_captions_arib_type/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/closed_captions_arib_type/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -2361,7 +2366,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/picture_afd_grat/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/picture_afd_grat/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -2379,7 +2384,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/picture_afd_grat_overlay/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/picture_afd_grat_overlay/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -2397,7 +2402,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/picture_lut/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/picture_lut/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -2416,7 +2421,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/picture_format_overlay/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/picture_format_overlay/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -2434,7 +2439,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/picture_false_color_gamut_mode`, {
+				await self.postCommand(`/picture_false_color_gamut_mode`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -2453,7 +2458,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/picture_false_color/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/picture_false_color/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -2472,7 +2477,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/picture_false_color_mode/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/picture_false_color_mode/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -2490,12 +2495,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(
-					`/picture_false_color_band_meter/${await parseTileScope(options, self, context)}`,
-					{
-						ints: [await context.parseVariablesInString(options.mode)],
-					},
-				)
+				await self.postCommand(`/picture_false_color_band_meter/${await parseTileScope(options, self, context)}`, {
+					ints: [await context.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		closedCaptionsInfoEnable: {
@@ -2511,7 +2513,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/closed_captions_info_enable/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/closed_captions_info_enable/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -2529,7 +2531,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/source_id_display/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/source_id_display/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -2546,7 +2548,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/picture_aspect_ratio`, {
+				await self.postCommand(`/picture_aspect_ratio`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -2563,7 +2565,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/preset_recall_saved_inputs`, {
+				await self.postCommand(`/preset_recall_saved_inputs`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -2580,7 +2582,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/preset_edit_mode`, {
+				await self.postCommand(`/preset_edit_mode`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -2598,7 +2600,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/ptp_profile`, {
+				await self.postCommand(`/ptp_profile`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -2622,7 +2624,7 @@ export default function (self) {
 			callback: async ({ options }, context) => {
 				const mode = await parseIntOption(options, context, 'mode', 'modeVar')
 				validateIntRange(mode, 0, 127, 'ptp_domain_2059_profile')
-				return await self.postCommand(`/ptp_domain_2059_profile`, {
+				await self.postCommand(`/ptp_domain_2059_profile`, {
 					ints: [mode],
 				})
 			},
@@ -2639,7 +2641,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/ptp_comm_mode_2059_profile`, {
+				await self.postCommand(`/ptp_comm_mode_2059_profile`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -2665,7 +2667,7 @@ export default function (self) {
 			callback: async ({ options }, context) => {
 				const mode = await parseIntOption(options, context, 'mode', 'gainVar')
 				validateIntRange(mode, 0, 127, 'ptp_domain_aes67_profile')
-				return await self.postCommand(`/ptp_domain_aes67_profile`, {
+				await self.postCommand(`/ptp_domain_aes67_profile`, {
 					ints: [mode],
 				})
 			},
@@ -2690,7 +2692,7 @@ export default function (self) {
 			callback: async ({ options }, context) => {
 				const mode = await parseIntOption(options, context, 'mode', 'modeVar')
 				validateIntRange(mode, 0, 127, 'ptp_domain_general_profile')
-				return await self.postCommand(`/ptp_domain_general_profile`, {
+				await self.postCommand(`/ptp_domain_general_profile`, {
 					ints: [mode],
 				})
 			},
@@ -2707,7 +2709,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }) => {
-				return await self.postCommand(`/snmp_trap_enable`, { ints: [parseInt(options.mode)] })
+				await self.postCommand(`/snmp_trap_enable`, { ints: [parseInt(options.mode)] })
 			},
 		},
 		timingMeasureMode: {
@@ -2723,7 +2725,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/timing_measure_mode/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/timing_measure_mode/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -2748,7 +2750,7 @@ export default function (self) {
 			callback: async ({ options }, context) => {
 				const mode = await parseIntOption(options, context, 'mode', 'modeVar')
 				validateIntRange(mode, -50, 50, 'tile_grat_intensity')
-				return await self.postCommand(`/tile_grat_intensity`, {
+				await self.postCommand(`/tile_grat_intensity`, {
 					ints: [mode],
 				})
 			},
@@ -2774,7 +2776,7 @@ export default function (self) {
 			callback: async ({ options }, context) => {
 				const mode = await parseIntOption(options, context, 'mode', 'modeVar')
 				validateIntRange(mode, -50, 50, 'trace_intensity')
-				return await self.postCommand(`/trace_intensity`, {
+				await self.postCommand(`/trace_intensity`, {
 					ints: [mode],
 				})
 			},
@@ -2792,7 +2794,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/extended_status_bar_pinned_menu`, {
+				await self.postCommand(`/extended_status_bar_pinned_menu`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -2809,7 +2811,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/cie_color_space`, {
+				await self.postCommand(`/cie_color_space`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -2826,7 +2828,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/cie_trace_appearance`, {
+				await self.postCommand(`/cie_trace_appearance`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -2843,7 +2845,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/out_of_gamut_alarm`, {
+				await self.postCommand(`/out_of_gamut_alarm`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -2860,7 +2862,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/gamut_alarm_thresholds_preset`, {
+				await self.postCommand(`/gamut_alarm_thresholds_preset`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -2877,7 +2879,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/hdr_alarms`, {
+				await self.postCommand(`/hdr_alarms`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -2903,7 +2905,7 @@ export default function (self) {
 			callback: async ({ options }, context) => {
 				const mode = await parseIntOption(options, context, 'mode', 'modeVar')
 				validateIntRange(mode, 0, 10000, 'hdr_total_area_threshold')
-				return await self.postCommand(`/hdr_total_area_threshold`, {
+				await self.postCommand(`/hdr_total_area_threshold`, {
 					ints: [mode],
 				})
 			},
@@ -2928,7 +2930,7 @@ export default function (self) {
 			callback: async ({ options }, context) => {
 				const mode = await parseIntOption(options, context, 'mode', 'modeVar')
 				validateIntRange(mode, 0, 100, 'hdr_brightest_area_threshold')
-				return await self.postCommand(`/hdr_brightest_area_threshold`, {
+				await self.postCommand(`/hdr_brightest_area_threshold`, {
 					ints: [mode],
 				})
 			},
@@ -2953,7 +2955,7 @@ export default function (self) {
 			callback: async ({ options }, context) => {
 				const mode = await parseIntOption(options, context, 'mode', 'modeVar')
 				validateIntRange(mode, 0, 100, 'hdr_area_threshold')
-				return await self.postCommand(`/hdr_area_threshold`, {
+				await self.postCommand(`/hdr_area_threshold`, {
 					ints: [mode],
 				})
 			},
@@ -2978,7 +2980,7 @@ export default function (self) {
 			callback: async ({ options }, context) => {
 				const mode = await parseIntOption(options, context, 'mode', 'modeVar')
 				validateIntRange(mode, 0, 100, 'hdr_darkest_area_threshold')
-				return await self.postCommand(`/hdr_darkest_area_threshold`, {
+				await self.postCommand(`/hdr_darkest_area_threshold`, {
 					ints: [mode],
 				})
 			},
@@ -2997,7 +2999,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/center_grat_color`, {
+				await self.postCommand(`/center_grat_color`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -3016,7 +3018,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/afd_grat_color`, {
+				await self.postCommand(`/afd_grat_color`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -3035,7 +3037,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/safe_area_1_color`, {
+				await self.postCommand(`/safe_area_1_color`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -3054,7 +3056,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/safe_area_2_color`, {
+				await self.postCommand(`/safe_area_2_color`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -3072,7 +3074,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/picture_safe_area_std`, {
+				await self.postCommand(`/picture_safe_area_std`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -3089,7 +3091,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/timecode_overlay`, {
+				await self.postCommand(`/timecode_overlay`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -3116,7 +3118,7 @@ export default function (self) {
 			callback: async ({ options }, context) => {
 				const mode = await parseIntOption(options, context, 'mode', 'modeVar')
 				validateIntRange(mode, 1, 2500, 'tile_av_advanced_threshold')
-				return await self.postCommand(`/tile_av_advanced_threshold`, {
+				await self.postCommand(`/tile_av_advanced_threshold`, {
 					ints: [mode],
 				})
 			},
@@ -3143,7 +3145,7 @@ export default function (self) {
 			callback: async ({ options }, context) => {
 				const mode = await parseIntOption(options, context, 'mode', 'modeVar')
 				validateIntRange(mode, 1, 2500, 'tile_av_delayed_threshold')
-				return await self.postCommand(`/tile_av_delayed_threshold`, {
+				await self.postCommand(`/tile_av_delayed_threshold`, {
 					ints: [mode],
 				})
 			},
@@ -3160,7 +3162,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/timecode_select`, {
+				await self.postCommand(`/timecode_select`, {
 					string: await context.parseVariablesInString(options.mode),
 				})
 			},
@@ -3178,7 +3180,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/timing_ref_source`, {
+				await self.postCommand(`/timing_ref_source`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -3197,7 +3199,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/vector_gain/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/vector_gain/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -3216,7 +3218,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/vector_var_enable/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/vector_var_enable/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -3235,7 +3237,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/vector_lut/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/vector_lut/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -3254,7 +3256,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/vector_iq_axis/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/vector_iq_axis/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -3273,7 +3275,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/vector_sdi_compass_rose/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/vector_sdi_compass_rose/${await parseTileScope(options, self, context)}`, {
 					ints: [parseInt(await context.parseVariablesInString(options.mode))],
 				})
 			},
@@ -3290,7 +3292,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/sdi_vid_out`, {
+				await self.postCommand(`/sdi_vid_out`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -3307,7 +3309,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/sdi_gen_enable`, {
+				await self.postCommand(`/sdi_gen_enable`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -3324,7 +3326,7 @@ export default function (self) {
 				},
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/sdi_gen_video_moving_pix`, {
+				await self.postCommand(`/sdi_gen_video_moving_pix`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -3342,7 +3344,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/waveform_mode/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/waveform_mode/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -3360,7 +3362,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/waveform_filter_ypbpr/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/waveform_filter_ypbpr/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -3378,7 +3380,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/waveform_filter_rgb/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/waveform_filter_rgb/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -3396,7 +3398,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/waveform_filter_yrgb/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/waveform_filter_yrgb/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -3415,7 +3417,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/waveform_sweep/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/waveform_sweep/${await parseTileScope(options, self, context)}`, {
 					ints: [parseInt(await context.parseVariablesInString(options.mode))],
 				})
 			},
@@ -3433,7 +3435,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/waveform_color_trace/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/waveform_color_trace/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -3461,7 +3463,7 @@ export default function (self) {
 			callback: async ({ options }, context) => {
 				const mode = await parseIntOption(options, context, 'mode', 'modeVar')
 				validateIntRange(mode, 1, 10, 'waveform_gain')
-				return await self.postCommand(`/waveform_gain/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/waveform_gain/${await parseTileScope(options, self, context)}`, {
 					ints: [mode],
 				})
 			},
@@ -3480,7 +3482,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/waveform_var_enable/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/waveform_var_enable/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -3518,7 +3520,7 @@ export default function (self) {
 				const hmag = await parseIntOption(options, context, 'hmag', 'hmagVar')
 				validateIntRange(hmag, 1, 25, 'Hmag')
 				const bestView = validateIntRange(await context.parseVariablesInString(options.bestView), 0, 1, 'Best view')
-				return await self.postCommand(`/waveform_hmag/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/waveform_hmag/${await parseTileScope(options, self, context)}`, {
 					ints: [hmag, bestView],
 				})
 			},
@@ -3537,12 +3539,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(
-					`/waveform_vertical_cursor_enable/${await parseTileScope(options, self, context)}`,
-					{
-						ints: [await context.parseVariablesInString(options.mode)],
-					},
-				)
+				await self.postCommand(`/waveform_vertical_cursor_enable/${await parseTileScope(options, self, context)}`, {
+					ints: [await context.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		waveformHorizontalCursorEnable: {
@@ -3559,12 +3558,9 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(
-					`/waveform_horizontal_cursor_enable/${await parseTileScope(options, self, context)}`,
-					{
-						ints: [await context.parseVariablesInString(options.mode)],
-					},
-				)
+				await self.postCommand(`/waveform_horizontal_cursor_enable/${await parseTileScope(options, self, context)}`, {
+					ints: [await context.parseVariablesInString(options.mode)],
+				})
 			},
 		},
 		waveformGratSdiUnits: {
@@ -3581,7 +3577,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/waveform_grat_sdi_units/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/waveform_grat_sdi_units/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -3599,7 +3595,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/waveform_lut/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/waveform_lut/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -3617,7 +3613,7 @@ export default function (self) {
 				actionOptions.tiles,
 			],
 			callback: async ({ options }, context) => {
-				return await self.postCommand(`/waveform_active_area/${await parseTileScope(options, self, context)}`, {
+				await self.postCommand(`/waveform_active_area/${await parseTileScope(options, self, context)}`, {
 					ints: [await context.parseVariablesInString(options.mode)],
 				})
 			},
@@ -3645,7 +3641,7 @@ export default function (self) {
 			callback: async ({ options }, context) => {
 				const level = await parseFloatOption(options, context, 'level', 'levelVar')
 				validateFloatRange(level, -31, 0, 'level')
-				return await self.postCommand(`/loudness_loud_level/`, {
+				await self.postCommand(`/loudness_loud_level/`, {
 					floats: [level],
 				})
 			},
@@ -3673,7 +3669,7 @@ export default function (self) {
 			callback: async ({ options }, context) => {
 				const level = await parseFloatOption(options, context, 'level', 'levelVar')
 				validateFloatRange(level, -60, 0, 'level')
-				return await self.postCommand(`/loudness_quiet_level/`, {
+				await self.postCommand(`/loudness_quiet_level/`, {
 					floats: [level],
 				})
 			},
@@ -3737,7 +3733,7 @@ export default function (self) {
 				let low = await parseFloatOption(options, context, 'low', 'lowVar')
 				validateFloatRange(low, 0, 10, 'loudnessTargetLevel: Low')
 				low = Math.round(low * 10) / 10
-				return await self.postCommand(`/loudness_target_level/`, {
+				await self.postCommand(`/loudness_target_level/`, {
 					object: {
 						target: target,
 						targetLow: low,
