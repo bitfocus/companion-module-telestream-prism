@@ -16,7 +16,7 @@ const contentType = 'application/json'
 const pollInterval_reg = 2000
 const pollInterval_slow = 20000
 
-class Telestream_PRISM extends InstanceBase {
+export class Telestream_PRISM extends InstanceBase {
 	constructor(internal) {
 		super(internal)
 		this.pollTimer_fast = {}
@@ -117,26 +117,24 @@ class Telestream_PRISM extends InstanceBase {
 	}
 
 	async postCommand(path, data) {
-		return await this.queue.add(async () => {
-			if (this.axios === undefined) {
-				return undefined
-			}
-			try {
+		return await this.queue.add(
+			async () => {
+				if (this.axios === undefined) {
+					throw new Error('Client not initalized')
+				}
 				const response = await this.axios.post(path, JSON.stringify(data))
 				this.logResponse(response)
 				return response
-			} catch (error) {
-				this.logError(error)
-				return undefined
-			}
-		})
+			},
+			{ priority: 1 },
+		)
 	}
 
 	async getInputConfig() {
 		if (this.axios === undefined) {
 			return undefined
 		}
-		let varList = []
+		const varList = {}
 		let input_list_changed = false
 		let input_entry = {}
 		for (let i = 0; i <= 5; i++) {
@@ -174,7 +172,7 @@ class Telestream_PRISM extends InstanceBase {
 			if (this.axios === undefined) {
 				return undefined
 			}
-			let varList = []
+			const varList = {}
 			try {
 				const response = await this.axios.get('/tile_in_focus')
 				this.logResponse(response)
@@ -204,7 +202,7 @@ class Telestream_PRISM extends InstanceBase {
 			if (this.axios === undefined) {
 				return undefined
 			}
-			let varList = []
+			const varList = {}
 			try {
 				const response = await this.axios.get('/activeinput')
 				this.logResponse(response)
